@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { Transaction } from '../common'
+import { Transaction } from '@OBSHCHAK/common'
 
 interface TransactionListProps {
-  transactions: Transaction[];
+  transactions: Transaction[]
 }
 
 

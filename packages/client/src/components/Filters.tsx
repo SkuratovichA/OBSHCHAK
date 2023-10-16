@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { FilterTypes } from '../common'
-import { COLORS, ThemeType } from '../styles'
 import { css } from '@emotion/react'
-import { useTheme } from '../hooks/use-theme'
+import { FilterTypes } from '@OBSHCHAK-UI/types'
+import { COLORS, ThemeType } from '@OBSHCHAK-UI/styles'
+import { useTheme } from '@OBSHCHAK-UI/hooks'
 
 interface FiltersProps {
   activeFilters: FilterTypes[];

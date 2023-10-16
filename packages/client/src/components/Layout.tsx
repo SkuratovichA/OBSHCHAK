@@ -1,18 +1,19 @@
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import { Filters } from './Filters'
 import { TransactionList } from './TransactionList'
 
 import { Balance } from './Balance'
-import { Currencies, FilterTypes, Transaction, TransactionStatus } from '../common'
 import styled from '@emotion/styled'
-import { useWebsockets } from '../hooks/use-websockets'
-import { useTheme } from '../hooks/use-theme'
-import { COLORS, ThemeType } from '../styles'
 import { css } from '@emotion/react'
 import { RequestMoneyPortal } from './RequestMoneyPortal'
 import { Button } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useAppContext } from '../hooks/use-app-context'
+import { FilterTypes } from '@OBSHCHAK-UI/types'
+import { COLORS, ThemeType } from '@OBSHCHAK-UI/styles'
+import { useAppContext, useTheme, useWebsockets } from '@OBSHCHAK-UI/hooks'
+import { Currencies, Transaction, TransactionStatus } from '@OBSHCHAK/common'
 
 export const Layout: React.FC = () => {
   const { theme } = useTheme()
@@ -21,6 +22,7 @@ export const Layout: React.FC = () => {
   const { transactions, username } = useWebsockets()
   const [ filteredTransactions, setFilteredTransactions ] = useState<Transaction[]>([])
   const [ activeFilters, setActiveFilters ] = useState<FilterTypes[]>([])
+
 
   const balance = transactions.reduce((acc, transaction) => {
     if (activeFilters.includes(FilterTypes.MY_DUES) && transaction.target === username) {
@@ -38,14 +40,14 @@ export const Layout: React.FC = () => {
       return
     }
     setUsername(username)
-  }, [username])
+  }, [ setUsername, username ])
 
   useEffect(() => {
     const filtered = transactions.filter((transaction) => {
-      if (activeFilters.includes(FilterTypes.PENDING) && transaction.status !== TransactionStatus.Active) {
+      if (activeFilters.includes(FilterTypes.PENDING) && transaction.status !== TransactionStatus.ACTIVE) {
         return false
       }
-      if (activeFilters.includes(FilterTypes.PAID) && transaction.status !== TransactionStatus.Closed) {
+      if (activeFilters.includes(FilterTypes.PAID) && transaction.status !== TransactionStatus.APPROVED) {
         return false
       }
       return true
@@ -56,6 +58,17 @@ export const Layout: React.FC = () => {
 
   const [ showingRequestMoney, setShowingRequestMoney ] = useState(false)
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch(
+        '/api/test',
+        { method: 'POST', body: JSON.stringify({ test: 'test' }) },
+      )
+      return res.json()
+    }
+    fetchData().catch((e) => console.error('error', JSON.stringify(e))).then((res) => alert(JSON.stringify(res)))
+  }, [])
+
 
   return (
     <TWAContainer
@@ -64,6 +77,11 @@ export const Layout: React.FC = () => {
       <AnimatePresence>
         {showingRequestMoney &&
             <RequestMoneyPortalMot
+                initial={{opacity: 0, x: '-100px'}}
+                animate={{opacity: 1, x: '0px'}}
+                exit={{opacity: 0, x: '-100px'}}
+                // specify duration and easing function
+                transition={{duration: 0.4}}
                 toggleClose={() => setShowingRequestMoney(false)}
             />}
       </AnimatePresence>

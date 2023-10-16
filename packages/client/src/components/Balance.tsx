@@ -1,8 +1,8 @@
 import styled from '@emotion/styled'
-import { COLORS, ThemeType } from '../styles'
-import { useTheme } from '../hooks/use-theme'
 import { css } from '@emotion/react'
-import { currencyMapping, Currencies } from '../common'
+import { Currencies, currencyMapping } from '@OBSHCHAK-UI/types'
+import { useTheme } from '@OBSHCHAK-UI/hooks'
+import { COLORS, ThemeType } from '@OBSHCHAK-UI/styles'
 
 
 interface BalanceProps {

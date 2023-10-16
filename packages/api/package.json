@@ -5,11 +5,18 @@
   "type": "module",
   "dependencies": {
     "@OBSHCHAK/common": "*",
+    "@types/koa-router": "^7.4.5",
+    "koa": "^2.14.2",
+    "koa-bodyparser": "^4.4.1",
+    "koa-router": "^12.0.0",
     "lodash": "^4.17.21",
+    "socket.io": "^4.7.2",
     "ts-node": "^10.8.1",
     "typescript": "^4.9.5"
   },
   "devDependencies": {
+    "@types/koa": "^2",
+    "@types/koa-bodyparser": "^4",
     "@types/lodash": "^4.14.182",
     "@types/node": "^16.11.24",
     "@types/node-fetch": "^2.5.10",

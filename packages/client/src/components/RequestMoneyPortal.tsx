@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from 'react'
 import styled from '@emotion/styled'
-import { COLORS, ThemeType } from '../styles'
 import { Button, InputAdornment, TextField } from '@mui/material'
-import { useAppContext } from '../hooks/use-app-context'
-import { useWebsockets } from '../hooks/use-websockets'
+import { useAppContext, useWebsockets } from '@OBSHCHAK-UI/hooks'
+import { COLORS, ThemeType } from '@OBSHCHAK-UI/styles'
 
 
 interface RequestMoneyPortalProps {

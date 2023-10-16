@@ -1,6 +1,9 @@
+'use client'
+
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import io, { Socket } from 'socket.io-client'
-import { SERVER_URL, Transaction } from '../common'
+import { API_ORIGIN, Transaction } from '@OBSHCHAK/common'
+
 
 interface WebsocketsContextProps {
   transactions: Transaction[];
@@ -27,7 +30,7 @@ export const WebsocketsProvider: React.FC<React.PropsWithChildren> = ({ children
     const username = new URLSearchParams(window.location.search).get('username')
     const query = username ? { username } : {}
     const newSocket = io(
-      SERVER_URL, {
+      API_ORIGIN, {
         transports: ['websocket'],
         query
       }
