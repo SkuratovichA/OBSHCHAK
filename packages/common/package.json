@@ -1,5 +1,5 @@
 {
-  "name": "@OBSHCHAK/common",
+  "name": "app-common",
   "version": "0.1.0",
   "private": true,
   "main": "lib/index.js",
@@ -11,5 +11,8 @@
   "scripts": {
     "build": "tsc -b",
     "watch": "tsc -b -w"
+  },
+  "dependencies": {
+    "typeorm": "^0.3.17"
   }
 }

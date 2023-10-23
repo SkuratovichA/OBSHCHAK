@@ -1,17 +1,17 @@
 {
-  "name": "@OBSHCHAK/client",
+  "name": "app-client",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next dev",
     "lint": "next lint"
   },
   "dependencies": {
-    "@OBSHCHAK/common": "*",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "app-common": "*",
     "bufferutil": "^4.0.7",
     "next": "latest",
     "react": "latest",

@@ -1,5 +1,5 @@
 {
-  "name": "OBSHCHAK",
+  "name": "app",
   "private": true,
   "version": "0.1.0",
   "workspaces": [
@@ -19,12 +19,12 @@
   "scripts": {
     "watch": "tsc -b -w packages/common/tsconfig.json packages/api/tsconfig.json",
     "build": "yarn build-client && yarn build-api",
-    "build-client": "yarn workspace @OBSHCHAK/client build",
-    "build-api": "yarn workspace @OBSHCHAK/api build",
+    "build-client": "yarn workspace app-client build",
+    "build-api": "yarn workspace app-api build",
     "clean-build": "rm -rf packages/*/{lib,build,tsconfig.tsbuildinfo}",
     "start": "concurrently -n client,server 'yarn start-client' 'yarn start-api' --kill-others",
-    "start-client": "yarn workspace @OBSHCHAK/client start",
-    "start-api": "yarn workspace @OBSHCHAK/api start"
+    "start-client": "yarn workspace app-client start",
+    "start-api": "yarn workspace app-api start"
   },
   "packageManager": "yarn@3.1.4"
 }

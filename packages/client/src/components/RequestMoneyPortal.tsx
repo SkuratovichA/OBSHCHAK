@@ -12,11 +12,10 @@ interface RequestMoneyPortalProps {
 export const RequestMoneyPortal: React.FC<RequestMoneyPortalProps> = ({ toggleClose }) => {
 
   const { username } = useAppContext()
-
-  const {
-    requestMoney,
-  } = useWebsockets()
-
+  //
+  // const {
+  //   requestMoney,
+  // } = useWebsockets()
 
   const [ account, setAccount ] = useState<string | null>(null)
   const [ amount, setAmount ] = useState<number | null>(null)
@@ -24,22 +23,22 @@ export const RequestMoneyPortal: React.FC<RequestMoneyPortalProps> = ({ toggleCl
 
   const isRequestValid = account && amount
 
-  const handleSendRequest = useCallback(async () => {
-    if (!isRequestValid) {
-      return
-    }
-
-    const requestBody = {
-      owner: username,
-      target: account,
-      amount: amount,
-      currency: 'USD', /// fuck meeee
-      message: note,
-    }
-    await requestMoney(requestBody)
-
-    toggleClose()
-  }, [ username, account, amount, note, requestMoney, toggleClose ])
+  // const handleSendRequest = useCallback(async () => {
+  //   if (!isRequestValid) {
+  //     return
+  //   }
+  //
+  //   const requestBody = {
+  //     owner: username,
+  //     target: account,
+  //     amount: amount,
+  //     currency: 'USD', /// fuck meeee
+  //     message: note,
+  //   }
+  //   await requestMoney(requestBody)
+  //
+  //   toggleClose()
+  // }, [isRequestValid, username, account, amount, note, requestMoney, toggleClose])
 
 
   const handleBack = () => {
@@ -90,13 +89,13 @@ export const RequestMoneyPortal: React.FC<RequestMoneyPortalProps> = ({ toggleCl
         >
           Back
         </Button>
-        <Button
-          onClick={handleSendRequest}
-          variant="contained"
-          disabled={!isRequestValid}
-        >
-          Send Request
-        </Button>
+        {/*<Button*/}
+        {/*  onClick={handleSendRequest}*/}
+        {/*  variant="contained"*/}
+        {/*  disabled={!isRequestValid}*/}
+        {/*>*/}
+        {/*  Send Request*/}
+        {/*</Button>*/}
       </ButtonContainer>
     </RequestMoneyContainer>
   )

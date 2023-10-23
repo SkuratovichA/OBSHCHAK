@@ -1,9 +1,8 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { Transaction } from '@OBSHCHAK/common'
 
 interface TransactionListProps {
-  transactions: Transaction[]
+  transactions: any[] // FIXME: maybe Debt but have no time for this.
 }
 
 
