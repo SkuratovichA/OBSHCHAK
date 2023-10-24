@@ -16,16 +16,11 @@ import { useAppContext, useTheme, useWebsockets } from '@OBSHCHAK-UI/hooks'
 import { Currencies } from 'app-common'
 import Link from 'next/link'
 
-
 export const Layout: React.FC = () => {
-
   const { theme } = useTheme()
 
-  return (
-    <div> da pizda </div>
-  )
+  return <div> da pizda </div>
 }
-
 
 // export const Layout: React.FC = () => {
 //   const { theme } = useTheme()

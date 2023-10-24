@@ -8,26 +8,20 @@ import { API_PATH, API_VER } from 'app-common'
 import { signIn } from 'next-auth/react'
 
 const Home: React.FC = () => {
-
   return (
     <main>
       <WebsocketsProvider>
         <ThemeProvider>
           <AppProvider>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => signIn('google')}
-            >
+            <Button variant="contained" color="primary" onClick={() => signIn('google')}>
               Login with Google
             </Button>
-            <Layout/>
+            <Layout />
           </AppProvider>
         </ThemeProvider>
       </WebsocketsProvider>
     </main>
   )
 }
-
 
 export default Home

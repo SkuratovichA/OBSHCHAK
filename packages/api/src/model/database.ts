@@ -10,20 +10,15 @@ export const dataSource = new DataSource({
   username: PSQL_USERNAME,
   password: PSQL_PASSWORD,
   database: PSQL_DATABASE_NAME,
-  entities: [
-    User,
-    Debt,
-    DebtGroup,
-    DebtGroupParticipation,
-    DebtParticipation,
-    Payment,
-  ],
+  entities: [User, Debt, DebtGroup, DebtGroupParticipation, DebtParticipation, Payment],
   synchronize: true,
 })
 
-dataSource.connect().then(() => {
-  console.log('Connected to database')
-}).catch((err) => {
-  console.error(err)
-})
-
+dataSource
+  .connect()
+  .then(() => {
+    console.log('Connected to database')
+  })
+  .catch((err) => {
+    console.error(err)
+  })

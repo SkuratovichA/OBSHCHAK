@@ -13,7 +13,7 @@ export class UserSocketsManager {
 
   removeUserSocket(userId: string, socket: Socket) {
     console.log(`SOCKET REMOVED FROM USER ${userId}`)
-    this.userSockets[userId] = this.userSockets[userId].filter(s => s !== socket)
+    this.userSockets[userId] = this.userSockets[userId].filter((s) => s !== socket)
     if (this.userSockets[userId].length === 0) {
       delete this.userSockets[userId]
     }
@@ -21,6 +21,6 @@ export class UserSocketsManager {
 
   emitToUser(userId: string, event: string, data: any) {
     console.log(`EVENT ${event} EMITTED TO USER ${userId}`)
-    this.userSockets[userId]?.forEach(socket => socket.emit(event, data))
+    this.userSockets[userId]?.forEach((socket) => socket.emit(event, data))
   }
 }

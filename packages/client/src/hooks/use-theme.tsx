@@ -3,7 +3,6 @@
 import React, { createContext, useCallback, useContext, useState } from 'react'
 import { ThemeType } from '../styles'
 
-
 interface ThemeContextType {
   theme: ThemeType
   toggleTheme: () => void
@@ -16,17 +15,13 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [ theme, setTheme ] = useState(ThemeType.LIGHT)
+  const [theme, setTheme] = useState(ThemeType.LIGHT)
 
   const toggleTheme = useCallback(() => {
-    setTheme(prevTheme => (prevTheme === ThemeType.LIGHT ? ThemeType.DARK : ThemeType.LIGHT))
+    setTheme((prevTheme) => (prevTheme === ThemeType.LIGHT ? ThemeType.DARK : ThemeType.LIGHT))
   }, [])
 
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  )
+  return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>
 }
 
 export const useTheme = () => {

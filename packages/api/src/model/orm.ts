@@ -25,7 +25,7 @@ export class User {
   @Column()
   name!: string
 
-  @Column({nullable: false})
+  @Column({ nullable: false })
   googleId!: string
 
   @Column()
@@ -59,7 +59,7 @@ export class Debt {
   @CreateDateColumn()
   createdTimestamp!: Date
 
-  @UpdateDateColumn({nullable: true})
+  @UpdateDateColumn({ nullable: true })
   resolvedTimestamp!: Date | null
 
   @AfterInsert()
@@ -171,10 +171,10 @@ export class DebtGroupParticipation {
   @PrimaryGeneratedColumn('uuid')
   id!: string
 
-  @ManyToOne(() => DebtGroup, debtGroup => debtGroup.debtGroupId)
+  @ManyToOne(() => DebtGroup, (debtGroup) => debtGroup.debtGroupId)
   debtGroup!: DebtGroup
 
-  @ManyToOne(() => User, user => user.userId)
+  @ManyToOne(() => User, (user) => user.userId)
   user!: User
 
   @Column({

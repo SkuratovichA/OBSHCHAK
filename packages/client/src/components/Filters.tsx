@@ -6,15 +6,14 @@ import { COLORS, ThemeType } from '@OBSHCHAK-UI/styles'
 import { useTheme } from '@OBSHCHAK-UI/hooks'
 
 interface FiltersProps {
-  activeFilters: FilterTypes[];
-  setActiveFilters: React.Dispatch<React.SetStateAction<FilterTypes[]>>;
+  activeFilters: FilterTypes[]
+  setActiveFilters: React.Dispatch<React.SetStateAction<FilterTypes[]>>
 }
 
 interface FilterButtonProps {
-  isActive: boolean;
+  isActive: boolean
   theme: ThemeType
 }
-
 
 export const Filters: React.FC<FiltersProps> = ({ activeFilters, setActiveFilters }) => {
   const handleFilterClick = (filter: FilterTypes) => {
@@ -22,16 +21,14 @@ export const Filters: React.FC<FiltersProps> = ({ activeFilters, setActiveFilter
       if (prev.includes(filter)) {
         return prev.filter((f) => f !== filter)
       }
-      return [ ...prev, filter ]
+      return [...prev, filter]
     })
   }
 
-  const {theme} = useTheme()
+  const { theme } = useTheme()
 
   return (
-    <FiltersContainer
-      theme={theme}
-    >
+    <FiltersContainer theme={theme}>
       {Object.values(FilterTypes).map((filter) => (
         <FilterButton
           key={filter}
@@ -42,21 +39,20 @@ export const Filters: React.FC<FiltersProps> = ({ activeFilters, setActiveFilter
           {filter}
         </FilterButton>
       ))}
-
     </FiltersContainer>
   )
 }
 
-const FiltersContainer = styled.div<{theme: ThemeType}>`
+const FiltersContainer = styled.div<{ theme: ThemeType }>`
   display: flex;
   justify-content: end;
   align-items: center;
   gap: 10px; // to give space between buttons
   padding: 8px;
   border-radius: 10px;
-  
-  ${({theme}) => css`
-    background: ${COLORS.text(theme).primary}; 
+
+  ${({ theme }) => css`
+    background: ${COLORS.text(theme).primary};
   `}
 `
 
@@ -65,13 +61,16 @@ const FilterButton = styled.button<FilterButtonProps>`
   padding: 5px 10px;
   border: 1px solid transparent;
 
-  ${({ theme, isActive }) => isActive ? css`
-    border: 1px solid ${COLORS.text(theme).secondary};
-    color: ${COLORS.text(theme).secondary};
-    background: ${COLORS.text(theme).primary};
-  ` : css`     
-    color: ${COLORS.text(theme).primary};
-    background: ${COLORS.text(theme).secondary};
-  `}
+  ${({ theme, isActive }) =>
+    isActive
+      ? css`
+          border: 1px solid ${COLORS.text(theme).secondary};
+          color: ${COLORS.text(theme).secondary};
+          background: ${COLORS.text(theme).primary};
+        `
+      : css`
+          color: ${COLORS.text(theme).primary};
+          background: ${COLORS.text(theme).secondary};
+        `}
   cursor: pointer;
 `

@@ -4,7 +4,6 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 import io, { Socket } from 'socket.io-client'
 import { API_ORIGIN } from 'app-common'
 
-
 // FIXME: add types
 interface WebsocketsContextProps {
   // transactions: any[];
@@ -112,15 +111,19 @@ export const WebsocketsProvider: React.FC<React.PropsWithChildren> = ({ children
   // }
   //
   return (
-    <WebsocketsContext.Provider value={{
-      // requestMoney,
-      // answerOnRequestMoney,
-      // pay,
-      // username,
-      // transactions,
-      // addTransaction,
-      // changeTransaction
-    }}>
+    <WebsocketsContext.Provider
+      value={
+        {
+          // requestMoney,
+          // answerOnRequestMoney,
+          // pay,
+          // username,
+          // transactions,
+          // addTransaction,
+          // changeTransaction
+        }
+      }
+    >
       {children}
     </WebsocketsContext.Provider>
   )
@@ -128,6 +131,7 @@ export const WebsocketsProvider: React.FC<React.PropsWithChildren> = ({ children
 
 export const useWebsockets = () => {
   const context = useContext(WebsocketsContext)
-  if (context === undefined) throw new Error('useTransactions must be used within WebsocketProvider')
+  if (context === undefined)
+    throw new Error('useTransactions must be used within WebsocketProvider')
   return context
 }
