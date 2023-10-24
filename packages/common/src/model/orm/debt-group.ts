@@ -5,10 +5,10 @@ export enum DebtGroupStatusType {
 }
 
 export interface DebtGroup {
-  debtGroupId: string;
-  name: string;
-  description: string;
-  status: DebtGroupStatusType;
-  createdTimestamp: string;
-  resolvedTimestamp: string | null;
+  debtGroupId: string
+  name: string
+  description: string
+  status: DebtGroupStatusType
+  createdTimestamp: string
+  resolvedTimestamp: string | null
 }

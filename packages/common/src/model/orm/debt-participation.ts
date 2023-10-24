@@ -13,10 +13,10 @@ export enum ParticipationStatusType {
 }
 
 export interface DebtParticipation {
-  debtParticipationId: string;
-  debtId: Debt['debtId']; // Refer to Debt
-  userId: User['userId']; // Refer to User
-  role: ParticipationRoleType;
-  amount: number;
-  status: ParticipationStatusType;
+  debtParticipationId: string
+  debtId: Debt['debtId'] // Refer to Debt
+  userId: User['userId'] // Refer to User
+  role: ParticipationRoleType
+  amount: number
+  status: ParticipationStatusType
 }

@@ -9,9 +9,7 @@ export const metadata: Metadata = {
   description: 'Split and share money with friends',
 }
 
-const RootLayout: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
+const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>

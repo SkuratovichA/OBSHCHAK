@@ -4,9 +4,7 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 import io, { Socket } from 'socket.io-client'
 import { API_ORIGIN } from '@OBSHCHAK/common'
 
-
-interface WebsocketsContextProps {
-}
+interface WebsocketsContextProps {}
 
 const WebsocketsContext = createContext<WebsocketsContextProps | undefined>(undefined)
 
@@ -21,12 +19,10 @@ export const WebsocketsProvider: React.FC<React.PropsWithChildren> = ({ children
     }
     const username = new URLSearchParams(window.location.search).get('username')
     const query = username ? { username } : {}
-    const newSocket = io(
-      API_ORIGIN, {
-        transports: ['websocket'],
-        query
-      }
-    )
+    const newSocket = io(API_ORIGIN, {
+      transports: ['websocket'],
+      query,
+    })
     setSocket(newSocket)
   }, [socket])
 
@@ -42,22 +38,18 @@ export const WebsocketsProvider: React.FC<React.PropsWithChildren> = ({ children
     return disconnectSocket
   }, [connectSocket, disconnectSocket])
 
-
   useEffect(() => {
-    if (!socket){
+    if (!socket) {
       return
     }
   }, [socket])
 
-  return (
-    <WebsocketsContext.Provider value={{}}>
-      {children}
-    </WebsocketsContext.Provider>
-  )
+  return <WebsocketsContext.Provider value={{}}>{children}</WebsocketsContext.Provider>
 }
 
 export const useWebsockets = () => {
   const context = useContext(WebsocketsContext)
-  if (context === undefined) throw new Error('useTransactions must be used within WebsocketProvider')
+  if (context === undefined)
+    throw new Error('useTransactions must be used within WebsocketProvider')
   return context
 }

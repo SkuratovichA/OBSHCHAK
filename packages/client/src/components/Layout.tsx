@@ -3,13 +3,8 @@
 import React from 'react'
 import styled from '@emotion/styled'
 
-export const Layout: React.FC<React.PropsWithChildren> = ({children}) => {
-
-  return (
-    <TWAContainer>
-      {children}
-    </TWAContainer>
-  )
+export const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
+  return <TWAContainer>{children}</TWAContainer>
 }
 
 const TWAContainer = styled.div`

@@ -9,10 +9,10 @@ export enum PaymentMethodType {
 }
 
 export interface Payment {
-  paymentId: string;
-  debtParticipationId: string; // Refer to DebtParticipation
-  amount: number;
-  method: PaymentMethodType;
-  status: PaymentStatusType;
-  timestamp: string;
+  paymentId: string
+  debtParticipationId: string // Refer to DebtParticipation
+  amount: number
+  method: PaymentMethodType
+  status: PaymentStatusType
+  timestamp: string
 }

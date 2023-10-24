@@ -4,17 +4,15 @@ import { AppProvider } from '@OBSHCHAK-UI/hooks'
 import { Layout } from '@OBSHCHAK-UI/components'
 
 const Home: React.FC = () => {
-
   return (
     <main>
       <WebsocketsProvider>
         <AppProvider>
-          <Layout/>
+          <Layout />
         </AppProvider>
       </WebsocketsProvider>
     </main>
   )
 }
-
 
 export default Home

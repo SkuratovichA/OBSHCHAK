@@ -5,5 +5,5 @@ export const GET = (request: Request) => {
 
 export const POST = (request: Request) => {
   console.log('post request')
-  return new Response(JSON.stringify({message: 'why are you gae?'}))
+  return new Response(JSON.stringify({ message: 'why are you gae?' }))
 }
