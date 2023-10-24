@@ -4,7 +4,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import { API_PATH } from 'app-common'
 import { GOOGLE_CLOUD_CLIENT_ID, GOOGLE_CLOUD_CLIENT_SECRET } from 'app-common'
 
-export const authOptions: NextAuthOptions  = {
+export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt' as const,
   },
@@ -35,7 +35,7 @@ export const authOptions: NextAuthOptions  = {
       console.log('SUCCESS')
       return session
     },
-    async redirect({url, baseUrl}: any) {
+    async redirect({ url, baseUrl }: any) {
       return Promise.resolve(baseUrl)
     },
   },

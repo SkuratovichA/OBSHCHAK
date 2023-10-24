@@ -2,7 +2,7 @@ import { Socket } from 'socket.io'
 import { WebsocketEventType } from 'app-common'
 import { UserSocketsManager } from './socket-manager'
 
-type SocketFunction =  (socket: Socket, userSocketsManager: UserSocketsManager) => void
+type SocketFunction = (socket: Socket, userSocketsManager: UserSocketsManager) => void
 
 export const socketConnectionHandler: SocketFunction = (socket, userSocketsManager) => {
   void (async () => {
@@ -23,7 +23,7 @@ export const socketConnectionHandler: SocketFunction = (socket, userSocketsManag
 }
 
 const handleSocketConnect: SocketFunction = async (socket, userSocketsManager) => {
-const { userId } = socket.handshake.auth
+  const { userId } = socket.handshake.auth
   if (!userId) {
     throw new Error('No user ID provided')
   }

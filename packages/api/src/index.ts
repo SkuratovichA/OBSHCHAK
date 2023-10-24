@@ -29,10 +29,12 @@ const SESS_CONFIG = {
 app.keys = ['hui']
 
 app
-  .use(cors({
-    origin: CLIENT_PATH,
-    credentials: true,
-  }))
+  .use(
+    cors({
+      origin: CLIENT_PATH,
+      credentials: true,
+    }),
+  )
   .use(bodyParser())
   .use(router.routes())
   .use(router.allowedMethods())
@@ -44,10 +46,9 @@ const server = http.createServer(app.callback())
 const io = new Server(server, {
   cors: {
     origin: API_PATH,
-    methods: [ 'GET', 'POST' ],
+    methods: ['GET', 'POST'],
   },
 })
 io.on('connection', (socket) => socketConnectionHandler(socket, userSocketsManager))
 
-server
-  .listen(API_PORT, () => console.log(`Server is running on port ${API_PORT}`))
+server.listen(API_PORT, () => console.log(`Server is running on port ${API_PORT}`))

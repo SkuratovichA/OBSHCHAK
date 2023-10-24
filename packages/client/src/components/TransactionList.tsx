@@ -5,14 +5,15 @@ interface TransactionListProps {
   transactions: any[] // FIXME: maybe Debt but have no time for this.
 }
 
-
 export const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
   return (
     <ListContainer>
       {transactions.map((transaction) => (
         <TransactionRow key={transaction.timestamp}>
           <div>{transaction.target}</div>
-          <div>{transaction.amount} {transaction.currency}</div>
+          <div>
+            {transaction.amount} {transaction.currency}
+          </div>
           <div>{transaction.message}</div>
           <div>{transaction.status}</div>
         </TransactionRow>

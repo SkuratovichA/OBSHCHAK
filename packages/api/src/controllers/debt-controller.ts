@@ -3,7 +3,6 @@ import { UserSocketsManager } from '../websockets'
 
 export default {}
 
-
 interface CreateDebtBodyProps {
   name: string
   description: string
@@ -78,7 +77,6 @@ export const updateDebt = (userSocketsManager: UserSocketsManager) => async (ctx
   ctx.body = debt
 }
  */
-
 
 // interface DebtRequestBody {
 //   name: string;

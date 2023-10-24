@@ -4,22 +4,20 @@ import { Button, InputAdornment, TextField } from '@mui/material'
 import { useAppContext, useWebsockets } from '@OBSHCHAK-UI/hooks'
 import { COLORS, ThemeType } from '@OBSHCHAK-UI/styles'
 
-
 interface RequestMoneyPortalProps {
   toggleClose: () => void
 }
 
 export const RequestMoneyPortal: React.FC<RequestMoneyPortalProps> = ({ toggleClose }) => {
-
   const { username } = useAppContext()
   //
   // const {
   //   requestMoney,
   // } = useWebsockets()
 
-  const [ account, setAccount ] = useState<string | null>(null)
-  const [ amount, setAmount ] = useState<number | null>(null)
-  const [ note, setNote ] = useState<string | null>(null)
+  const [account, setAccount] = useState<string | null>(null)
+  const [amount, setAmount] = useState<number | null>(null)
+  const [note, setNote] = useState<string | null>(null)
 
   const isRequestValid = account && amount
 
@@ -39,7 +37,6 @@ export const RequestMoneyPortal: React.FC<RequestMoneyPortalProps> = ({ toggleCl
   //
   //   toggleClose()
   // }, [isRequestValid, username, account, amount, note, requestMoney, toggleClose])
-
 
   const handleBack = () => {
     toggleClose()
@@ -83,10 +80,7 @@ export const RequestMoneyPortal: React.FC<RequestMoneyPortalProps> = ({ toggleCl
       />
 
       <ButtonContainer>
-        <Button
-          variant="outlined"
-          onClick={handleBack}
-        >
+        <Button variant="outlined" onClick={handleBack}>
           Back
         </Button>
         {/*<Button*/}
