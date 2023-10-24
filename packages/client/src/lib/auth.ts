@@ -1,5 +1,5 @@
 // src/app/auth/[...nextauth].ts
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import { API_PATH } from 'app-common'
 import { GOOGLE_CLOUD_CLIENT_ID, GOOGLE_CLOUD_CLIENT_SECRET } from 'app-common'
@@ -40,5 +40,3 @@ export const authOptions: NextAuthOptions = {
     },
   },
 }
-
-// export default NextAuth(authOptions)
