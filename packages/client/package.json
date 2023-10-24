@@ -1,19 +1,20 @@
 {
-  "name": "@OBSHCHAK/client",
+  "name": "app-client",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next dev",
     "lint": "next lint"
   },
   "dependencies": {
-    "@OBSHCHAK/common": "*",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "app-common": "*",
     "bufferutil": "^4.0.7",
     "next": "latest",
+    "next-auth": "^4.24.3",
     "react": "latest",
     "react-dom": "latest",
     "utf-8-validate": "^6.0.3"

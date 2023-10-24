@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io'
+import { WebsocketEventType } from 'app-common'
 import { UserSocketsManager } from './socket-manager'
-import { WebsocketEventType } from '@OBSHCHAK/common'
 
 type SocketFunction =  (socket: Socket, userSocketsManager: UserSocketsManager) => void
 

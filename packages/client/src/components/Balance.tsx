@@ -1,8 +1,8 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/react'
-import { Currencies, currencyMapping } from '@OBSHCHAK-UI/types'
 import { useTheme } from '@OBSHCHAK-UI/hooks'
 import { COLORS, ThemeType } from '@OBSHCHAK-UI/styles'
+import { Currencies } from 'app-common'
 
 
 interface BalanceProps {
@@ -21,9 +21,9 @@ export const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({ balan
         <BalanceHeader
           theme={theme}
         >My Balance</BalanceHeader>
-        <BalanceValue
-          theme={theme}
-        >{currencyMapping[currency]}{' '}{balance}</BalanceValue>
+        {/*<BalanceValue*/}
+        {/*  theme={theme}*/}
+        {/*>{currencyMapping[currency]}{' '}{balance}</BalanceValue>*/}
       </BalanceMoney>
       {children}
     </BalanceContainer>
