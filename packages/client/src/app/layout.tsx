@@ -17,7 +17,7 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({
   return (
     <html lang="en">
     <body className={inter.className}>
-    <div className={'TWAContainer'} >
+    <div className={'TWAContainer'}>
       {children}
     </div>
     </body>

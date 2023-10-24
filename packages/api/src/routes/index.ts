@@ -65,10 +65,17 @@ passport.deserializeUser(async (id: string, done) => {
 export const setupRoutes = (userSocketsManager: UserSocketsManager) => {
   const router = new Router()
 
-
   router.get(`/v${API_VER}/auth/google`, passport.authenticate('google', { scope: [ 'profile', 'email' ] }))
   router.get(`/v${API_VER}/auth/google/callback`, passport.authenticate('google', { failureRedirect: `${CLIENT_PATH}/login` }), (ctx) => {
     ctx.redirect(`${CLIENT_PATH}/`)
+  })
+  router.get(`/v${API_VER}/user`, (ctx) => {
+    if (ctx.isAuthenticated()) {
+      ctx.body = ctx.state.user
+    } else {
+      ctx.status = 401
+      ctx.body = { error: 'Not authenticated' }
+    }
   })
   return router
 }

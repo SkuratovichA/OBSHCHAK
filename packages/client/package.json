@@ -14,6 +14,7 @@
     "app-common": "*",
     "bufferutil": "^4.0.7",
     "next": "latest",
+    "next-auth": "^4.24.3",
     "react": "latest",
     "react-dom": "latest",
     "utf-8-validate": "^6.0.3"

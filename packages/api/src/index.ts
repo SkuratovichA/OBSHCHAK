@@ -31,6 +31,7 @@ app.keys = ['hui']
 app
   .use(cors({
     origin: CLIENT_PATH,
+    credentials: true,
   }))
   .use(bodyParser())
   .use(router.routes())
