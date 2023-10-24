@@ -1,21 +1,26 @@
 {
   "name": "app",
-  "private": true,
   "version": "0.1.0",
+  "private": true,
   "workspaces": [
-    "packages/**"
+    "packages/*"
   ],
   "engines": {
     "node": "18.18.0",
     "yarn": "^1.22.5"
   },
   "dependencies": {
-    "@mui/material": "^5.14.10",
+    "@mui/material": "latest",
     "concurrently": "7.0.0",
-    "framer-motion": "^10.16.4",
+    "framer-motion": "latest",
+    "lodash": "latest",
     "prettier": "^3.0.3",
-    "socket.io-client": "^4.7.2",
-    "typescript": "5.1.6"
+    "socket.io-client": "latest",
+    "typescript": "latest"
+  },
+  "devDependencies": {
+    "@types/lodash": "latest",
+    "@types/node": "latest"
   },
   "scripts": {
     "watch": "tsc -b -w packages/common/tsconfig.json packages/api/tsconfig.json",
