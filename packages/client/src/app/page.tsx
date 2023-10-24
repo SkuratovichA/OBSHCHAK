@@ -1,18 +1,16 @@
 'use client'
-import { Layout } from '@OBSHCHAK-UI/components'
-import { ThemeProvider, WebsocketsProvider } from '@OBSHCHAK-UI/hooks'
+import { WebsocketsProvider } from '@OBSHCHAK-UI/hooks'
 import { AppProvider } from '@OBSHCHAK-UI/hooks'
+import { Layout } from '@OBSHCHAK-UI/components'
 
 const Home: React.FC = () => {
 
   return (
     <main>
       <WebsocketsProvider>
-        <ThemeProvider>
-          <AppProvider>
-            <Layout/>
-          </AppProvider>
-        </ThemeProvider>
+        <AppProvider>
+          <Layout/>
+        </AppProvider>
       </WebsocketsProvider>
     </main>
   )
