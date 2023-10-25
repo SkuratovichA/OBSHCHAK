@@ -1,4 +1,3 @@
-// src/app/auth/[...nextauth].ts
 import { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import { API_PATH } from 'app-common'
@@ -36,7 +35,7 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     async redirect({ url, baseUrl }: any) {
-      return Promise.resolve(baseUrl)
+      return Promise.resolve(baseUrl + '/home')
     },
   },
 }

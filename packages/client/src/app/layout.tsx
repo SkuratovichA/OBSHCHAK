@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import Link from 'next/link'
 import React from 'react'
 import './globals.css'
 
@@ -15,7 +14,7 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className={'TWAContainer'}>{children}</div>
+        <div>{children}</div>
       </body>
     </html>
   )
