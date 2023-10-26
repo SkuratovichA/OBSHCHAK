@@ -28,7 +28,7 @@ import styled from '@emotion/styled'
 
 import { Transaction, Notification, UserProfile } from 'app-common'
 
-const HomePage: React.FC = () => {
+const Layout: React.FC = () => {
   const { data: session } = useSession()
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [filter, setFilter] = useState<string>('')
@@ -111,31 +111,10 @@ const HomePage: React.FC = () => {
         </DialogActions>
       </Dialog>
 
-      <BottomNav>
-        <BottomNavigation showLabels style={{ justifyContent: 'center' }}>
-          <BottomNavigationAction label="Profile" icon={<ProfileIcon />} />
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="Groups" icon={<GroupsIcon />} />
-          <BottomNavigationAction label="Transactions" icon={<TransactionIcon />} />
-
-          <BottomNavigationAction
-            label="Notifications"
-            icon={
-              <Badge badgeContent={4} color="error">
-                <NotificationsIcon />
-              </Badge>
-            }
-          />
-          <BottomNavigationAction label="Logout" icon={<LogoutIcon />} />
-
-          {/* Add more primary navigation items here */}
-        </BottomNavigation>
-      </BottomNav>
     </Container>
   )
 }
 
-// Emotion styled components
 const SearchSection = styled.div`
   margin: 20px 0;
 `
@@ -145,12 +124,6 @@ const TransactionList = styled.div`
   flex-grow: 1; // to occupy the main screen real estate
 `
 
-const BottomNav = styled.div`
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-`
-
 const AskForMoneyContent = styled.div`
   display: flex;
   align-content: center;
@@ -158,4 +131,4 @@ const AskForMoneyContent = styled.div`
   justify-content: center;
 `
 
-export default HomePage
+export default Layout
