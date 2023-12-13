@@ -2,15 +2,10 @@
   "name": "app-client",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next dev",
-    "lint": "next lint"
-  },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.15",
     "app-common": "*",
     "bufferutil": "^4.0.7",
     "next": "latest",
@@ -20,11 +15,15 @@
     "utf-8-validate": "^6.0.3"
   },
   "devDependencies": {
-    "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "eslint": "latest",
-    "eslint-config-next": "latest",
-    "typescript": "latest"
+    "eslint-config-next": "latest"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next dev",
+    "lint": "next lint"
   }
 }

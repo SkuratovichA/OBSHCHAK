@@ -15,7 +15,7 @@ import {
   ParticipationStatusType,
   PaymentMethodType,
   PaymentStatusType,
-} from './types'
+} from 'app-common'
 
 @Entity()
 export class User {

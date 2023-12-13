@@ -3,9 +3,9 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-family: 'Roboto Mono', monospace;
-    letter-spacing: 0.1rem;
-    font-size: 1rem;
+    /*font-family: 'Roboto Mono', monospace;*/
+    /*letter-spacing: 0.1rem;*/
+    /*font-size: 1rem;*/
 }
 
 a {
@@ -29,10 +29,3 @@ nav {
     background: rgba(125,123,73, 0.5);
 }
 
-.TWAContainer {
-    width: 386px;
-    margin: auto;
-    padding: 12px;
-    height: 100vh;
-    background: rgba(125,123,73, 0.5);
-}

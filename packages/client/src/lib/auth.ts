@@ -1,8 +1,7 @@
-// src/app/auth/[...nextauth].ts
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import { API_PATH } from 'app-common'
-import { GOOGLE_CLOUD_CLIENT_ID, GOOGLE_CLOUD_CLIENT_SECRET } from 'app-common'
+import { GOOGLE_CLOUD_CLIENT_ID, GOOGLE_CLOUD_CLIENT_SECRET } from '../config'
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -36,9 +35,7 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     async redirect({ url, baseUrl }: any) {
-      return Promise.resolve(baseUrl)
+      return Promise.resolve(baseUrl + '/home')
     },
   },
 }
-
-// export default NextAuth(authOptions)
