@@ -39,6 +39,17 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
         <LoginBlock>
           {children}
 
+          {/*TODO: instead of divider, create OR with before and after sticks
+         .or-divider:after, .or-divider:before {
+              border-top: 0.1rem solid #dee2e7;
+              border-top: 0.1rem solid var(--color-line);
+              content: "";
+              display: inline-block;
+              flex-grow: 1;
+          */}
+          {/*
+            Or instead, create a splitted page. the whole left is for adds, the right for login. Horizontal divider is used
+          */}
           <LoginDivider orientation="vertical" />
 
           <OauthContainer>
