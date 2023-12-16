@@ -1,0 +1,16 @@
+{
+    "extends": "../../tsconfig.json",
+    "module": "commonjs",
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "outDir": "build",
+        "rootDir": "src"
+    },
+    "include": ["src"],
+    "references": [
+        {
+            "path": "../common/tsconfig.json"
+        }
+    ]
+}

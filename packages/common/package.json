@@ -9,6 +9,7 @@
     "watch": "tsc -b -w"
   },
   "dependencies": {
-    "typeorm": "^0.3.17"
+    "typeorm": "^0.3.17",
+    "winston": "^3.11.0"
   }
 }
