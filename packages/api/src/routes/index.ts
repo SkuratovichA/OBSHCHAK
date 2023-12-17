@@ -1,16 +1,12 @@
 import Router from 'koa-router'
 import { UserSocketsManager } from '../websockets'
-import {
-  API_PATH,
-  API_VER,
-  CLIENT_PATH,
-  GOOGLE_CLOUD_CLIENT_ID,
-  GOOGLE_CLOUD_CLIENT_SECRET,
-} from 'app-common'
+import { API_PATH, API_VER, CLIENT_PATH } from 'app-common'
+import { GOOGLE_CLOUD_CLIENT_ID, GOOGLE_CLOUD_CLIENT_SECRET } from '../config'
 
 import passport from 'koa-passport'
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 import { dataSource, User } from '../model'
+import * as transactionFunctions from './transactions'
 
 passport.use(
   new GoogleStrategy(
@@ -92,7 +88,37 @@ export const setupRoutes = (userSocketsManager: UserSocketsManager) => {
       ctx.body = { error: 'Not authenticated' }
     }
   })
+  router.post(`/v${API_VER}/create-transaction`, async (ctx) =>
+    transactionFunctions.createDebt(ctx, userSocketsManager),
+  )
+
   return router
+}
+
+const getDebtsFunction = (userSocketsManager: UserSocketsManager) => async (ctx: any) => {
+  console.log(`GET DEBTS`)
+  // TODO: implement authentication
+  // if (!ctx.isAuthenticated()) {
+  //   ctx.status = 401
+  //   ctx.body = { error: 'Not authenticated' }
+  //   return
+  // }
+
+  // const userController = dataSource.getRepository(User)
+  // TODO: implement transactions by user, and find them
+  // const user = await userController.findOne({
+  //   where: {
+  //     userId: ctx.state.user.userId,
+  //   },
+  // })
+  // if (!user) {
+  //   ctx.status = 404
+  //   ctx.body = { error: 'User not found' }
+  //   return
+  // }
+  // const transactions = await user.transactions
+  // ctx.body = transactions
+  // ctx.status = 200
 }
 
 // const loginFunction = (userSocketsManager: UserSocketsManager) => async (ctx: any) => {
@@ -155,19 +181,19 @@ export const setupRoutes = (userSocketsManager: UserSocketsManager) => {
 // router.post(`/v${API_VER}/users`, userController.createUser)
 // router.get('/v${API_VER}/users/:userId', userController.getUser)
 //
-// router.post('/v${API_VER}/debts', debtController.createDebt)
-// router.get('/v${API_VER}/debts/:debtId', debtController.getDebt)
-// router.put('/v${API_VER}/debts/:debtId', debtController.updateDebt)
-// router.delete('/v${API_VER}/debts/:debtId', debtController.deleteDebt)
+// router.post('/v${API_VER}/transactions', transactionController.createDebt)
+// router.get('/v${API_VER}/transactions/:transactionId', transactionController.getDebt)
+// router.put('/v${API_VER}/transactions/:transactionId', transactionController.updateDebt)
+// router.delete('/v${API_VER}/transactions/:transactionId', transactionController.deleteDebt)
 //
-// router.post('/v${API_VER}/debts/:debtId/participations', participationController.createParticipation)
-// router.get('/v${API_VER}/debts/:debtId/participations', participationController.listParticipations)
-// router.put('/v${API_VER}/debts/:debtId/participations/:participationId', participationController.updateParticipation)
+// router.post('/v${API_VER}/transactions/:transactionId/participations', participationController.createParticipation)
+// router.get('/v${API_VER}/transactions/:transactionId/participations', participationController.listParticipations)
+// router.put('/v${API_VER}/transactions/:transactionId/participations/:participationId', participationController.updateParticipation)
 //
-// router.post('/v${API_VER}/debts/:debtId/payments', paymentController.makePayment)
-// router.get('/v${API_VER}/debts/:debtId/payments', paymentController.listPayments)
+// router.post('/v${API_VER}/transactions/:transactionId/payments', paymentController.makePayment)
+// router.get('/v${API_VER}/transactions/:transactionId/payments', paymentController.listPayments)
 // router.get('/v${API_VER}/payments/:paymentId', paymentController.getPayment)
 //
-// router.post('/v${API_VER}/debt-groups', debtGroupController.createDebtGroup)
-// router.get('/v${API_VER}/debt-groups/:groupId', debtGroupController.getDebtGroup)
-// router.put('/v${API_VER}/debt-groups/:groupId', debtGroupController.updateDebtGroup)
+// router.post('/v${API_VER}/transaction-groups', transactionGroupController.createDebtGroup)
+// router.get('/v${API_VER}/transaction-groups/:groupId', transactionGroupController.getDebtGroup)
+// router.put('/v${API_VER}/transaction-groups/:groupId', transactionGroupController.updateDebtGroup)
