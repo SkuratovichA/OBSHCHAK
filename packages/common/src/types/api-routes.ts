@@ -12,13 +12,13 @@ export enum TransactionDirectionType {
 }
 
 export type CreateTransactionData = {
-  name: string;
-  currency: string;
-  participants: Participant[];
-  direction: TransactionDirectionType;
-  transactionDate: Date;
-  description?: string;
-  groups?: string[];
-  categories?: string[];
+  name: string
+  currency: string
+  participants: Participant[]
+  direction: TransactionDirectionType
+  transactionDate: Date
+  description?: string
+  groups?: string[]
+  categories?: string[]
   status: TransactionStatusType
-};
+}

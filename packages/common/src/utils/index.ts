@@ -1,7 +1,15 @@
+const CRITICAL_STRING_LENGTH_RATIO = 1 / 4
+export const hideCriticalString = (str: string) =>
+  str.slice(0, str.length * CRITICAL_STRING_LENGTH_RATIO) +
+  Array.from(str)
+    .slice(str.length * CRITICAL_STRING_LENGTH_RATIO)
+    .map(() => '*')
+    .join('')
+
 export const createLabeledList = <T>(
   obj: { [key: string]: T } | undefined,
   ppFun: (key: string, value: T) => string,
-  joiner: string = '\n\n'
+  joiner: string = '\n\n',
 ): string =>
   obj
     ? Object.entries(obj)
@@ -41,7 +49,7 @@ export const reactOnChar: ReactOnChar = ({
   textBuffer,
   chunk,
   direction,
-  charTrigger = '?.!\n'
+  charTrigger = '?.!\n',
 }) => {
   const [mapFunction, comparisonFunction] =
     direction === 'forward'
@@ -50,8 +58,8 @@ export const reactOnChar: ReactOnChar = ({
 
   const indices = charTrigger
     .split('')
-    .map(ch => mapFunction(chunk, ch))
-    .filter(index => index !== -1)
+    .map((ch) => mapFunction(chunk, ch))
+    .filter((index) => index !== -1)
 
   const triggerIndex = indices.length > 0 ? comparisonFunction(...indices) : -1
 
@@ -69,12 +77,13 @@ export const reactOnChar: ReactOnChar = ({
       }
 }
 
-
 export const splitSentence = (text: string, chunk: string): ReturnType<typeof reactOnChar> => {
   const minChunkLength = 4
   const sentence = text + chunk
   const correctLengthAndExcludedNumbers =
     sentence.length > minChunkLength && (!sentence.match(/\d\.?$/) || !!sentence.match(/\d\.\d+\./))
 
-  return correctLengthAndExcludedNumbers ? reactOnChar({textBuffer: text, chunk, direction: 'backward' }) : { prefix: '', suffix: text + chunk }
+  return correctLengthAndExcludedNumbers
+    ? reactOnChar({ textBuffer: text, chunk, direction: 'backward' })
+    : { prefix: '', suffix: text + chunk }
 }
