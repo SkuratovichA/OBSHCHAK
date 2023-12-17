@@ -8,9 +8,7 @@ export enum EmbeddedFunctionType {
 
 export const EmbeddedFunctions = Object.values(EmbeddedFunctionType)
 
-const operationFirstCharacters = new Set(
-  [...EmbeddedFunctions].map(op => op[0]),
-)
+const operationFirstCharacters = new Set([...EmbeddedFunctions].map((op) => op[0]))
 
 const isEmbeddedOperation = (operations: string[], buffer: string): IsEmbeddedOperationResult => {
   const bufferTrimmed = buffer.trim()
@@ -37,4 +35,5 @@ const isEmbeddedOperation = (operations: string[], buffer: string): IsEmbeddedOp
   return undefined
 }
 
-export const isEmbeddedFunction: IsEmbeddedFunction = (buffer: string) => isEmbeddedOperation(EmbeddedFunctions, buffer)
+export const isEmbeddedFunction: IsEmbeddedFunction = (buffer: string) =>
+  isEmbeddedOperation(EmbeddedFunctions, buffer)
