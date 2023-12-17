@@ -56,7 +56,7 @@ export class LLMSession {
       trimmedHistory.unshift(this.messages[i])
     }
 
-    const userElementIndex = trimmedHistory.findIndex(element => element.role === 'user')
+    const userElementIndex = trimmedHistory.findIndex((element) => element.role === 'user')
     if (userElementIndex !== -1 && userElementIndex !== 0) {
       trimmedHistory = trimmedHistory.slice(userElementIndex)
     }
@@ -64,22 +64,21 @@ export class LLMSession {
     this.messages = trimmedHistory
   }
 
-  onAnswerStart(message: string) {
+  private onAnswerStart(message: string) {
     this.messages.push({ role: 'user', content: message })
     const tokensInMessage = getNumberOfTokens(this.encoder, message)
     logger.info(`TOKENS IN MESSAGE: ${tokensInMessage}`)
   }
 
-  onAnswerEnd(systemPrompt: string, answer: string) {
+  private onAnswerEnd(systemPrompt: string, answer: string) {
     this.messages.push({ role: 'assistant', content: answer })
     this.trimHistoryIfNeeded(systemPrompt)
   }
 
-  async* complete(
+  async *answerGenerator(
     { systemPrompt, historyLookBehind }: ChatGPTBlockDataGeneratorProps,
     message: string,
   ): AsyncGenerator<string> {
-
     this.onAnswerStart(message)
 
     const messages = this.messages.slice(-(historyLookBehind ?? 0))

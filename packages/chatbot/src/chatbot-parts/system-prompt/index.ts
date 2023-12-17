@@ -4,7 +4,4 @@ export * from './prompt-parts'
 
 export type SystemPromptFn = () => string
 
-export const getSystemPrompt: SystemPromptFn = () =>
-  [
-    commonDescription,
-  ].join('\n\n')
+export const getSystemPrompt: SystemPromptFn = () => [commonDescription].join('\n\n')

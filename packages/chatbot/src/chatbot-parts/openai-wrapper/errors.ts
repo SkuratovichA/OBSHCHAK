@@ -1,4 +1,4 @@
-const getOpenAIErrorMessage = (statusCode: number | undefined): string | undefined => {
+export const getOpenAIErrorMessage = (statusCode: number | undefined): string | undefined => {
   switch (statusCode) {
     case 400:
       return 'Invalid request. Check the request body, parameters of the request and the the length of the system prompt and messages.'

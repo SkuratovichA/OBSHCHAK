@@ -50,8 +50,8 @@ export const processBuffer: ProcessBuffer = async ({ buffer, functionCall }) => 
   }
 }
 
-const fnNameRegex = '\w+'
-const fnPropsObjRegex = '\{.*?\}'
+const fnNameRegex = 'w+'
+const fnPropsObjRegex = '{.*?}'
 const EmbeddedFunctionArguments: Record<EmbeddedFunctionType, string> = {
   [EmbeddedFunctionType.FUNCTION_CALL]: `${fnNameRegex}, ${fnPropsObjRegex}`,
 }

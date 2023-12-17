@@ -28,16 +28,15 @@ export const maxTokensByModel = {
 
 export const getNumberOfTokens = (
   encoder: Tiktoken,
-  input: string | ChatCompletionMessageParam | ChatCompletionMessageParam[]
+  input: string | ChatCompletionMessageParam | ChatCompletionMessageParam[],
 ): number => {
   if (typeof input === 'string') {
     return encoder.encode(input).length
     /* ChatCompletionMessageParam[] */
   } else if (Array.isArray(input)) {
-    return encoder.encode(input.map(x => x.content).join(' ')).length
+    return encoder.encode(input.map((x) => x.content).join(' ')).length
     /* ChatCompletionMessageParam */
   } else {
     return encoder.encode(input.content as string).length
   }
 }
-
