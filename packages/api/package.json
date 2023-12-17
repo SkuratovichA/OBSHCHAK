@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@koa/cors": "^4.0.0",
-    "@types/koa-router": "^7.4.5",
     "app-common": "*",
     "koa": "^2.14.2",
     "koa-bodyparser": "^4.4.1",
@@ -15,14 +14,13 @@
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
     "socket.io": "^4.7.2",
-    "ts-loader": "^9.5.0",
-    "ts-node": "^10.8.1",
     "typeorm": "^0.3.17"
   },
   "devDependencies": {
     "@types/koa": "^2",
     "@types/koa-bodyparser": "^4",
     "@types/koa-passport": "^6",
+    "@types/koa-router": "^7.4.5",
     "@types/koa-session": "^6",
     "@types/koa__cors": "^4",
     "@types/node-fetch": "^2.5.10",

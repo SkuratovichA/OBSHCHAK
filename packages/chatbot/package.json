@@ -6,15 +6,9 @@
     "app-common": "*",
     "koa": "^2.14.2",
     "openai": "latest",
-    "tiktoken": "latest",
-    "ts-loader": "^9.5.0",
-    "ts-node": "^10.8.1",
-    "tslib": "latest",
-    "typescript": "latest"
+    "tiktoken": "latest"
   },
   "devDependencies": {
-    "@types/koa": "^2",
-    "@types/node": "latest",
     "nodemon": "^2.0.15"
   },
   "scripts": {

@@ -14,12 +14,21 @@
     "yarn": "^1.22.5"
   },
   "dependencies": {
+    "axios": "latest",
     "concurrently": "7.0.0",
+    "dotenv": "^8.2.0",
+    "dotenv-expand": "^5.1.0",
     "prettier": "^3.0.3",
+    "ts-loader": "^9.5.0",
+    "ts-node": "^10.8.1",
+    "tslib": "latest",
     "typescript": "latest"
   },
   "devDependencies": {
-    "@types/node": "latest"
+    "@types/koa": "^2",
+    "@types/node": "latest",
+    "eslint": "latest",
+    "webpack": "latest"
   },
   "scripts": {
     "watch": "tsc -b -w packages/common/tsconfig.json packages/api/tsconfig.json",
