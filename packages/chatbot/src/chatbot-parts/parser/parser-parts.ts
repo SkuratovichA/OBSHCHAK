@@ -1,30 +1,33 @@
-import { ParseLines, ProcessBuffer } from './types'
-import { EmbeddedFunctionType, isEmbeddedFunction } from '../function-calling'
-
+import { ParseLines, ProcessBuffer, ProcessBufferProps } from './types'
+import { EmbeddedFunctionType, isEmbeddedFunction } from './function-calling'
 
 const END_TOKEN_IF_EMPTY = 'Done'
 
-export const parseLines: ParseLines = async ({ generator, processBuffer, callbacks: { onAnswerPart, onFunctionCall } }) => {
+export const parseLines: ParseLines = async ({
+  generator,
+  processBuffer,
+  callbacks: { onAnswerPart, onFunctionCall },
+}) => {
   let buffer = ''
   let completeAnswer = ''
 
   for await (const token of generator) {
     buffer += token
 
-    const { newChunk, newBuffer } = await processBuffer({ buffer, functionCall: onFunctionCall })
+    const { newChunk, newBuffer } = await processBuffer({ buffer, onFunctionCall })
 
     buffer = newBuffer
-    await onAnswerPart(newChunk)
+    onAnswerPart(newChunk)
     completeAnswer += newChunk
   }
 
   if (buffer) {
-    await onAnswerPart(buffer)
+    onAnswerPart(buffer)
     completeAnswer += buffer
   }
   if (!completeAnswer) {
     completeAnswer = END_TOKEN_IF_EMPTY // Replace with actual end token if different
-    await onAnswerPart(completeAnswer)
+    onAnswerPart(completeAnswer)
   }
 
   return {
@@ -32,7 +35,7 @@ export const parseLines: ParseLines = async ({ generator, processBuffer, callbac
   }
 }
 
-export const processBuffer: ProcessBuffer = async ({ buffer, functionCall }) => {
+export const processBuffer: ProcessBuffer = async ({ buffer, onFunctionCall }) => {
   const embeddedFunctionIndex = isEmbeddedFunction(buffer)
 
   const indexStartCommand = embeddedFunctionIndex ?? buffer.length
@@ -41,7 +44,10 @@ export const processBuffer: ProcessBuffer = async ({ buffer, functionCall }) => 
   let newBuffer = buffer.slice(indexStartCommand)
 
   if (embeddedFunctionIndex !== undefined) {
-    newBuffer = await processEmbeddedFunctions({buffer, functionCall})
+    newBuffer = await processEmbeddedFunctions({
+      buffer,
+      onFunctionCall,
+    })
   }
 
   return {
@@ -58,7 +64,9 @@ const EmbeddedFunctionArguments: Record<EmbeddedFunctionType, string> = {
 
 export const EmbeddedFunctionRegexes: Record<EmbeddedFunctionType, RegExp> = {
   [EmbeddedFunctionType.FUNCTION_CALL]: new RegExp(
-    `${EmbeddedFunctionType.FUNCTION_CALL}\\(${EmbeddedFunctionArguments[EmbeddedFunctionType.FUNCTION_CALL]}\\)`
+    `${EmbeddedFunctionType.FUNCTION_CALL}\\(${
+      EmbeddedFunctionArguments[EmbeddedFunctionType.FUNCTION_CALL]
+    }\\)`,
   ),
 }
 
@@ -76,19 +84,16 @@ const getEmbeddedFunctionsWithArgs = (buffer: string) =>
     return { fun, args, match }
   }, {})
 
+type ProcessEmbeddedFunction = (props: ProcessBufferProps) => Promise<string>
+const processEmbeddedFunctions: ProcessEmbeddedFunction = async ({ buffer, onFunctionCall }) => {
+  const { fun: functionName, args, match } = getEmbeddedFunctionsWithArgs(buffer)
 
-type FunctionCall = <T extends {}>(functionName: string, args: T) => Promise<void>
-type ProcessEmbeddedFunctionProps = {
-  buffer: string
-  functionCall: FunctionCall
-}
-type ProcessEmbeddedFunction = (props: ProcessEmbeddedFunctionProps) => Promise<string>
-const processEmbeddedFunctions: ProcessEmbeddedFunction = async ({ buffer, functionCall }) => {
-  const { fun, args, match } = getEmbeddedFunctionsWithArgs(buffer)
-
-  if (match && fun && args) {
-    await functionCall<object>(fun, JSON.parse(args))
-    buffer = buffer.replace(match[0], '') // remove the function call from the buffer
+  if (match && functionName && args) {
+    onFunctionCall({
+      functionName,
+      args: JSON.parse(args),
+    })
+    buffer = buffer.replace(match[0], '') // remove the whole function call from the buffer
   }
 
   return buffer

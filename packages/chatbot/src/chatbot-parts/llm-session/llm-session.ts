@@ -5,16 +5,26 @@ import type { ChatCompletionCreateParams } from 'openai/resources/chat/completio
 import { logger } from '../../loggers'
 import { complete, CompletionParams } from '../openai-wrapper'
 import { ChatGPTBlockDataGeneratorProps } from './types'
-import { getTokenEncoder, maxTokensByModel, getNumberOfTokens, MAX_OUTPUT_TOKENS, MAX_CONTEXT_TOKENS } from './utils'
+import {
+  getTokenEncoder,
+  maxTokensByModel,
+  getNumberOfTokens,
+  MAX_OUTPUT_TOKENS,
+  MAX_CONTEXT_TOKENS,
+} from './utils'
+import { OPENAI_GPT_MODEL } from 'app-common'
 
-export type ChatGPTBlockConstructorProps = Omit<ChatCompletionCreateParams, 'max_tokens'> & {
-  model: `gpt-${string}` & TiktokenModel & ChatCompletionCreateParams['model']
+export type ChatCompletionModel = `gpt-${string}` &
+  TiktokenModel &
+  ChatCompletionCreateParams['model']
+export type LLMSessionProps = Partial<Omit<ChatCompletionCreateParams, 'max_tokens'>> & {
+  model?: ChatCompletionModel
   contextTokens?: number
   maxTokens?: number
 }
 
 export class LLMSession {
-  private readonly model: ChatGPTBlockConstructorProps['model'] & `gpt-${string}`
+  private readonly model: ChatCompletionModel
   private messages: ChatCompletionMessageParam[]
   private readonly encoder: Tiktoken
   private readonly maxTokens: number
@@ -27,14 +37,14 @@ export class LLMSession {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     maxTokens = MAX_OUTPUT_TOKENS,
     contextTokens = MAX_CONTEXT_TOKENS,
-  }: ChatGPTBlockConstructorProps) {
-    this.model = model
+  }: LLMSessionProps) {
+    this.model = model ?? OPENAI_GPT_MODEL
     this.messages = messages
     this.maxTokens = maxTokens
     this.contextTokens = contextTokens
     this.encoder = getTokenEncoder(this.model)
     this.completionParams = {
-      model,
+      model: this.model,
     }
   }
 

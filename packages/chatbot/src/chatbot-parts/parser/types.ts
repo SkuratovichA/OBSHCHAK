@@ -1,14 +1,15 @@
+export type FunctionCallProps<T extends {}> = {
+  functionName: string
+  args: T
+}
 
 export interface ParseStreamCallbacks {
-  onAnswerStart: () => Promise<void>
-  onAnswerPart: (text: string | null) => Promise<void>
-  // TODO: add functions
-  onFunctionCall: (functionName: string, args: object) => Promise<void>
-  onAnswerEnd: () => Promise<void>
+  onAnswerPart: (props: string | null) => void
+  onFunctionCall: <T extends object>(props: FunctionCallProps<T>) => void
 }
 
 export interface ParseStreamProps {
-  text: string
+  message: string
   callbacks: ParseStreamCallbacks
   generator: AsyncGenerator<string>
 }
@@ -17,8 +18,8 @@ export type ParseStream = (props: ParseStreamProps) => Promise<void>
 
 export type ProcessBufferProps = {
   buffer: string
-  functionCall: ParseStreamCallbacks['onFunctionCall']
-}
+} & Pick<ParseStreamCallbacks, 'onFunctionCall'>
+
 export type ProcessBufferResult = {
   newBuffer: string
   newChunk: string

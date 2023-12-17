@@ -1,10 +1,10 @@
 import Koa from 'koa'
 import { messageRouter } from './routes'
-import { PORT } from './config'
+import { CHATBOT_PORT } from 'app-common'
 
 const app = new Koa()
 
 app.use(messageRouter.routes())
-app.listen(PORT, () => {
-  console.log(`Chatbot server running on port ${PORT}`)
+app.listen(CHATBOT_PORT, () => {
+  console.log(`Chatbot server running on port ${CHATBOT_PORT}`)
 })
