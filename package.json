@@ -36,5 +36,5 @@
     "start-chatbot": "yarn workspace app-chatbot start",
     "prettify": "prettier --write \"packages/**/*.{ts,tsx}\""
   },
-  "packageManager": "yarn@3.1.4"
+  "packageManager": "yarn@3.4.1"
 }
