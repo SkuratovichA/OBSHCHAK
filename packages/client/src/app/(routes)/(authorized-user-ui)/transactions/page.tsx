@@ -26,7 +26,14 @@ import GroupsIcon from '@mui/icons-material/GroupWork'
 import { motion } from 'framer-motion'
 import styled from '@emotion/styled'
 
-import { Transaction, Notification, UserProfile } from 'app-common'
+import {
+  TransactionDirectionType,
+  TransactionStatusType,
+  CreateTransactionData,
+  Transaction,
+  Notification,
+  UserProfile,
+} from 'app-common'
 
 const Layout: React.FC = () => {
   const { data: session } = useSession()
@@ -46,6 +53,39 @@ const Layout: React.FC = () => {
   const handleClickOpen = () => {
     setOpen(true)
   }
+
+  const handleSaveTransaction = useCallback(async () => {
+    const transactionDummyData: CreateTransactionData = {
+      name: 'Test transaction',
+      currency: 'USD',
+      participants: [],
+      direction: TransactionDirectionType.PAID,
+      transactionDate: new Date(),
+      description: 'Test transaction description',
+      groups: ['1', '2'],
+      categories: ['1', '2'],
+      status: TransactionStatusType.PENDING,
+    }
+    let response: any | undefined
+    try {
+      response = (
+        await fetch('/api/transactions/create-transaction', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(transactionDummyData),
+        })
+      ).json()
+    } catch (err: any) {
+      console.error(err)
+      alert('CANT CREARTE TRANSACTION')
+      setOpen(false)
+      return
+    }
+    console.log(response)
+    setOpen(false)
+  }, [])
 
   const handleClose = () => {
     setOpen(false)
@@ -82,7 +122,7 @@ const Layout: React.FC = () => {
         />
       </SearchSection>
 
-      {/* TODO: refactor */}
+      {/* TODO: refactor. dunno how transactions look as fow now */}
       <TransactionList style={{ height: '50vh', border: '1px solid black' }}>
         {transactions
           .filter((t) => t.name.includes(filter))
@@ -91,7 +131,7 @@ const Layout: React.FC = () => {
           ))}
       </TransactionList>
 
-      {/* TODO: refactor */}
+      {/* TODO: refactor. this button looks shitty */}
       <Button color="primary" aria-label="add" onClick={handleClickOpen}>
         <AskForMoneyContent>
           <a>Create Transaction</a>
@@ -100,20 +140,38 @@ const Layout: React.FC = () => {
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>New Transaction</DialogTitle>
-        <DialogContent>{/* Transaction form fields can go here */}</DialogContent>
+
+        <DialogContent>
+          <TextField id="name" label="Name" variant="outlined" fullWidth />
+          <TextField id="amount" label="Amount" variant="outlined" fullWidth />
+          {/*look up participants*/}
+          <TextField id="participants" label="Participants" variant="outlined" fullWidth />
+          <ParticipantsDistribution />
+          <TextField id="description" label="Description" variant="outlined" fullWidth />
+          <TextField id="groups" label="Groups" variant="outlined" fullWidth />
+          <TextField id="categories" label="Categories" variant="outlined" fullWidth />
+          <TextField id="direction" label="Direction" variant="outlined" fullWidth />
+        </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleSaveTransaction} color="primary">
             Save
           </Button>
         </DialogActions>
       </Dialog>
-
     </Container>
   )
 }
+
+const ParticipantsDistribution = styled.div`
+  width: 80%;
+  display: flex;
+  height: 40px;
+  background: white;
+  color: black;
+`
 
 const SearchSection = styled.div`
   margin: 20px 0;

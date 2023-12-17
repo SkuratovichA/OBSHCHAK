@@ -5,33 +5,45 @@
   "workspaces": [
     "packages/*"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SkuratovichA/OBSHCHAK.git"
+  },
   "engines": {
     "node": "18.18.0",
     "yarn": "^1.22.5"
   },
   "dependencies": {
-    "@mui/material": "latest",
+    "axios": "latest",
     "concurrently": "7.0.0",
-    "framer-motion": "latest",
-    "lodash": "latest",
+    "dotenv": "^8.2.0",
+    "dotenv-expand": "^5.1.0",
     "prettier": "^3.0.3",
-    "socket.io-client": "latest",
+    "ts-loader": "^9.5.0",
+    "ts-node": "^10.8.1",
+    "tslib": "latest",
     "typescript": "latest"
   },
   "devDependencies": {
-    "@types/lodash": "latest",
-    "@types/node": "latest"
+    "@types/koa": "^2",
+    "@types/node": "latest",
+    "eslint": "latest",
+    "webpack": "latest"
   },
   "scripts": {
     "watch": "tsc -b -w packages/common/tsconfig.json packages/api/tsconfig.json",
-    "build": "yarn build-client && yarn build-api",
+    "build": "yarn build-client && yarn build-api && yarn build-telegram",
     "build-client": "yarn workspace app-client build",
     "build-api": "yarn workspace app-api build",
+    "build-telegram": "yarn workspace app-telegram build",
+    "build-chatbot": "yarn workspace app-chatbot build",
     "clean-build": "rm -rf packages/*/{lib,build,tsconfig.tsbuildinfo}",
-    "start": "concurrently -n client,server 'yarn start-client' 'yarn start-api' --kill-others",
+    "start": "concurrently -n client,server,telegram 'yarn start-client' 'yarn start-api' 'yarn start-telegram' --kill-others",
     "start-client": "yarn workspace app-client start",
     "start-api": "yarn workspace app-api start",
+    "start-telegram": "yarn workspace app-telegram start",
+    "start-chatbot": "yarn workspace app-chatbot start",
     "prettify": "prettier --write \"packages/**/*.{ts,tsx}\""
   },
-  "packageManager": "yarn@3.1.4"
+  "packageManager": "yarn@3.4.1"
 }

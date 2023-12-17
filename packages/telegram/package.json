@@ -1,0 +1,12 @@
+{
+  "name": "app-telegram",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "app-common": "*"
+  },
+  "scripts": {
+    "start": "tsc -b -w & NODE_OPTIONS=--preserve-symlinks yarn nodemon ./build/index.js",
+    "build": "tsc -b"
+  }
+}
