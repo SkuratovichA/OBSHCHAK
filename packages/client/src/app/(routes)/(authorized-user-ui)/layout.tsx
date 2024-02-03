@@ -1,12 +1,12 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { AppBar, Badge, BottomNavigation, BottomNavigationAction, Container, Fab } from '@mui/material'
+import { AppBar, BottomNavigation, BottomNavigationAction, Box, Container, Fab, IconButton } from '@mui/material'
 import ProfileIcon from '@mui/icons-material/AccountCircle'
 import TransactionIcon from '@mui/icons-material/AccountBalanceWallet'
 import React from 'react'
 import styled from '@emotion/styled'
-import { AddCircleOutline, Group, Groups } from '@mui/icons-material'
+import { AddCircleOutline, Group, Groups, MicNone, Notifications, NotificationsNone } from '@mui/icons-material'
 
 const StyledFab = styled(Fab)({
   position: 'absolute',
@@ -22,6 +22,14 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <Container component="main">
+      <Box display="flex" justifyContent="space-between" alignItems="center" py={2}>
+        <IconButton  edge="start" color="inherit" aria-label="notifications">
+          <NotificationsNone />
+        </IconButton>
+        <IconButton edge="end" color="inherit" aria-label="microphone">
+          <MicNone />
+        </IconButton>
+      </Box>
       {children}
 
       <AppBar position="fixed" color="primary" style={{ top: 'auto', bottom: 0 }}>
