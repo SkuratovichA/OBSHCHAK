@@ -1,13 +1,21 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { AppBar, Badge, BottomNavigation, BottomNavigationAction, Container } from '@mui/material'
+import { AppBar, Badge, BottomNavigation, BottomNavigationAction, Container, Fab } from '@mui/material'
 import ProfileIcon from '@mui/icons-material/AccountCircle'
-import HomeIcon from '@mui/icons-material/Home'
-import GroupsIcon from '@mui/icons-material/GroupWork'
 import TransactionIcon from '@mui/icons-material/AccountBalanceWallet'
-import NotificationsIcon from '@mui/icons-material/Notifications'
-import LogoutIcon from '@mui/icons-material/Logout'
+import React from 'react'
+import styled from '@emotion/styled'
+import { AddCircleOutline, Group, Groups } from '@mui/icons-material'
+
+const StyledFab = styled(Fab)({
+  position: 'absolute',
+  zIndex: 1,
+  top: -30,
+  left: 0,
+  right: 0,
+  margin: '0 auto',
+})
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { data: session } = useSession()
@@ -18,19 +26,15 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       <AppBar position="fixed" color="primary" style={{ top: 'auto', bottom: 0 }}>
         <BottomNavigation showLabels style={{ justifyContent: 'center' }}>
-          <BottomNavigationAction label="Profile" icon={<ProfileIcon />} />
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction label="Groups" icon={<GroupsIcon />} />
-          <BottomNavigationAction label="Transactions" icon={<TransactionIcon />} />
+          <BottomNavigationAction label="Friends" icon={<Group />} />
+          <BottomNavigationAction label="Groups" icon={<Groups />} />
           <BottomNavigationAction
-            label="Notifications"
             icon={
-              <Badge badgeContent={4} color="error">
-                <NotificationsIcon />
-              </Badge>
+              <AddCircleOutline fontSize="large" color="primary" />
             }
           />
-          <BottomNavigationAction label="Logout" icon={<LogoutIcon />} />
+          <BottomNavigationAction label="Transactions" icon={<TransactionIcon />} />
+          <BottomNavigationAction label="Account" icon={<ProfileIcon />} />
         </BottomNavigation>
       </AppBar>
     </Container>
