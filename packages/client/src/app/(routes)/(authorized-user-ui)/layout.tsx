@@ -14,14 +14,25 @@ import ProfileIcon from '@mui/icons-material/AccountCircle'
 import TransactionIcon from '@mui/icons-material/AccountBalanceWallet'
 import React from 'react'
 import { AddCircleOutline, Group, Groups, MicNone, NotificationsNone } from '@mui/icons-material'
-import { usePathname } from 'next/navigation'
+import ListIcon from '@mui/icons-material/List'
+import { redirect, usePathname } from 'next/navigation'
 import styled from '@emotion/styled'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+
+
+const linkify = (text: string): string => `/${text.toLowerCase()}`
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { data: session } = useSession()
+  const router = useRouter()
 
   const pathname = usePathname()
-  const shouldHl = (text: string): boolean => pathname.includes(text.toLowerCase())
+  const shouldHl = (text: string): boolean => pathname === linkify(text)
+  const handleRedirect = (path: string) => {
+    console.log('redirecting to', path)
+    router.push(path)
+  }
 
   return (
     <Container component="main">
@@ -33,33 +44,33 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
           <MicNone />
         </IconButton>
       </Box>
+
       {children}
 
+      {/*TODO: fucked up route names. here we go having with some bugs probably*/}
       <AppBar position="fixed" color="primary" style={{ top: 'auto', bottom: 0 }}>
         <BottomNavigation showLabels style={{ justifyContent: 'center' }}>
           {[
-            // TODO: fucked up route names. here we go having with some bugs probably
-            { label: 'Friends', icon: <Group />, shouldHighlight: shouldHl('friends') },
-            { label: 'Groups', icon: <Groups />, shouldHighlight: shouldHl('groups') },
-            {
-              label: '',
-              icon: <AddCircleOutline fontSize="large" color="primary" />,
-              shouldHighlight: shouldHl('addTransaction'),
-            },
-            {
-              label: 'Transactions',
-              icon: <TransactionIcon />,
-              shouldHighlight: shouldHl('transactions'),
-            },
-            { label: 'Account', icon: <ProfileIcon />, shouldHighlight: shouldHl('account') },
-          ].map((props, idx) => (
-            <BottomNavActionHighlighted
-              // TODO: fucked up constants
-              highlightColor={'rgba(151,71,255,0.43)'}
-              key={idx}
-              {...props}
-            />
-          ))}
+            { Friends: { icon: <Group /> } },
+            { Groups: { icon: <Groups /> } },
+            { '': { icon: <AddCircleOutline fontSize="large" color="primary" /> } },
+            { Transactions: { icon: <ListIcon /> } },
+            { Account: { icon: <ProfileIcon /> } },
+          ]
+            .map(a => Object.entries(a)[0])
+            .map(([text, props]) => ({...props, label: text}))
+            .map((props, idx) => (
+
+              <BottomNavActionHighlighted
+                onClick={() => handleRedirect(linkify(props.label))}
+                // TODO: fucked up constants
+                shouldhighlight={shouldHl(props.label)}
+                highlightcolor={'rgba(151,71,255,0.43)'}
+                key={idx}
+                icon={props.icon}
+                label={props.label}
+              />
+            ))}
         </BottomNavigation>
       </AppBar>
     </Container>
@@ -67,15 +78,15 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
 }
 
 const BottomNavActionHighlighted = styled(BottomNavigationAction)<{
-  shouldHighlight?: boolean
-  highlightColor?: string
+  shouldhighlight?: boolean
+  highlightcolor?: string
 }>`
-  ${({ shouldHighlight, highlightColor }) =>
-    shouldHighlight &&
-    css`
-      background: ${highlightColor};
-      border-radius: 8px;
-    `}
+    ${({ shouldhighlight, highlightcolor }) =>
+            shouldhighlight &&
+            css`
+                background: ${highlightcolor};
+                border-radius: 8px;
+            `}
 `
 
 export default Layout
