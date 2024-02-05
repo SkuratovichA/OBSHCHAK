@@ -1,192 +1,112 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
-import { useSession } from 'next-auth/react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   Container,
-  Typography,
-  TextField,
-  Button,
-  Badge,
-  BottomNavigation,
-  BottomNavigationAction,
-  AppBar,
-  Toolbar,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
+  List,
+  ListItem,
 } from '@mui/material'
-import NotificationsIcon from '@mui/icons-material/Notifications'
-import LogoutIcon from '@mui/icons-material/Logout'
-import HomeIcon from '@mui/icons-material/Home'
-import ProfileIcon from '@mui/icons-material/AccountCircle'
-import TransactionIcon from '@mui/icons-material/AccountBalanceWallet'
-import GroupsIcon from '@mui/icons-material/GroupWork'
-import { motion } from 'framer-motion'
-import styled from '@emotion/styled'
 
-import {
-  TransactionDirectionType,
-  TransactionStatusType,
-  CreateTransactionData,
-  Transaction,
-  Notification,
-  UserProfile,
-} from 'app-common'
+import { FilterBar } from '../filter-bar'
+import { Transaction, transactionsMock } from '../common-mocks'
+import { TransactionStatus } from '../common-mocks'
+import { TransactionItem } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/transaction-item'
+import { FiltersProvider, useFilters } from '@OBSHCHAK-UI/hooks/use-filters'
 
-const Layout: React.FC = () => {
-  const { data: session } = useSession()
-  const [transactions, setTransactions] = useState<Transaction[]>([])
-  const [filter, setFilter] = useState<string>('')
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [open, setOpen] = useState(false)
 
-  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
+interface TransactionsListProps {
+  transactions: Transaction[]
+}
 
-  const handleMenuClose = () => {
-    setAnchorEl(null)
-  }
+interface TransactionFilters {
+  search: string
+  status: 'Paid' | 'Active' | 'Pending' | ''
+}
 
-  const handleClickOpen = () => {
-    setOpen(true)
-  }
+enum FilterType {
+  'Filter by' = 'Filter by'
+}
 
-  const handleSaveTransaction = useCallback(async () => {
-    const transactionDummyData: CreateTransactionData = {
-      name: 'Test transaction',
-      currency: 'USD',
-      participants: [],
-      direction: TransactionDirectionType.PAID,
-      transactionDate: new Date(),
-      description: 'Test transaction description',
-      groups: ['1', '2'],
-      categories: ['1', '2'],
-      status: TransactionStatusType.PENDING,
-    }
-    let response: any | undefined
-    try {
-      response = (
-        await fetch('/api/transactions/create-transaction', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(transactionDummyData),
-        })
-      ).json()
-    } catch (err: any) {
-      console.error(err)
-      alert('CANT CREARTE TRANSACTION')
-      setOpen(false)
-      return
-    }
-    console.log(response)
-    setOpen(false)
-  }, [])
+const filtersToKeyMap: Record<FilterType, keyof Transaction> = {
+  [FilterType['Filter by']]: 'status',
+}
 
-  const handleClose = () => {
-    setOpen(false)
-  }
+const filterTransactions = (
+  transactions: Transaction[],
+  filters: TransactionFilters,
+): Transaction[] => transactions.filter((transaction) => {
+  const matchesStatus = (
+    !filters.status ||
+    transaction.status === TransactionStatus[filters.status as keyof typeof TransactionStatus]
+  )
+
+  const matchesSearch = (
+    !filters.search ||
+    Object.values(transaction)
+      .join('')
+      .toLowerCase()
+      .includes(filters.search.toLowerCase())
+  )
+
+  return matchesStatus && matchesSearch
+})
+
+const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) => {
+  const { filters, updateFilters } = useFilters<TransactionFilters>()
+  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>(transactions)
 
   useEffect(() => {
-    // Mock fetching data, you can replace this with your API calls.
-    const fetchData = async () => {
-      const response = await fetch('/api/getTransactions')
-      const data: Transaction[] = await response.json()
-      setTransactions(data)
-    }
+    const filtered = filterTransactions(transactionsMock, filters)
+    setFilteredTransactions(filtered)
+  }, [filters, transactions])
 
-    fetchData()
-  }, [])
+  const handleFilterChange = (filterName: FilterType, value: keyof Transaction) => {
+    updateFilters({ [filtersToKeyMap[filterName]]: value })
+  }
+
+  const handleSearchChange = (value: string) => {
+    updateFilters({ search: value })
+  }
+
+  // TODO: come up with some grouping solution
+  const filterOptions = useMemo(() => [{
+    name: FilterType['Filter by'],
+    values: { None: '', Paid: 'Paid', Active: 'Active', Pending: 'Pending' },
+    selectedValue: filters.status || '', // Use the status filter value here
+  }], [filters.status])
 
   return (
-    <Container component="main">
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            хуй знает, что тут будет. Но это будет...
-          </Typography>
-        </Toolbar>
-      </AppBar>
+    <Container>
+      <FilterBar
+        filterOptions={filterOptions}
+        // TODO: maybe go with hooks to make it more type-safe. tbd in the future versions if there are any
+        onFilterChange={(filterName, value) => handleFilterChange(filterName as FilterType, value as keyof Transaction)}
 
-      <SearchSection>
-        <TextField
-          label="Search Transactions"
-          variant="outlined"
-          fullWidth
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        />
-      </SearchSection>
+        searchValue={filters.search || ''}
+        onSearchChange={handleSearchChange}
+      />
 
-      {/* TODO: refactor. dunno how transactions look as fow now */}
-      <TransactionList style={{ height: '50vh', border: '1px solid black' }}>
-        {transactions
-          .filter((t) => t.name.includes(filter))
-          .map((transaction) => (
-            <motion.div key={transaction.debtId}>{/* Render transaction */}</motion.div>
-          ))}
-      </TransactionList>
-
-      {/* TODO: refactor. this button looks shitty */}
-      <Button color="primary" aria-label="add" onClick={handleClickOpen}>
-        <AskForMoneyContent>
-          <a>Create Transaction</a>
-        </AskForMoneyContent>
-      </Button>
-
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New Transaction</DialogTitle>
-
-        <DialogContent>
-          <TextField id="name" label="Name" variant="outlined" fullWidth />
-          <TextField id="amount" label="Amount" variant="outlined" fullWidth />
-          {/*look up participants*/}
-          <TextField id="participants" label="Participants" variant="outlined" fullWidth />
-          <ParticipantsDistribution />
-          <TextField id="description" label="Description" variant="outlined" fullWidth />
-          <TextField id="groups" label="Groups" variant="outlined" fullWidth />
-          <TextField id="categories" label="Categories" variant="outlined" fullWidth />
-          <TextField id="direction" label="Direction" variant="outlined" fullWidth />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={handleSaveTransaction} color="primary">
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <List>
+        {filteredTransactions.map((transaction) => (
+          <ListItem
+            key={transaction.id}
+            style={{ borderRadius: 8, marginBottom: 8, height: 100, perspective: 10000 }}
+          >
+            <TransactionItem transaction={transaction} />
+          </ListItem>
+        ))}
+      </List>
     </Container>
   )
 }
 
-const ParticipantsDistribution = styled.div`
-  width: 80%;
-  display: flex;
-  height: 40px;
-  background: white;
-  color: black;
-`
+const TransactionsListBase: React.FC = () => {
 
-const SearchSection = styled.div`
-  margin: 20px 0;
-`
+  return (
+    <FiltersProvider>
+      <TransactionsList transactions={transactionsMock} />
+    </FiltersProvider>
+  )
+}
+export default TransactionsListBase
 
-const TransactionList = styled.div`
-  margin: 20px 0;
-  flex-grow: 1; // to occupy the main screen real estate
-`
-
-const AskForMoneyContent = styled.div`
-  display: flex;
-  align-content: center;
-  align-items: center;
-  justify-content: center;
-`
-
-export default Layout

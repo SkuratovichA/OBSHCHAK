@@ -4,7 +4,6 @@ import React, { createContext, useContext, useState } from 'react'
 interface AppContextType {
   username: string
   setUsername: (username: string) => void
-  // Add other values as needed
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined)
@@ -16,11 +15,9 @@ interface AppProviderProps {
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [username, setUsername] = useState('')
 
-  // Provide initial values for the context
   const contextValue = {
     username,
     setUsername,
-    // Initialize other values here as needed
   }
 
   return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
