@@ -7,11 +7,12 @@ import {
   ListItem,
 } from '@mui/material'
 
-import { FilterBar } from '../filter-bar'
+import { FiltersProvider, useFilters } from '@OBSHCHAK-UI/hooks/use-filters'
+import { FilterBar } from '@OBSHCHAK-UI/components/filter-bar'
+
 import { Transaction, transactionsMock } from './common-mocks'
 import { TransactionStatus } from './common-mocks'
-import { TransactionItem } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/transactions/transaction-item'
-import { FiltersProvider, useFilters } from '@OBSHCHAK-UI/hooks/use-filters'
+import { TransactionItem } from './transaction-item'
 
 
 interface TransactionsListProps {
