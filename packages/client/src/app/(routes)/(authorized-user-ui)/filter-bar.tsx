@@ -1,4 +1,4 @@
-import { deSpacify, Function } from 'app-common'
+import { deSpacify } from 'app-common'
 import {
   Box,
   FormControl, IconButton,
@@ -9,112 +9,89 @@ import {
   SelectChangeEvent,
   TextField,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
 import { Search } from '@mui/icons-material'
+import styled from '@emotion/styled'
 
-export type NamedCallbacks<T extends string | number | symbol = string, X = void, Y = void> = Record<
-  T,
-  Function<X, Y>
->
-interface TogglerConfiguratorProps {
-  name: string
-  values: NamedCallbacks
-  handler: Function<SelectChangeEvent<string>, void>
-  selectedValue: string
+
+interface FilterSelectorProps {
+  name: string;
+  values: Record<string, string>;
+  selectedValue: string;
+  onFilterChange: (name: string, value: string) => void;
 }
+const FilterSelector: React.FC<FilterSelectorProps> = ({ name, values, selectedValue, onFilterChange }) => {
 
-const TogglerConfigurtaor: React.FC<TogglerConfiguratorProps> = ({
-                                                                   name,
-                                                                   values,
-                                                                   handler,
-                                                                   selectedValue,
-                                                                 }) => (
-  <FormControl key={name} variant="standard" sx={{ m: 1, minWidth: 120 }}>
-    <InputLabel id={`input-label-${deSpacify(name)}`}>{name}</InputLabel>
+  const deSpacifiedName = deSpacify(name)
+
+  return <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+    <InputLabel id={`input-label-${deSpacifiedName}`}>{name}</InputLabel>
     <Select
-      labelId={`label-${deSpacify(name)}`}
-      id={`select-${deSpacify(name)}`}
+      labelId={`label-${deSpacifiedName}`}
+      id={`select-${deSpacifiedName}`}
       value={selectedValue}
-      onChange={handler}
-      label={name}
+      onChange={(event: SelectChangeEvent) => onFilterChange(name, event.target.value)}
+      label={deSpacifiedName}
     >
-      {Object.entries(values).map(([displayName, _], idx) => (
-        <MenuItem key={idx} id={`${idx}-${displayName}`} value={displayName}>
-          {displayName}
+      {Object.entries(values).map(([key, value]) => (
+        <MenuItem key={key} value={value}>
+          {key}
         </MenuItem>
       ))}
     </Select>
   </FormControl>
-)
+}
 
-type FilterBarProps = {
-  filters: NamedCallbacks
-  groupBy: NamedCallbacks
-  search: Function<string>
+export interface FilterOption<V extends Record<string, string> = Record<string, string>> {
+  name: string;
+  values: V;
+  selectedValue: string;
+}
+
+interface FilterBarProps {
+  filterOptions: FilterOption[];
+  onFilterChange: (filterName: string, value: string) => void;
+  searchValue: string;
+  onSearchChange: (value: string) => void;
 }
 export const FilterBar: React.FC<FilterBarProps> = ({
-                                                                      filters,
-                                                                      groupBy,
-                                                                      search,
-                                                                    }) => {
-  const [dateFilter, setDateFilter] = useState('')
-  const [userGrouping, setUserGrouping] = useState('')
-  const [searchValue, setSearchValue] = useState('')
-
-  // Handler functions for filter and group-by and search
-  const handleFilterChange = (event: SelectChangeEvent<string>) => {
-    setDateFilter(event.target.value as string)
-    filters[event.target.value as string]?.()
-  }
-
-  const handleGroupingChange = (event: SelectChangeEvent<string>) => {
-    setUserGrouping(event.target.value as string)
-    groupBy[event.target.value as string]?.()
-  }
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setSearchValue(event.target.value)
-    search(event.target.value)
-  }
-
-  // TODO: we can go generic here and have an object with the specifications but we aren't going to.
-  // maybe somewhere in the future whenever we'll need it
-  const configurations: TogglerConfiguratorProps[] = [
-    {
-      name: 'Filter by',
-      values: filters,
-      handler: handleFilterChange,
-      selectedValue: dateFilter, // Assuming dateFilter is the state for the selected filter
-    },
-    {
-      name: 'Group by',
-      values: groupBy,
-      handler: handleGroupingChange,
-      selectedValue: userGrouping,
-    },
-  ]
+  filterOptions,
+  onFilterChange,
+  searchValue,
+  onSearchChange,
+}) => {
   return (
-    <Box display="flex" justifyContent="space-between" alignItems="center" p={2}>
-      {configurations.map((config, idx) => (
-        <TogglerConfigurtaor key={idx} {...config} />
+    <FilterBarBox display="flex" justifyContent="end" alignItems="center" width={'100%'}>
+      {filterOptions.map(({ name, values, selectedValue }) => (
+        <FilterSelector
+          key={name}
+          name={name}
+          values={values}
+          selectedValue={selectedValue}
+          onFilterChange={onFilterChange}
+        />
       ))}
-
       <TextField
         id="search-by-value"
         label="Search"
         variant="standard"
         value={searchValue}
-        onChange={handleSearchChange}
+        onChange={(e) => onSearchChange(e.target.value)}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton>
+              <IconButton onClick={() => onSearchChange(searchValue)}>
                 <Search />
               </IconButton>
             </InputAdornment>
           ),
         }}
       />
-    </Box>
+    </FilterBarBox>
   )
 }
+
+const FilterBarBox = styled(Box)`
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0;
+`
