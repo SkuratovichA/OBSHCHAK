@@ -1,4 +1,3 @@
-import { deSpacify } from 'app-common'
 import {
   Box,
   FormControl, IconButton,
@@ -12,6 +11,9 @@ import {
 import React from 'react'
 import { Search } from '@mui/icons-material'
 import styled from '@emotion/styled'
+
+import { deSpacify } from 'app-common'
+import type { Function, Undefine } from 'app-common'
 
 
 interface FilterSelectorProps {
@@ -48,12 +50,20 @@ export interface FilterOption<V extends Record<string, string> = Record<string, 
   selectedValue: string
 }
 
-interface FilterBarProps {
-  filterOptions: FilterOption[]
-  onFilterChange: (filterName: string, value: string) => void
+
+interface SearchFilters {
   searchValue: string
-  onSearchChange: (value: string) => void
+  onSearchChange: Function<string>
 }
+
+interface FilterOptions {
+  filterOptions: FilterOption[]
+  // TODO: use something like Function<<string, string>, void>
+  onFilterChange: (filterName: string, value: string) => void
+}
+
+type FilterBarProps = (SearchFilters & Undefine<FilterOptions>)| (SearchFilters & FilterOptions)
+
 export const FilterBar: React.FC<FilterBarProps> = ({
   filterOptions,
   onFilterChange,
@@ -62,7 +72,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 }) => {
   return (
     <FilterBarBox display="flex" justifyContent="end" alignItems="center" width={'100%'}>
-      {filterOptions.map(({ name, values, selectedValue }) => (
+      {filterOptions?.map(({ name, values, selectedValue }) => (
         <FilterSelector
           key={name}
           name={name}
