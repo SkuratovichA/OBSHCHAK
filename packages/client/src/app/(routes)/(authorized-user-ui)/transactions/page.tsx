@@ -56,7 +56,7 @@ const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) => 
   const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>(transactions)
 
   useEffect(() => {
-    const filtered = filterTransactions(transactionsMock, filters)
+    const filtered = filterTransactions(transactions, filters)
     setFilteredTransactions(filtered)
   }, [filters, transactions])
 
