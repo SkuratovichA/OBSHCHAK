@@ -7,7 +7,7 @@ import {
   ListItem,
 } from '@mui/material'
 
-import { FilterBar, FilterOption } from '../filter-bar'
+import { FilterBar } from '../filter-bar'
 import { Transaction, transactionsMock } from '../common-mocks'
 import { TransactionStatus } from '../common-mocks'
 import { TransactionItem } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/transaction-item'
@@ -19,8 +19,8 @@ interface TransactionsListProps {
 }
 
 interface TransactionFilters {
-  search: string;
-  status: 'Paid' | 'Active' | 'Pending' | '';
+  search: string
+  status: 'Paid' | 'Active' | 'Pending' | ''
 }
 
 enum FilterType {

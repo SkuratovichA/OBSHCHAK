@@ -15,10 +15,10 @@ import styled from '@emotion/styled'
 
 
 interface FilterSelectorProps {
-  name: string;
-  values: Record<string, string>;
-  selectedValue: string;
-  onFilterChange: (name: string, value: string) => void;
+  name: string
+  values: Record<string, string>
+  selectedValue: string
+  onFilterChange: (name: string, value: string) => void
 }
 const FilterSelector: React.FC<FilterSelectorProps> = ({ name, values, selectedValue, onFilterChange }) => {
 
@@ -43,16 +43,16 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ name, values, selectedV
 }
 
 export interface FilterOption<V extends Record<string, string> = Record<string, string>> {
-  name: string;
-  values: V;
-  selectedValue: string;
+  name: string
+  values: V
+  selectedValue: string
 }
 
 interface FilterBarProps {
-  filterOptions: FilterOption[];
-  onFilterChange: (filterName: string, value: string) => void;
-  searchValue: string;
-  onSearchChange: (value: string) => void;
+  filterOptions: FilterOption[]
+  onFilterChange: (filterName: string, value: string) => void
+  searchValue: string
+  onSearchChange: (value: string) => void
 }
 export const FilterBar: React.FC<FilterBarProps> = ({
   filterOptions,
