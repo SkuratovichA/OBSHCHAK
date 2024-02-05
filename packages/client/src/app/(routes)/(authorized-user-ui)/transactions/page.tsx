@@ -1,66 +1,89 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   Container,
   List,
   ListItem,
-  SelectChangeEvent,
 } from '@mui/material'
 
-import { NamedCallbacks, FilterBar } from '../filter-bar'
-import { transactionsMock } from '../common-mocks'
+import { FilterBar, FilterOption } from '../filter-bar'
+import { Transaction, transactionsMock } from '../common-mocks'
 import { TransactionStatus } from '../common-mocks'
 import { TransactionItem } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/transaction-item'
+import { FiltersProvider, useFilters } from '@OBSHCHAK-UI/hooks/use-filters'
 
-const withNone = (obj: Object) => ({ ...obj, None: 'None' })
 
-const TransactionsList: React.FC = () => {
-  // State for filter and group-by
-  const [filterBy, setFilterBy] = useState(withNone({}).None)
-  const [groupBy, setGroupBy] = useState(withNone({}).None)
+interface TransactionsListProps {
+  transactions: Transaction[]
+}
 
-  // Handler functions for filter and group-by
-  const handleFilterChange = (event: SelectChangeEvent<string>) => {
-    setFilterBy(event.target.value as string)
-  }
+interface TransactionFilters {
+  search: string;
+  status: 'Paid' | 'Active' | 'Pending' | '';
+}
 
-  const handleGroupChange = (event: SelectChangeEvent<string>) => {
-    setGroupBy(event.target.value as string)
-  }
+enum FilterType {
+  'Filter by' = 'Filter by'
+}
 
-  // Filter function for transactions
-  const filteredTransactions = transactionsMock.filter((transaction) => {
-    // Implement filtering logic here based on the filterBy state
-    return true // Currently, it returns true for all transactions
-  })
+const filtersToKeyMap: Record<FilterType, keyof Transaction> = {
+  [FilterType['Filter by']]: 'status',
+}
 
-  const filterValues = Object.fromEntries(
-    Object.keys(withNone(TransactionStatus)).map((key) => [
-      key,
-      () => console.log(`filtering by ${key}`),
-    ]),
-  ) as NamedCallbacks<keyof typeof TransactionStatus, void, void>
-
-  const groupByValues = Object.fromEntries(
-    Object.keys(
-      withNone({
-        Users: 1,
-        Labels: 2,
-        Direction: 3,
-      }),
-    ).map((key) => [key, () => console.log(`grouping by ${key}`)]),
+const filterTransactions = (
+  transactions: Transaction[],
+  filters: TransactionFilters,
+): Transaction[] => transactions.filter((transaction) => {
+  const matchesStatus = (
+    !filters.status ||
+    transaction.status === TransactionStatus[filters.status as keyof typeof TransactionStatus]
   )
 
-  // TODO: Implement grouping logic based on the groupBy state
+  const matchesSearch = (
+    !filters.search ||
+    Object.values(transaction)
+      .join('')
+      .toLowerCase()
+      .includes(filters.search.toLowerCase())
+  )
+
+  return matchesStatus && matchesSearch
+})
+
+const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) => {
+  const { filters, updateFilters } = useFilters<TransactionFilters>()
+  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>(transactions)
+
+  useEffect(() => {
+    const filtered = filterTransactions(transactionsMock, filters)
+    setFilteredTransactions(filtered)
+  }, [filters, transactions])
+
+  const handleFilterChange = (filterName: FilterType, value: keyof Transaction) => {
+    updateFilters({ [filtersToKeyMap[filterName]]: value })
+  }
+
+  const handleSearchChange = (value: string) => {
+    updateFilters({ search: value })
+  }
+
+  // TODO: come up with some grouping solution
+  const filterOptions = useMemo(() => [{
+    name: FilterType['Filter by'],
+    values: { None: '', Paid: 'Paid', Active: 'Active', Pending: 'Pending' },
+    selectedValue: filters.status || '', // Use the status filter value here
+  }], [filters.status])
+
   return (
     <Container>
       <FilterBar
-        filters={filterValues}
-        groupBy={groupByValues}
-        search={(value: string) => {
-          console.log(`searching ${value}`)
-        }}
+        filterOptions={filterOptions}
+        // TODO: maybe go with hooks to make it more type-safe. tbd in the future versions if there are any
+        onFilterChange={(filterName, value) => handleFilterChange(filterName as FilterType, value as keyof Transaction)}
+
+        searchValue={filters.search || ''}
+        onSearchChange={handleSearchChange}
       />
 
       <List>
@@ -77,4 +100,13 @@ const TransactionsList: React.FC = () => {
   )
 }
 
-export default TransactionsList
+const TransactionsListBase: React.FC = () => {
+
+  return (
+    <FiltersProvider>
+      <TransactionsList transactions={transactionsMock} />
+    </FiltersProvider>
+  )
+}
+export default TransactionsListBase
+
