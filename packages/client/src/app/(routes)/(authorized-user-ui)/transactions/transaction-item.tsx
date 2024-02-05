@@ -1,9 +1,9 @@
-import { type Transaction, TransactionStatus } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/common-mocks'
+import { type Transaction, TransactionStatus } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/transactions/common-mocks'
 import { green, grey, purple } from '@mui/material/colors'
 import React, { useState } from 'react'
 import { TiltedContainer } from '@OBSHCHAK-UI/components'
 import { Box, Modal, Paper, Typography } from '@mui/material'
-import { TransactionView } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/transaction-view'
+import { TransactionView } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/transactions/transaction-view'
 import styled from '@emotion/styled'
 
 const getColorByStatus = (status: TransactionStatus): string => {

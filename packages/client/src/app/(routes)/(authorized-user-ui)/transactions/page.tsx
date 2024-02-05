@@ -8,9 +8,9 @@ import {
 } from '@mui/material'
 
 import { FilterBar } from '../filter-bar'
-import { Transaction, transactionsMock } from '../common-mocks'
-import { TransactionStatus } from '../common-mocks'
-import { TransactionItem } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/transaction-item'
+import { Transaction, transactionsMock } from './common-mocks'
+import { TransactionStatus } from './common-mocks'
+import { TransactionItem } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/transactions/transaction-item'
 import { FiltersProvider, useFilters } from '@OBSHCHAK-UI/hooks/use-filters'
 
 
