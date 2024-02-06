@@ -1,10 +1,14 @@
-import { type Transaction, TransactionStatus } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/transactions/common-mocks'
-import { green, grey, purple } from '@mui/material/colors'
 import React, { useState } from 'react'
-import { TiltedContainer } from '@OBSHCHAK-UI/components'
-import { Box, Modal, Paper, Typography } from '@mui/material'
-import { TransactionView } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/transactions/transaction-view'
+import { green, grey, purple } from '@mui/material/colors'
+import { Box, Modal, Typography } from '@mui/material'
 import styled from '@emotion/styled'
+
+import { TiltedContainer, ListItemContainer } from '@OBSHCHAK-UI/components'
+
+import { TransactionView } from './transaction-view'
+import { TransactionStatus } from './common-mocks'
+import type { Transaction } from './common-mocks'
+
 
 const getColorByStatus = (status: TransactionStatus): string => {
   switch (status) {
@@ -31,7 +35,7 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction })
   return (
     <>
       <TiltedContainer>
-        <TransactionBody elevation={1} onClick={handleOpen}>
+        <ListItemContainer elevation={1} onClick={handleOpen}>
           <Box>
             <Typography variant="body1">{`${transaction.name}`}</Typography>
             <Typography variant="body2" color="textSecondary">
@@ -43,7 +47,7 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction })
           <Typography variant="body2" style={{ color: getColorByStatus(transaction.status) }}>
             {TransactionStatus[transaction.status]}
           </Typography>
-        </TransactionBody>
+        </ListItemContainer>
       </TiltedContainer>
 
       <Modal
@@ -62,21 +66,6 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction })
 
 const UnderlinedText = styled.span`
     text-decoration: underline;
-`
-
-const TransactionBody = styled(Paper)`
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 100%;
-    background-color: #fefefe;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-
-    &:hover {
-        background-color: #fcfcfc;
-    }
 `
 
 const ModalBox = styled(Box)`
