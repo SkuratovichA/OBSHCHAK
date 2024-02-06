@@ -1,14 +1,14 @@
 'use client'
 
 import React, { useEffect, useMemo, useState } from 'react'
-import {
-  Container,
-  List,
-  ListItem,
-} from '@mui/material'
 
 import { FiltersProvider, useFilters } from '@OBSHCHAK-UI/hooks/use-filters'
-import { FilterBar } from '@OBSHCHAK-UI/components/filter-bar'
+import {
+  FilterBar,
+  FullHeightNonScrollableContainer,
+  ListItemTiltable,
+  ScrollableBarlessList,
+} from '@OBSHCHAK-UI/components'
 
 import { Transaction, transactionsMock } from './common-mocks'
 import { TransactionStatus } from './common-mocks'
@@ -77,7 +77,7 @@ const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) => 
   }], [filters.status])
 
   return (
-    <Container>
+    <FullHeightNonScrollableContainer>
       <FilterBar
         filterOptions={filterOptions}
         // TODO: maybe go with hooks to make it more type-safe. tbd in the future versions if there are any
@@ -87,17 +87,14 @@ const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) => 
         onSearchChange={handleSearchChange}
       />
 
-      <List>
+      <ScrollableBarlessList>
         {filteredTransactions.map((transaction) => (
-          <ListItem
-            key={transaction.id}
-            style={{ borderRadius: 8, marginBottom: 8, height: 100, perspective: 10000 }}
-          >
+          <ListItemTiltable key={transaction.id}>
             <TransactionItem transaction={transaction} />
-          </ListItem>
+          </ListItemTiltable>
         ))}
-      </List>
-    </Container>
+      </ScrollableBarlessList>
+    </FullHeightNonScrollableContainer>
   )
 }
 
