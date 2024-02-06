@@ -1,4 +1,3 @@
-
 export interface UserMockType {
   id: string
   name: string

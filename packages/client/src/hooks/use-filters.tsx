@@ -2,8 +2,6 @@
 import React, { Context, createContext, PropsWithChildren, useContext, useState } from 'react'
 import { Function } from 'app-common'
 
-
-
 type FilterContextTypeBase<X extends string | number | symbol = string, Y = any> = Record<X, Y>
 
 interface FiltersContextType<T extends FilterContextTypeBase = FilterContextTypeBase> {
@@ -21,9 +19,7 @@ export const FiltersProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }
 
   return (
-    <FiltersContext.Provider value={{ filters, updateFilters }}>
-      {children}
-    </FiltersContext.Provider>
+    <FiltersContext.Provider value={{ filters, updateFilters }}>{children}</FiltersContext.Provider>
   )
 }
 

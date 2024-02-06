@@ -1,6 +1,7 @@
 import {
   Box,
-  FormControl, IconButton,
+  FormControl,
+  IconButton,
   InputAdornment,
   InputLabel,
   MenuItem,
@@ -15,33 +16,38 @@ import styled from '@emotion/styled'
 import { deSpacify } from 'app-common'
 import type { Function, Undefine } from 'app-common'
 
-
 interface FilterSelectorProps {
   name: string
   values: Record<string, string>
   selectedValue: string
   onFilterChange: (name: string, value: string) => void
 }
-const FilterSelector: React.FC<FilterSelectorProps> = ({ name, values, selectedValue, onFilterChange }) => {
-
+const FilterSelector: React.FC<FilterSelectorProps> = ({
+  name,
+  values,
+  selectedValue,
+  onFilterChange,
+}) => {
   const deSpacifiedName = deSpacify(name)
 
-  return <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-    <InputLabel id={`input-label-${deSpacifiedName}`}>{name}</InputLabel>
-    <Select
-      labelId={`label-${deSpacifiedName}`}
-      id={`select-${deSpacifiedName}`}
-      value={selectedValue}
-      onChange={(event: SelectChangeEvent) => onFilterChange(name, event.target.value)}
-      label={deSpacifiedName}
-    >
-      {Object.entries(values).map(([key, value]) => (
-        <MenuItem key={key} value={value}>
-          {key}
-        </MenuItem>
-      ))}
-    </Select>
-  </FormControl>
+  return (
+    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+      <InputLabel id={`input-label-${deSpacifiedName}`}>{name}</InputLabel>
+      <Select
+        labelId={`label-${deSpacifiedName}`}
+        id={`select-${deSpacifiedName}`}
+        value={selectedValue}
+        onChange={(event: SelectChangeEvent) => onFilterChange(name, event.target.value)}
+        label={deSpacifiedName}
+      >
+        {Object.entries(values).map(([key, value]) => (
+          <MenuItem key={key} value={value}>
+            {key}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  )
 }
 
 export interface FilterOption<V extends Record<string, string> = Record<string, string>> {
@@ -49,7 +55,6 @@ export interface FilterOption<V extends Record<string, string> = Record<string, 
   values: V
   selectedValue: string
 }
-
 
 interface SearchFilters {
   searchValue: string
@@ -62,7 +67,7 @@ interface FilterOptions {
   onFilterChange: (filterName: string, value: string) => void
 }
 
-type FilterBarProps = (SearchFilters & Undefine<FilterOptions>)| (SearchFilters & FilterOptions)
+type FilterBarProps = (SearchFilters & Undefine<FilterOptions>) | (SearchFilters & FilterOptions)
 
 export const FilterBar: React.FC<FilterBarProps> = ({
   filterOptions,
@@ -102,6 +107,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 }
 
 const FilterBarBox = styled(Box)`
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 0;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0;
 `

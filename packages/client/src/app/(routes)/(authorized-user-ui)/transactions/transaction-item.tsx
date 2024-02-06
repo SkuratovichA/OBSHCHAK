@@ -9,7 +9,6 @@ import { TransactionView } from './transaction-view'
 import { TransactionStatus } from './common-mocks'
 import type { Transaction } from './common-mocks'
 
-
 const getColorByStatus = (status: TransactionStatus): string => {
   switch (status) {
     case TransactionStatus.Paid:
@@ -65,18 +64,17 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction })
 }
 
 const UnderlinedText = styled.span`
-    text-decoration: underline;
+  text-decoration: underline;
 `
 
 const ModalBox = styled(Box)`
-    position: absolute;
-    width: 75vw;
-    height: 75vh;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fefefe;
-    //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 16px;
+  position: absolute;
+  width: 75vw;
+  height: 75vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fefefe;
+  //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
 `
-

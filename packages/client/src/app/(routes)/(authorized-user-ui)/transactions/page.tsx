@@ -14,7 +14,6 @@ import { Transaction, transactionsMock } from './common-mocks'
 import { TransactionStatus } from './common-mocks'
 import { TransactionItem } from './transaction-item'
 
-
 interface TransactionsListProps {
   transactions: Transaction[]
 }
@@ -25,7 +24,7 @@ interface TransactionFilters {
 }
 
 enum FilterType {
-  'Filter by' = 'Filter by'
+  'Filter by' = 'Filter by',
 }
 
 const filtersToKeyMap: Record<FilterType, keyof Transaction> = {
@@ -35,22 +34,18 @@ const filtersToKeyMap: Record<FilterType, keyof Transaction> = {
 const filterTransactions = (
   transactions: Transaction[],
   filters: TransactionFilters,
-): Transaction[] => transactions.filter((transaction) => {
-  const matchesStatus = (
-    !filters.status ||
-    transaction.status === TransactionStatus[filters.status as keyof typeof TransactionStatus]
-  )
+): Transaction[] =>
+  transactions.filter((transaction) => {
+    const matchesStatus =
+      !filters.status ||
+      transaction.status === TransactionStatus[filters.status as keyof typeof TransactionStatus]
 
-  const matchesSearch = (
-    !filters.search ||
-    Object.values(transaction)
-      .join('')
-      .toLowerCase()
-      .includes(filters.search.toLowerCase())
-  )
+    const matchesSearch =
+      !filters.search ||
+      Object.values(transaction).join('').toLowerCase().includes(filters.search.toLowerCase())
 
-  return matchesStatus && matchesSearch
-})
+    return matchesStatus && matchesSearch
+  })
 
 const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) => {
   const { filters, updateFilters } = useFilters<TransactionFilters>()
@@ -70,19 +65,25 @@ const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) => 
   }
 
   // TODO: come up with some grouping solution
-  const filterOptions = useMemo(() => [{
-    name: FilterType['Filter by'],
-    values: { None: '', Paid: 'Paid', Active: 'Active', Pending: 'Pending' },
-    selectedValue: filters.status || '', // Use the status filter value here
-  }], [filters.status])
+  const filterOptions = useMemo(
+    () => [
+      {
+        name: FilterType['Filter by'],
+        values: { None: '', Paid: 'Paid', Active: 'Active', Pending: 'Pending' },
+        selectedValue: filters.status || '', // Use the status filter value here
+      },
+    ],
+    [filters.status],
+  )
 
   return (
     <FullHeightNonScrollableContainer>
       <FilterBar
         filterOptions={filterOptions}
         // TODO: maybe go with hooks to make it more type-safe. tbd in the future versions if there are any
-        onFilterChange={(filterName, value) => handleFilterChange(filterName as FilterType, value as keyof Transaction)}
-
+        onFilterChange={(filterName, value) =>
+          handleFilterChange(filterName as FilterType, value as keyof Transaction)
+        }
         searchValue={filters.search || ''}
         onSearchChange={handleSearchChange}
       />
@@ -99,7 +100,6 @@ const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) => 
 }
 
 const TransactionsListBase: React.FC = () => {
-
   return (
     <FiltersProvider>
       <TransactionsList transactions={transactionsMock} />
@@ -107,4 +107,3 @@ const TransactionsListBase: React.FC = () => {
   )
 }
 export default TransactionsListBase
-

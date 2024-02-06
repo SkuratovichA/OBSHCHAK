@@ -18,7 +18,6 @@ import { usePathname } from 'next/navigation'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/navigation'
 
-
 const linkify = (text: string): string => `/${text.toLowerCase()}`
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -55,10 +54,9 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
             { Transactions: { icon: <ListIcon /> } },
             { Account: { icon: <ProfileIcon /> } },
           ]
-            .map(a => Object.entries(a)[0])
+            .map((a) => Object.entries(a)[0])
             .map(([text, props]) => ({ ...props, label: text }))
             .map((props, idx) => (
-
               <BottomNavActionHighlighted
                 onClick={() => handleRedirect(linkify(props.label))}
                 // TODO: fucked up constants
@@ -76,24 +74,24 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
 }
 
 const TopBar = styled(Box)`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 1100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
 `
 
 const BottomNavActionHighlighted = styled(BottomNavigationAction)<{
   shouldhighlight?: boolean
   highlightcolor?: string
 }>`
-    ${({ shouldhighlight, highlightcolor }) =>
-            shouldhighlight &&
-            css`
-                background: ${highlightcolor};
-                border-radius: 8px;
-            `}
+  ${({ shouldhighlight, highlightcolor }) =>
+    shouldhighlight &&
+    css`
+      background: ${highlightcolor};
+      border-radius: 8px;
+    `}
 `
 
 export default Layout
