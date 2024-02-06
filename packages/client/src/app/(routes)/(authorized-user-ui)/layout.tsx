@@ -11,13 +11,11 @@ import {
   IconButton,
 } from '@mui/material'
 import ProfileIcon from '@mui/icons-material/AccountCircle'
-import TransactionIcon from '@mui/icons-material/AccountBalanceWallet'
 import React from 'react'
 import { AddCircleOutline, Group, Groups, MicNone, NotificationsNone } from '@mui/icons-material'
 import ListIcon from '@mui/icons-material/List'
-import { redirect, usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import styled from '@emotion/styled'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 
@@ -35,20 +33,20 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   }
 
   return (
-    <Container component="main">
-      <Box display="flex" justifyContent="space-between" alignItems="center" py={2}>
+    <Container component="main" sx={{ height: '100vh', overflow: 'hidden' }}>
+      <TopBar>
         <IconButton edge="start" color="inherit" aria-label="notifications">
           <NotificationsNone />
         </IconButton>
         <IconButton edge="end" color="inherit" aria-label="microphone">
           <MicNone />
         </IconButton>
-      </Box>
+      </TopBar>
 
       {children}
 
       {/*TODO: fucked up route names. here we go having with some bugs probably*/}
-      <AppBar position="fixed" color="primary" style={{ top: 'auto', bottom: 0 }}>
+      <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
         <BottomNavigation showLabels style={{ justifyContent: 'center' }}>
           {[
             { Friends: { icon: <Group /> } },
@@ -58,7 +56,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
             { Account: { icon: <ProfileIcon /> } },
           ]
             .map(a => Object.entries(a)[0])
-            .map(([text, props]) => ({...props, label: text}))
+            .map(([text, props]) => ({ ...props, label: text }))
             .map((props, idx) => (
 
               <BottomNavActionHighlighted
@@ -76,6 +74,15 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
     </Container>
   )
 }
+
+const TopBar = styled(Box)`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1100;
+`
 
 const BottomNavActionHighlighted = styled(BottomNavigationAction)<{
   shouldhighlight?: boolean
