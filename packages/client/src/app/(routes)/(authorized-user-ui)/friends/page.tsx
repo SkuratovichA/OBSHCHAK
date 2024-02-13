@@ -1,66 +1,19 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { usersMock } from 'app-common'
+import { FiltersProvider } from '@OBSHCHAK-UI/app/_client-hooks'
+import { FriendsList } from '@OBSHCHAK-UI/app/_components'
 
-import {
-  FullHeightNonScrollableContainer,
-  FilterBar,
-  ScrollableBarlessList,
-  ListItemTiltable,
-} from '@OBSHCHAK-UI/components'
-import { FiltersProvider, useFilters } from '@OBSHCHAK-UI/hooks/use-filters'
-
-import { friendsMock, UserMockType } from './friends-mock'
-import { User } from './user'
-
-interface UserFilters {
-  search: string
-}
-
-const filterFriends = (users: UserMockType[], filters: UserFilters): UserMockType[] =>
-  users.filter(
-    (user) =>
-      !filters.search ||
-      Object.values(user).join('').toLowerCase().includes(filters.search.toLowerCase()),
-  )
-
-interface UsersListProps {
-  friends: UserMockType[]
-}
-
-const FriendsList: React.FC<UsersListProps> = ({ friends }) => {
-  const { filters, updateFilters } = useFilters<UserFilters>()
-  const [filteredFriends, setFilteredFriends] = useState<UserMockType[]>(friends)
-
-  useEffect(() => {
-    const filtered = filterFriends(friends, filters)
-    setFilteredFriends(filtered)
-  }, [filters, friends])
-
-  const handleSearchChange = (value: string) => {
-    updateFilters({ search: value })
-  }
-
-  return (
-    <FullHeightNonScrollableContainer>
-      <FilterBar searchValue={filters.search || ''} onSearchChange={handleSearchChange} />
-
-      <ScrollableBarlessList>
-        {filteredFriends.map((friend) => (
-          <ListItemTiltable key={friend.id}>
-            <User user={friend} />
-          </ListItemTiltable>
-        ))}
-      </ScrollableBarlessList>
-    </FullHeightNonScrollableContainer>
-  )
-}
-
-const FriendsListBase: React.FC = () => {
+const Page: React.FC = () => {
+  // TODO: we need to have another layer of abstraction (xD) here and
+  //  fetch the data first based on the username
+  //  and then pass the friends to the component
+  //  component should be suspended while fetching the data btw.
   return (
     <FiltersProvider>
-      <FriendsList friends={friendsMock} />
+      <FriendsList friends={usersMock} />
     </FiltersProvider>
   )
 }
-export default FriendsListBase
+export default Page

@@ -3,12 +3,14 @@
 import React, { useState } from 'react'
 import { Avatar, Box, IconButton, Menu, MenuItem, Typography } from '@mui/material'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
+import { Launch } from '@mui/icons-material'
+import { usePathname, useRouter } from 'next/navigation'
+import { ObshchakUser } from 'app-common'
 
-import { UserMockType } from './friends-mock'
-import { ListItemContainer, TiltedContainer } from '@OBSHCHAK-UI/components'
+import { ListItemContainer, TiltedContainer } from '@OBSHCHAK-UI/app/_components'
 
 interface UserProps {
-  user: UserMockType
+  user: ObshchakUser
 }
 
 interface UserMenuProps {
@@ -43,9 +45,15 @@ const UserMenu: React.FC<UserMenuProps> = ({ anchorEl, onClose }) => {
 export const User: React.FC<UserProps> = ({ user }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const router = useRouter()
+  const pathName = usePathname()
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
+  }
+
+  const handleRedirect = () => {
+    router.push(`${pathName}/${user.id}`)
   }
 
   const handleCloseMenu = () => {
@@ -55,13 +63,17 @@ export const User: React.FC<UserProps> = ({ user }) => {
   return (
     <TiltedContainer>
       <ListItemContainer elevation={1} onClick={() => console.log('Open user details')}>
-        <Avatar alt={user.name} src={user.avatar} />
+        <Avatar alt={user.name} src={user.profileImage} />
         <Box sx={{ flex: 1, ml: 2 }}>
           <Typography variant="body1">{user.name}</Typography>
           <Typography variant="caption" color="textSecondary">
             @{user.username}
           </Typography>
         </Box>
+        <Launch
+          fontSize="small"
+          onClick={handleRedirect}
+        />
         <IconButton
           aria-label="more"
           id={`user-menu-${user.id}`}

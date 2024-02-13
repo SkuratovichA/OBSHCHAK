@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { Tilt } from 'react-tilt'
 import styled from '@emotion/styled'

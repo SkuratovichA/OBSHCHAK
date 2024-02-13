@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Box,
   FormControl,
@@ -11,10 +13,10 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { Search } from '@mui/icons-material'
-import styled from '@emotion/styled'
 
 import { deSpacify } from 'app-common'
 import type { Function, Undefine } from 'app-common'
+import styled from '@emotion/styled'
 
 interface FilterSelectorProps {
   name: string
@@ -76,7 +78,16 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   onSearchChange,
 }) => {
   return (
-    <FilterBarBox display="flex" justifyContent="end" alignItems="center" width={'100%'}>
+    <FilterBarBox
+      sx={{
+        borderBottom: '1px solid #e0e0e0',
+        paddingBottom: 0,
+      }}
+      display="flex"
+      justifyContent="end"
+      alignItems="center"
+      width={'100%'}
+    >
       {filterOptions?.map(({ name, values, selectedValue }) => (
         <FilterSelector
           key={name}
@@ -110,3 +121,5 @@ const FilterBarBox = styled(Box)`
   border-bottom: 1px solid #e0e0e0;
   padding-bottom: 0;
 `
+
+export default FilterBar

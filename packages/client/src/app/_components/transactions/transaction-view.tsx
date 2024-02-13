@@ -1,6 +1,6 @@
+import React from 'react'
 import { Typography } from '@mui/material'
-import type { Transaction } from './common-mocks'
-import { TransactionStatus } from './common-mocks'
+import { getTransactionAmount, Transaction, TransactionStatusType } from 'app-common'
 
 interface TransactionViewProps {
   transaction: Transaction
@@ -12,12 +12,21 @@ export const TransactionView: React.FC<TransactionViewProps> = ({ transaction })
       <Typography id="transaction-modal-title" variant="h6" component="h2">
         {transaction.name}
       </Typography>
+
       <Typography>From: {transaction.from}</Typography>
-      <Typography>To: {transaction.to}</Typography>
+
+      <Typography>To:</Typography>
+      <ul>
+        {transaction.to.map((to, idx) => (
+          <li key={idx}>{to.username}</li>
+        ))}
+      </ul>
+
+
       <Typography>
-        Amount: ${transaction.amount} {transaction.currency}
+        Amount: ${getTransactionAmount(transaction)} {transaction.currency}
       </Typography>
-      <Typography>Status: {TransactionStatus[transaction.status]}</Typography>
+      <Typography>Status: {TransactionStatusType[transaction.status]}</Typography>
     </>
   )
 }
