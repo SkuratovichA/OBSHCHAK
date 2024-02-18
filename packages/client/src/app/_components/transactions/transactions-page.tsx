@@ -3,14 +3,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 
-import { FiltersProvider, useFilters } from '@OBSHCHAK-UI/app/_client-hooks'
+import { FiltersProvider, useFilters, useLoading } from '@OBSHCHAK-UI/app/_client-hooks'
 import { FilterBar, FullHeightNonScrollableContainer, TransactionsList } from '@OBSHCHAK-UI/app/_components'
 import type { Transaction } from 'app-common'
 import { TransactionStatusType } from 'app-common'
-
-interface TransactionsListProps {
-  transactions: Transaction[]
-}
 
 interface TransactionFilters {
   search: string
@@ -41,9 +37,15 @@ const filterTransactions = (
     return matchesStatus && matchesSearch
   })
 
-const TransactionsPage: React.FC<TransactionsListProps> = ({ transactions }) => {
+type TransactionsPageProps = {
+  transactions: Transaction[] | undefined
+}
+const TransactionsPage: React.FC<TransactionsPageProps> = ({ transactions: nullableTransactions }) => {
+  const transactions = useMemo(() => nullableTransactions ?? [] as Transaction[], [nullableTransactions])
+
   const { filters, updateFilters } = useFilters<TransactionFilters>()
   const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>(transactions)
+  const { isLoading } = useLoading()
 
   useEffect(() => {
     const filtered = filterTransactions(transactions, filters)
@@ -82,12 +84,18 @@ const TransactionsPage: React.FC<TransactionsListProps> = ({ transactions }) => 
         onSearchChange={handleSearchChange}
       />
 
-      <TransactionsList transactions={filteredTransactions} />
+      {isLoading
+        ? <TransactionsList isLoading={true} />
+        : <TransactionsList transactions={filteredTransactions} />
+      }
     </FullHeightNonScrollableContainer>
   )
 }
 
-export const BaseTransactionsPage: React.FC<TransactionsListProps> = ({ transactions }) =>
+export const BaseTransactionsPage: React.FC<TransactionsPageProps> = ({ transactions }) => (
   <FiltersProvider>
-    <TransactionsPage transactions={transactions} />
+    <TransactionsPage
+      transactions={transactions}
+    />
   </FiltersProvider>
+)

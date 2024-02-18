@@ -1,19 +1,43 @@
-'use client'
-
 import React from 'react'
 import { ListItemTiltable, ScrollableBarlessList, TransactionItem } from '@OBSHCHAK-UI/app/_components'
+import { Loadable, Transaction } from 'app-common'
 
 
-interface TransactionsListProps {
-  transactions: any[] // FIXME: tmp solution
+const TransactionsSkeleton: React.FC = () => {
+  return (
+    <ScrollableBarlessList>
+      <ListItemTiltable>
+        <TransactionItem isLoading={true} />
+      </ListItemTiltable>
+      <ListItemTiltable>
+        <TransactionItem isLoading={true} />
+      </ListItemTiltable>
+      <ListItemTiltable>
+        <TransactionItem isLoading={true} />
+      </ListItemTiltable>
+    </ScrollableBarlessList>
+  )
 }
 
-export const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) =>
-  <ScrollableBarlessList>
-    {transactions.map((transaction) => (
+type TransactionsListProps = Loadable<{
+  transactions: Transaction[]
+}>
+
+export const TransactionsList: React.FC<TransactionsListProps> = ({ isLoading, transactions }) => {
+
+  if (isLoading) {
+    return <TransactionsSkeleton />
+  }
+
+  if (transactions === undefined) {
+    return <div>PROBABLY AN UNHANDLED ERROR</div>
+  }
+
+  return (
+    transactions.map((transaction) => (
       <ListItemTiltable key={transaction.id}>
         <TransactionItem transaction={transaction} />
       </ListItemTiltable>
-    ))}
-  </ScrollableBarlessList>
-
+    ))
+  )
+}
