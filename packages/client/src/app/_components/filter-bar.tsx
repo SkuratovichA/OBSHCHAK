@@ -1,5 +1,3 @@
-'use client'
-
 import {
   Box,
   FormControl,
@@ -118,8 +116,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 }
 
 const FilterBarBox = styled(Box)`
-  border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 0;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0;
 `
 
 export default FilterBar
