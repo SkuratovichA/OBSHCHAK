@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { UserSearchParams } from '@OBSHCHAK-UI/app/api/users/route'
 import { FriendPage } from '@OBSHCHAK-UI/app/_components'
 
 interface PageProps {

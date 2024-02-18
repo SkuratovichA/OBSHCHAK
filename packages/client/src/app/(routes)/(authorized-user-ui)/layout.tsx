@@ -1,15 +1,12 @@
-import {
-  Container,
-  IconButton,
-} from '@mui/material'
 import React from 'react'
+import { IconButton, } from '@mui/material'
 import { MicNone, NotificationsNone } from '@mui/icons-material'
-import { BottomBar, TopBar } from '@OBSHCHAK-UI/app/_components'
+import { BottomBar, FullHeightStackContainer, ScrollableBodyContainer, TopBar } from '@OBSHCHAK-UI/app/_components'
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
-    <Container component="main" sx={{ height: '100vh', overflow: 'hidden' }}>
+    <FullHeightStackContainer>
       <TopBar>
         <IconButton edge="start" color="inherit" aria-label="notifications">
           <NotificationsNone />
@@ -19,11 +16,12 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
         </IconButton>
       </TopBar>
 
-      {children}
+      <ScrollableBodyContainer component="main">
+        {children}
+      </ScrollableBodyContainer>
 
-      {/*TODO: fucked up route names. here we go having with some bugs probably*/}
       <BottomBar />
-    </Container>
+    </FullHeightStackContainer>
   )
 }
 
