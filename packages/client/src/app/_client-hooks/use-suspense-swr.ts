@@ -1,28 +1,44 @@
 'use client'
 
-import useSWR from 'swr'
 
-const fetcher = async <T>(url: string, params: T): Promise<any> => {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  })
+// TODO: not tested
+export const fetcher = async <T, S>(url: string, params: T, timeout = 5000): Promise<S> => {
+  console.log('USE SUSPENSE SWR: fetcher: url: ', url, 'params: ', params)
 
-  if (!response.ok) {
-    throw new Error('An error occurred while fetching the data.')
+  const controller = new AbortController()
+  const id = setTimeout(() => controller.abort(), timeout)
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params),
+      signal: controller.signal,
+    })
+
+    clearTimeout(id)
+
+    console.log('DATA ARE FETCHED')
+
+    if (!response.ok) {
+      console.log('We fucked up')
+      // Consider throwing an application-specific error with more details
+      throw new Error(`Fetch request to ${url} failed with status: ${response.status}`)
+    }
+
+    const jsonResponse = await response.json()
+    console.log('response JSON: ', jsonResponse)
+
+    return jsonResponse
+  } catch (error: any) {
+    if (error.name === 'AbortError') {
+      console.log('Request timed out')
+      throw new Error('Request timeout')
+    } else {
+      console.log('Unexpected error', error)
+      throw error
+    }
   }
-  return await response.json()
-}
-
-export const useSuspenseSWR = <T extends Record<string, any>>(key: string, params: T | null) => {
-
-  const { data, error } = useSWR(key, (a: string) => fetcher(a, params), { suspense: true })
-
-  if (error) {
-    throw error
-  }
-  return data
 }
