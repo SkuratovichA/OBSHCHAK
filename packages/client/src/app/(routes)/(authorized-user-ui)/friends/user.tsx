@@ -53,7 +53,7 @@ export const User: React.FC<UserProps> = ({ user }) => {
   }
 
   const handleRedirect = () => {
-    router.push(`${pathName}/${user.id}`)
+    router.push(`${pathName}/${user.username}`)
   }
 
   const handleCloseMenu = () => {
