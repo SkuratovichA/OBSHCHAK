@@ -1,58 +1,81 @@
 'use client'
 
-import React, { Suspense } from 'react'
-import { Box, Container, useMediaQuery, useTheme } from '@mui/material'
-import { ObshchakUser } from 'app-common'
+import React, { useMemo } from 'react'
+import useSWR, { State } from 'swr'
+import styled from '@emotion/styled'
 
-import { GroupsList, TransactionsList } from '@OBSHCHAK-UI/app/_components'
-import { useSuspenseSWR } from '@OBSHCHAK-UI/app/_client-hooks'
-import { UserSearchParams } from '@OBSHCHAK-UI/app/api/users/route'
-import { TransactionsSearchParams } from '@OBSHCHAK-UI/app/api/transactions/route'
-import { GroupsSearchParams } from '@OBSHCHAK-UI/app/api/groups/route'
+import {
+  BaseTransactionsPage,
+  GroupsList,
+  ScrollableBarlessList,
+  UserProfile,
+} from '@OBSHCHAK-UI/app/_components'
+import { fetcher, LoadingProvider } from '@OBSHCHAK-UI/app/_client-hooks'
+import type { UserSearchParams, UsersSearchResponse } from '@OBSHCHAK-UI/app/api/users/route'
+import type { TransactionsSearchResponse } from '@OBSHCHAK-UI/app/api/transactions/route'
+import type { GroupsSearchResponse } from '@OBSHCHAK-UI/app/api/groups/route'
 
-interface UserProfileProps {
-  user: ObshchakUser // FIXME: move this to common
-}
-
-// UserProfile component
-const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
-  const theme = useTheme()
-  const isSmallWidth = useMediaQuery(theme.breakpoints.down('sm'))
-
-  return (
-    <Box>
-    </Box>
-  )
-}
 
 // FIXME: tmp solution
 export interface FriendPageProps {
   username: string
 }
 
+const suspendWithNoFallback = {
+  // suspense: true,
+  // fallbackData: null,
+}
+
 export const FriendPage: React.FC<FriendPageProps> = ({ username }) => {
-  console.log(
-    `Friend page is about to be rendered`,
-  )
   const usernames: UserSearchParams = { usernames: [username] }
 
+  const swrCallback = useMemo(() => {
+    return function <T, S>([uri, params]: [string, T]) {
+      return fetcher<T, S>(uri, params)
+    }
+  }, [])
+
+  const { data: users, isLoading: isLoadingUser, error: errorUser } = useSWR(
+    [`/api/users`, usernames],
+    swrCallback,
+    suspendWithNoFallback,
+  ) as State<UsersSearchResponse>
+
+  const { data: transactions, isLoading: isLoadingTransactions, error: errorTransactions } = useSWR(
+    [`/api/transactions`, usernames],
+    swrCallback,
+    suspendWithNoFallback,
+  ) as State<TransactionsSearchResponse>
+
+  const { data: groups, isLoading: isLoadingGroups, error: errorGroups } = useSWR(
+    [`/api/groups`, usernames],
+    swrCallback,
+    suspendWithNoFallback,
+  ) as State<GroupsSearchResponse>
+
+  // TODO: add debug messages here
+  // TODO 2: don't use useSwr, it's fucked up. use custom logic
+
   return (
-    <Container maxWidth="sm">
-      <Suspense fallback={<div>Loading user...</div>}>
-        <UserProfile
-          user={useSuspenseSWR<UserSearchParams>(`/api/users`, usernames)}
-        />
-      </Suspense>
+    <ScrollableBarlessList>
+      <LoadingProvider isLoading={!!isLoadingUser}>
+        <UserProfile user={users && users.length ? users[0] : undefined} />
+      </LoadingProvider>
 
-      <Suspense fallback={<div>Loading transactions...</div>}>
-        <TransactionsList
-          transactions={useSuspenseSWR<TransactionsSearchParams>('/api/transactions', usernames)}
-        />
-      </Suspense>
+      <LoadingProvider isLoading={!!isLoadingTransactions}>
+        <FriendsTransactions transactions={transactions} />
+      </LoadingProvider>
 
-      <Suspense fallback={<div>Loading groups...</div>}>
-        <GroupsList groups={useSuspenseSWR<GroupsSearchParams>('/api/groups', usernames)} />
-      </Suspense>
-    </Container>
+      <LoadingProvider isLoading={!!isLoadingGroups}>
+        <GroupsList
+          groups={groups}
+        />
+      </LoadingProvider>
+    </ScrollableBarlessList>
   )
 }
+
+const FriendsTransactions = styled(BaseTransactionsPage)`
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+`
