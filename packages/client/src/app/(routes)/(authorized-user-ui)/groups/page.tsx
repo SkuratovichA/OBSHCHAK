@@ -1,6 +1,4 @@
-'use client'
-
-import React, { useState } from 'react'
+import React from 'react'
 
 const Page: React.FC = () => {
   return <div>
