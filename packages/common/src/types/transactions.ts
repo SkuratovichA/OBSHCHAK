@@ -24,6 +24,7 @@ export enum CurrencyType {
 export interface Transaction {
   id: string
   description?: string
+  amount: number
 
   name: string
   currency: CurrencyType
