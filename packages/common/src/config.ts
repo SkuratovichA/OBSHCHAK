@@ -1,5 +1,5 @@
 export const API_ORIGIN = process.env.REACT_APP_API_ORIGIN ?? 'http://localhost'
-export const API_PORT = process.env.PORT ?? '8000'
+export const API_PORT = process.env.PORT ?? '8003'
 export const CHATBOT_PORT = '8001'
 export const CLIENT_PORT = process.env.REACT_APP_CLIENT_PORT ?? '8002'
 
