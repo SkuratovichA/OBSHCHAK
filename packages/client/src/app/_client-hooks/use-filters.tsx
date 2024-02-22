@@ -3,7 +3,9 @@
 import React, { Context, createContext, PropsWithChildren, useContext, useState } from 'react'
 import { Function } from 'app-common'
 
-type FilterContextTypeBase<X extends string | number | symbol = string, Y = any> = Record<X, Y>
+// TODO: this should probably be eliminated in the future
+//  because useFilters should be embedded into useTransactions, useGroups, etc
+export type FilterContextTypeBase<X extends string | number | symbol = string, Y = any> = Record<X, Y>
 
 interface FiltersContextType<T extends FilterContextTypeBase = FilterContextTypeBase> {
   updateFilters: (newFilters: Partial<T>) => void

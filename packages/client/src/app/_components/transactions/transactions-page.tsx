@@ -1,12 +1,15 @@
 'use client'
 
-import React, { useEffect, useMemo, useState } from 'react'
-
-
-import { FiltersProvider, useFilters, useLoading } from '@OBSHCHAK-UI/app/_client-hooks'
+import React, { useMemo } from 'react'
+import {
+  FilterTransactionsFn,
+  TransactionsProvider,
+  useTransactions,
+} from '@OBSHCHAK-UI/app/_client-hooks'
 import { FilterBar, FullHeightNonScrollableContainer, TransactionsList } from '@OBSHCHAK-UI/app/_components'
-import type { Transaction } from 'app-common'
+import type { Defined, Transaction, Undefined } from 'app-common'
 import { TransactionStatusType } from 'app-common'
+import { isNil } from 'lodash'
 
 interface TransactionFilters {
   search: string
@@ -21,11 +24,11 @@ const filtersToKeyMap: Record<FilterType, keyof Transaction> = {
   [FilterType['Filter by']]: 'status',
 }
 
-const filterTransactions = (
-  transactions: Transaction[],
-  filters: TransactionFilters,
-): Transaction[] =>
-  transactions.filter((transaction) => {
+const filterTransactions: FilterTransactionsFn<TransactionFilters>  = (
+  transactions,
+  filters,
+) =>
+  transactions?.filter((transaction) => {
     const matchesStatus =
       !filters.status ||
       transaction.status === TransactionStatusType[filters.status as keyof typeof TransactionStatusType]
@@ -37,45 +40,58 @@ const filterTransactions = (
     return matchesStatus && matchesSearch
   })
 
-type TransactionsPageProps = {
-  transactions: Transaction[] | undefined
+const TransactionsPageSkeleton = () => {
+  return (
+    <FullHeightNonScrollableContainer>
+      <FilterBar filterOptions={[]} onFilterChange={() => {}} searchValue="" onSearchChange={() => {}} />
+      <TransactionsList isLoading={true} />
+    </FullHeightNonScrollableContainer>
+  )
 }
-const TransactionsPage: React.FC<TransactionsPageProps> = ({ transactions: nullableTransactions }) => {
-  const transactions = useMemo(() => nullableTransactions ?? [] as Transaction[], [nullableTransactions])
 
-  const { filters, updateFilters } = useFilters<TransactionFilters>()
-  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>(transactions)
-  const { isLoading } = useLoading()
 
-  useEffect(() => {
-    const filtered = filterTransactions(transactions, filters)
-    setFilteredTransactions(filtered)
-  }, [filters, transactions])
+const isUndefined = (value: any): value is undefined => isNil(value)
+
+const TransactionsPage: React.FC = () => {
+  const { isLoading, ...useTransactionsRest } = useTransactions<TransactionFilters>({
+     filteringFunction: filterTransactions,
+  })
+
+  const { filters, updateFilters, filteredTransactions } = isLoading
+    ? useTransactionsRest as Undefined<typeof useTransactionsRest>
+    : useTransactionsRest as Defined<typeof useTransactionsRest> // that's weird that this isn't enough to make it defined
 
   const handleFilterChange = (filterName: FilterType, value: keyof Transaction) => {
-    updateFilters({ [filtersToKeyMap[filterName]]: value })
+    updateFilters!!({ [filtersToKeyMap[filterName]]: value })
   }
 
   const handleSearchChange = (value: string) => {
-    updateFilters({ search: value })
+    updateFilters!!({ search: value })
   }
 
   // TODO: come up with some grouping solution
   const filterOptions = useMemo(
-    () => [
-      {
+    () => (filters: Partial<TransactionFilters>) => [{
         name: FilterType['Filter by'],
         values: { None: '', Paid: 'Paid', Active: 'Active', Pending: 'Pending' },
         selectedValue: filters.status || '', // Use the status filter value here
-      },
-    ],
-    [filters.status],
+    }],
+    [],
   )
+
+  if (isLoading) {
+    return <TransactionsPageSkeleton />
+  }
+
+  if (isUndefined(filters) || isUndefined(filteredTransactions)) {
+    // just a dummy for the TS
+    return <TransactionsPageSkeleton />
+  }
 
   return (
     <FullHeightNonScrollableContainer>
       <FilterBar
-        filterOptions={filterOptions}
+        filterOptions={filterOptions(filters)}
         // TODO: maybe go with hooks to make it more type-safe. tbd in the future versions if there are any
         onFilterChange={(filterName, value) =>
           handleFilterChange(filterName as FilterType, value as keyof Transaction)
@@ -92,10 +108,13 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ transactions: nulla
   )
 }
 
+type TransactionsPageProps = {
+  transactions: Transaction[] | undefined
+}
 export const BaseTransactionsPage: React.FC<TransactionsPageProps> = ({ transactions }) => (
-  <FiltersProvider>
-    <TransactionsPage
-      transactions={transactions}
-    />
-  </FiltersProvider>
+  <TransactionsProvider
+    transactions={transactions}
+  >
+    <TransactionsPage />
+  </TransactionsProvider>
 )

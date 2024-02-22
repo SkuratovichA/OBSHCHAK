@@ -13,7 +13,7 @@ import React from 'react'
 import { Search } from '@mui/icons-material'
 
 import { deSpacify } from 'app-common'
-import type { Function, Undefine } from 'app-common'
+import type { Function, Undefined } from 'app-common'
 import styled from '@emotion/styled'
 
 interface FilterSelectorProps {
@@ -67,7 +67,7 @@ interface FilterOptions {
   onFilterChange: (filterName: string, value: string) => void
 }
 
-type FilterBarProps = (SearchFilters & Undefine<FilterOptions>) | (SearchFilters & FilterOptions)
+type FilterBarProps = (SearchFilters & Undefined<FilterOptions>) | (SearchFilters & FilterOptions)
 
 export const FilterBar: React.FC<FilterBarProps> = ({
   filterOptions,
