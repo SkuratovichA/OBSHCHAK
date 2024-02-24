@@ -1,49 +1,41 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Avatar, Box, IconButton, Menu, MenuItem, Typography } from '@mui/material'
+import { Avatar, Box, IconButton, Typography } from '@mui/material'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { Launch } from '@mui/icons-material'
 import { usePathname, useRouter } from 'next/navigation'
-import { ObshchakUser } from 'app-common'
+import { Maybe, ObshchakUser } from 'app-common'
 
 import { ListItemContainer, TiltedContainer } from '@OBSHCHAK-UI/app/_components'
+import { DropdownMenu, DropdownMenuProps } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
+
+
+const friendActions: DropdownMenuProps['namedCallbacks'] = {
+  remove: {
+    name: 'Remove a friend',
+    callback: async () => console.log('remove'),
+  },
+  createTransaction: {
+    name: 'Create a transaction',
+    callback: async () => console.log('createTransaction'),
+  },
+  createGroup: {
+    name: 'Create a group',
+    callback: async () => console.log('createGroup'),
+  },
+  goToTransactions: {
+    name: 'Go to transactions',
+    callback: async () => console.log('goToTransactions'),
+  },
+}
 
 interface UserProps {
   user: ObshchakUser
 }
 
-interface UserMenuProps {
-  anchorEl: HTMLElement | null
-  onClose: () => void
-}
-
-const UserMenu: React.FC<UserMenuProps> = ({ anchorEl, onClose }) => {
-  const open = Boolean(anchorEl)
-
-  const handleMenuAction = (action: string) => () => {
-    alert(action)
-    onClose()
-  }
-
-  return (
-    <Menu
-      anchorEl={anchorEl}
-      open={open}
-      onClose={onClose}
-      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-    >
-      <MenuItem onClick={handleMenuAction('remove')}>Remove</MenuItem>
-      <MenuItem onClick={handleMenuAction('createTransaction')}>Create a transaction</MenuItem>
-      <MenuItem onClick={handleMenuAction('createGroup')}>Create a group</MenuItem>
-      <MenuItem onClick={handleMenuAction('goToTransactions')}>Go to transactions</MenuItem>
-    </Menu>
-  )
-}
-
 export const User: React.FC<UserProps> = ({ user }) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [anchorEl, setAnchorEl] = useState<Maybe<HTMLElement>>(null)
   const open = Boolean(anchorEl)
   const router = useRouter()
   const pathName = usePathname()
@@ -84,7 +76,11 @@ export const User: React.FC<UserProps> = ({ user }) => {
         >
           <MoreVertIcon />
         </IconButton>
-        <UserMenu anchorEl={anchorEl} onClose={handleCloseMenu} />
+        <DropdownMenu
+          namedCallbacks={friendActions}
+          anchorEl={anchorEl}
+          onClose={handleCloseMenu}
+        />
       </ListItemContainer>
     </TiltedContainer>
   )
