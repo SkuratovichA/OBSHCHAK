@@ -32,6 +32,7 @@ interface UserProfileProps {
   user: Maybe<ObshchakUser>
 }
 
+// TODO: probably, this should be called a FriendsProfile instaed
 export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
   const { isLoading } = useLoading()
 
