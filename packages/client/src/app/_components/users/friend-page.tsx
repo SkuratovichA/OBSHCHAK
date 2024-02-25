@@ -15,8 +15,6 @@ import type { UserSearchParams, UsersSearchResponse } from '@OBSHCHAK-UI/app/api
 import type { TransactionsSearchResponse } from '@OBSHCHAK-UI/app/api/transactions/route'
 import type { GroupsSearchResponse } from '@OBSHCHAK-UI/app/api/groups/route'
 
-
-// FIXME: tmp solution
 export interface FriendPageProps {
   username: string
 }
@@ -52,9 +50,6 @@ export const FriendPage: React.FC<FriendPageProps> = ({ username }) => {
     swrCallback,
     suspendWithNoFallback,
   ) as State<GroupsSearchResponse>
-
-  // TODO: add debug messages here
-  // TODO 2: don't use useSwr, it's fucked up. use custom logic
 
   return (
     <ScrollableBarlessList>
