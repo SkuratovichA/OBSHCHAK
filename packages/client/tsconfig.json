@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "types": ["react/experimental"],
     "noEmit": true,
     "jsx": "preserve",
     "incremental": true,
