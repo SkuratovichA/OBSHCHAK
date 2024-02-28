@@ -7,6 +7,15 @@ export interface ObshchakUser {
   mobileNumber: string
 }
 
+export const isObshchakUser = (user: any): user is ObshchakUser =>
+  user &&
+  typeof user.id === 'string' &&
+  typeof user.name === 'string' &&
+  typeof user.username === 'string' &&
+  typeof user.email === 'string' &&
+  typeof user.profileImage === 'string' &&
+  typeof user.mobileNumber === 'string'
+
 export enum TransactionStatusType {
   Paid = 'Paid',
   Pending = 'Pending',
