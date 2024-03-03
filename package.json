@@ -14,6 +14,8 @@
     "yarn": "^1.22.5"
   },
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
     "axios": "latest",
     "concurrently": "7.0.0",
     "dotenv": "^8.2.0",
@@ -29,7 +31,7 @@
   "devDependencies": {
     "@types/koa": "^2",
     "@types/node": "latest",
-    "eslint": "latest",
+    "eslint": "^8.57.0",
     "webpack": "latest"
   },
   "scripts": {
@@ -45,7 +47,9 @@
     "start-api": "yarn workspace app-api start",
     "start-telegram": "yarn workspace app-telegram start",
     "start-chatbot": "yarn workspace app-chatbot start",
-    "prettify": "prettier --write \"packages/**/*.{ts,tsx}\""
+    "prettify": "prettier --write \"packages/**/*.{ts,tsx}\"",
+    "lint": "eslint 'packages/**/*.ts' 'packages/**/*.tsx'",
+    "lint:fix": "eslint --fix 'packages/**/*.ts' 'packages/**/*.tsx'"
   },
   "packageManager": "yarn@3.4.1"
 }
