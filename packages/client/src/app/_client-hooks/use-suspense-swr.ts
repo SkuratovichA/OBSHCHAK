@@ -1,6 +1,9 @@
 'use client'
 
 
+// TODO investigate what's wrong with it and why I use it at all
+export const swrCallback = () => <T, S>([uri, params]: [string, T]) => fetcher<T, S>(uri, params)
+
 // TODO: not tested
 export const fetcher = async <T, S>(url: string, params: T, timeout = 5000): Promise<S> => {
   console.log('USE SUSPENSE SWR: fetcher: url: ', url, 'params: ', params)

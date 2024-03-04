@@ -30,16 +30,6 @@ export const TransactionsProvider: React.FC<TransactionProviderProps> = ({ child
   )
 }
 
-const useFilters = <T extends FilterContextTypeBase>() => {
-  const [filters, setFilters] = useState<Partial<T>>({})
-  const updateFilters = useCallback((update: Partial<T> | ((oldFilters: Partial<T>) => Partial<T>)) => {
-    setFilters((oldFilters) => isFunction(update) ? update(oldFilters) : { ...oldFilters, ...update })
-  }, [])
-
-  return { filters, updateFilters }
-}
-
-
 type UseTransactionsFnProps<T extends FilterContextTypeBase> = {
   filteringFunction: FilterTransactionsFn<T>
 }
@@ -69,12 +59,6 @@ export const useTransactions = <T extends FilterContextTypeBase, >({ filteringFu
   if (isNil(filteredTransactions)) {
     return { isLoading: true }
   }
-
-  console.log(
-    'initial transactions: ', transactions, '\n',
-    'filters: ', filters, '\n',
-    'filteredTransactions: ', filteredTransactions,
-  )
 
   return {
     filteredTransactions,
