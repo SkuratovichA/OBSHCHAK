@@ -1,5 +1,5 @@
 // gets the specified information (in the type) about the user(s)
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()

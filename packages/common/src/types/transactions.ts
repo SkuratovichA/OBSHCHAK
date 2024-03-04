@@ -7,14 +7,14 @@ export interface ObshchakUser {
   mobileNumber: string
 }
 
-export const isObshchakUser = (user: any): user is ObshchakUser =>
+export const isObshchakUser = (user: object): user is ObshchakUser =>
   user &&
-  typeof user.id === 'string' &&
-  typeof user.name === 'string' &&
-  typeof user.username === 'string' &&
-  typeof user.email === 'string' &&
-  typeof user.profileImage === 'string' &&
-  typeof user.mobileNumber === 'string'
+  'id' in user && typeof user.id === 'string' &&
+  'name' in user && typeof user.name === 'string' &&
+  'username' in user && typeof user.username === 'string' &&
+  'email' in user && typeof user.email === 'string' &&
+  'profileImage' in user && typeof user.profileImage === 'string' &&
+  'mobileNumber' in user && typeof user.mobileNumber === 'string'
 
 export enum TransactionStatusType {
   Paid = 'Paid',

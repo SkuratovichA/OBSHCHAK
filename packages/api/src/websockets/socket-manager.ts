@@ -1,4 +1,4 @@
-import { Socket } from 'socket.io'
+import type { Socket } from 'socket.io'
 
 export class UserSocketsManager {
   private userSockets: Record<string, Socket[]> = {}
@@ -19,7 +19,7 @@ export class UserSocketsManager {
     }
   }
 
-  emitToUser(userId: string, event: string, data: any) {
+  emitToUser(userId: string, event: string, data: object) {
     console.log(`EVENT ${event} EMITTED TO USER ${userId}`)
     this.userSockets[userId]?.forEach((socket) => socket.emit(event, data))
   }

@@ -4,7 +4,7 @@ import { useReducer, useCallback, useState } from 'react'
 import { Button, TextField, Box, Stack, Typography } from '@mui/material'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import styled from '@emotion/styled'
 import { CredentialsContainer } from '../components'
 

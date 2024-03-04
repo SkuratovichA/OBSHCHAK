@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useMemo } from 'react'
-import useSWR, { State } from 'swr'
+import type { State } from 'swr';
+import useSWR from 'swr'
 import styled from '@emotion/styled'
 
 import {
@@ -10,7 +11,7 @@ import {
   ScrollableBarlessList,
   UserProfile,
 } from '@OBSHCHAK-UI/app/_components'
-import { fetcher, LoadingProvider } from '@OBSHCHAK-UI/app/_client-hooks'
+import { fetcher, LoadingProvider, swrCallback } from '@OBSHCHAK-UI/app/_client-hooks'
 import type { UserSearchParams, UsersSearchResponse } from '@OBSHCHAK-UI/app/api/users/route'
 import type { TransactionsSearchResponse } from '@OBSHCHAK-UI/app/api/transactions/route'
 import type { GroupsSearchResponse } from '@OBSHCHAK-UI/app/api/groups/route'
@@ -54,7 +55,7 @@ export const FriendPage: React.FC<FriendPageProps> = ({ username }) => {
   return (
     <ScrollableBarlessList>
       <LoadingProvider isLoading={!!isLoadingUser}>
-        <UserProfile user={users && users.length ? users[0] : undefined} />
+        <UserProfile user={users?.length ? users[0] : undefined} />
       </LoadingProvider>
 
       <LoadingProvider isLoading={!!isLoadingTransactions}>

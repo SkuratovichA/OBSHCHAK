@@ -8,20 +8,15 @@ import { TiltedContainer, ListItemContainer } from '../../index'
 import { TransactionView } from '../transaction-view'
 import type { Loadable, Transaction } from 'app-common'
 import { TransactionStatusType } from 'app-common'
+import { match } from 'ts-pattern'
 
-const getColorByStatus = (status: TransactionStatusType): string => {
-  switch (status) {
-    case TransactionStatusType.Paid:
-      return green[500]
-    case TransactionStatusType.Pending:
-      return purple[800]
-    case TransactionStatusType.Active:
-      return grey[500]
-    default:
-      return grey[300]
-  }
-}
 
+const getColorByStatus = (status: TransactionStatusType): string =>
+  match(status)
+    .with(TransactionStatusType.Paid, () => green[500])
+    .with(TransactionStatusType.Pending, () => purple[800])
+    .with(TransactionStatusType.Active, () => grey[500])
+    .otherwise(() => grey[300])
 
 enum TransactionParticipantsType {
   from = 'from',
@@ -55,13 +50,6 @@ const TransactionParticipantsText: React.FC<TransactionParticipantsProps> = ({ f
     }
   </Typography>
 }
-
-const NowrapText = styled.div`
-  //white-space: nowrap;
-  //overflow: hidden;
-  //text-overflow: ellipsis;
-`
-
 
 type TransactionNameAndParticipantsType = keyof typeof TransactionNameType | keyof typeof TransactionParticipantsType
 type TransactionNameAndParticipantsProps = Loadable<Pick<Transaction, TransactionNameAndParticipantsType>>

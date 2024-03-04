@@ -1,20 +1,19 @@
 import React from 'react'
 import { ListItemTiltable, ScrollableBarlessList, TransactionItem } from '@OBSHCHAK-UI/app/_components'
-import { Loadable, Transaction } from 'app-common'
+import type { Loadable, Transaction } from 'app-common'
 
 
-const TransactionsSkeleton: React.FC = () => {
+type TransactionsSkeletonProps = React.PropsWithChildren<{
+  numberOfItems?: number
+}>
+const TransactionsSkeleton: React.FC<TransactionsSkeletonProps> = ({children, numberOfItems = 3}) => {
   return (
     <ScrollableBarlessList>
-      <ListItemTiltable>
-        <TransactionItem isLoading={true} />
-      </ListItemTiltable>
-      <ListItemTiltable>
-        <TransactionItem isLoading={true} />
-      </ListItemTiltable>
-      <ListItemTiltable>
-        <TransactionItem isLoading={true} />
-      </ListItemTiltable>
+      {Array.from({ length: numberOfItems }).map((_, i) => (
+        <ListItemTiltable key={i}>
+          <TransactionItem isLoading={true} />
+        </ListItemTiltable>
+      ))}
     </ScrollableBarlessList>
   )
 }

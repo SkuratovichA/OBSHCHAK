@@ -1,7 +1,7 @@
 import type { ObshchakUser, Transaction } from '../types'
 import { CurrencyType, TransactionStatusType } from '../types'
 
-export const transactionsMock: Transaction[] = [
+let _transactionsMock: Transaction[] = [
   {
     id: 'txn1',
     description: 'Payment for services rendered',
@@ -111,7 +111,6 @@ export const transactionsMock: Transaction[] = [
     categories: ['Donation'],
     groups: ['Charity Donations'],
   },
-
   {
     id: 'txn8',
     description: 'Andrei',
@@ -187,7 +186,6 @@ export const transactionsMock: Transaction[] = [
     categories: ['Reimbursement', 'Food'],
     groups: ['Lunch Group'],
   },
-
   {
     id: 'txn13',
     description: 'Lunch reimbursement',
@@ -203,7 +201,6 @@ export const transactionsMock: Transaction[] = [
     categories: ['Reimbursement', 'Food'],
     groups: ['Lunch Group'],
   },
-
   {
     id: 'txn14',
     description: 'Lunch reimbursement',
@@ -219,7 +216,6 @@ export const transactionsMock: Transaction[] = [
     categories: ['Reimbursement', 'Food'],
     groups: ['Lunch Group'],
   },
-
   {
     id: 'txn15',
     description: 'Lunch reimbursement',
@@ -237,9 +233,14 @@ export const transactionsMock: Transaction[] = [
   },
 ]
 
+export const transactionsMock = () => _transactionsMock
 
-// TODO: move it to the actual Backend API level
-export const usersMock: ObshchakUser[] = [
+export const updateTransactionMock = (newValue: typeof _transactionsMock) => {
+  _transactionsMock = newValue
+  return _transactionsMock
+}
+
+let _friendsMock: ObshchakUser[] = [
   {
     id: '1',
     name: 'Andrei Shchapaniak',
@@ -320,6 +321,26 @@ export const usersMock: ObshchakUser[] = [
     profileImage: 'https://randomuser.me/portraits/med/men/10.jpg',
     mobileNumber: '+420735594008',
   },
-
-
 ]
+
+export const friendsMock = () => _friendsMock
+export const updateFriendsMock = (newValue: typeof _friendsMock) => {
+  _friendsMock = newValue
+  return _friendsMock
+}
+
+let _userDataMock: ObshchakUser = {
+  id: '42069',
+  name: 'Mister Bulochka',
+  username: 'mister_bulochka',
+  email: 'mister_bulochka@gmail.com',
+  profileImage: 'https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg',
+  mobileNumber: '+420735594008',
+}
+
+export const userDataMock = (): ObshchakUser => _userDataMock
+
+export const setUserDataMock = (newUserData: Partial<ObshchakUser>) => {
+  _userDataMock = { ..._userDataMock, ...newUserData }
+  return _userDataMock
+}

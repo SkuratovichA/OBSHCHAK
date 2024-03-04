@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { Avatar, AvatarProps, Skeleton } from '@mui/material'
+import type { AvatarProps} from '@mui/material';
+import { Avatar, Skeleton } from '@mui/material'
 
 import type { Loadable, Optional, WithDimensions } from 'app-common'
 

@@ -1,9 +1,8 @@
-'use client'
 
 import React from 'react'
 import { Tilt } from 'react-tilt'
 import styled from '@emotion/styled'
-import { Box, Container, List, ListItem, Paper } from '@mui/material'
+import { Box, Container, css, List, ListItem, Paper } from '@mui/material'
 
 export const TiltedContainer: React.FC<React.PropsWithChildren> = ({ children }) => (
   <Tilt
@@ -14,9 +13,7 @@ export const TiltedContainer: React.FC<React.PropsWithChildren> = ({ children })
   </Tilt>
 )
 
-// TODO: Wtf do I have two components for ListITem?
-//  Where ListItem Tiltable is used compared to ListItemContainer
-export const ListItemContainer = styled(Paper)`
+const listItemContainerBase = css`
     padding: 16px;
     display: flex;
     justify-content: space-between;
@@ -24,11 +21,22 @@ export const ListItemContainer = styled(Paper)`
     height: 100%;
     background-color: #fefefe;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
 
     &:hover {
         background-color: #fcfcfc;
     }
+`
+
+// TODO: Wtf do I have two components for ListITem?
+//  Where ListItem Tiltable is used compared to ListItemContainer
+export const ListItemContainer = styled(Paper)`
+    ${listItemContainerBase};
+    cursor: pointer;
+`
+
+export const ListItemContainerPointless = styled(Paper)`
+    ${listItemContainerBase};
+    cursor: default;
 `
 
 export const ListItemTiltable = styled(ListItem)`

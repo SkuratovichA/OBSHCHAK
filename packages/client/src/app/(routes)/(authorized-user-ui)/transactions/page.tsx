@@ -11,7 +11,7 @@ const Page: React.FC = () => {
   //  component should be suspended while fetching the data btw.
   return (
     <LoadingProvider isLoading={false}>
-      <BaseTransactionsPage transactions={transactionsMock} />
+      <BaseTransactionsPage transactions={transactionsMock()} />
     </LoadingProvider>
   )
 }

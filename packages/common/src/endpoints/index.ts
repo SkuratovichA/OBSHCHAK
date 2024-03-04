@@ -1,4 +1,4 @@
-import { API_PATH } from 'app-common'
+import { API_PATH } from '../config'
 
 enum NEXT_ENDPOINTS {
   FRIENDS = '/friends',

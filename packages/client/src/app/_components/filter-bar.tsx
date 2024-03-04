@@ -1,3 +1,5 @@
+import type {
+  SelectChangeEvent} from '@mui/material';
 import {
   Box,
   FormControl,
@@ -6,7 +8,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
   TextField,
 } from '@mui/material'
 import React from 'react'
@@ -58,7 +59,7 @@ export interface FilterOption<V extends Record<string, string> = Record<string, 
 
 interface SearchFilters {
   searchValue: string
-  onSearchChange: Function<string>
+  onSearchChange: (value: string) => void
 }
 
 interface FilterOptions {

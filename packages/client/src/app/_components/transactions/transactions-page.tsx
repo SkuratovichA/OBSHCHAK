@@ -1,8 +1,11 @@
 'use client'
 
 import React, { useMemo } from 'react'
-import {
+import type {
+  FilterContextTypeBase,
   FilterTransactionsFn,
+} from '@OBSHCHAK-UI/app/_client-hooks'
+import {
   TransactionsProvider,
   useTransactions,
 } from '@OBSHCHAK-UI/app/_client-hooks'
@@ -11,7 +14,7 @@ import type { Defined, Transaction, Undefined } from 'app-common'
 import { TransactionStatusType } from 'app-common'
 import { isNil } from 'lodash'
 
-interface TransactionFilters {
+interface TransactionFilters extends FilterContextTypeBase {
   search: string
   status: keyof typeof TransactionStatusType | ''
 }
@@ -24,7 +27,7 @@ const filtersToKeyMap: Record<FilterType, keyof Transaction> = {
   [FilterType['Filter by']]: 'status',
 }
 
-const filterTransactions: FilterTransactionsFn<TransactionFilters>  = (
+const filterTransactions: FilterTransactionsFn<TransactionFilters> = (
   transactions,
   filters,
 ) =>
@@ -49,9 +52,6 @@ const TransactionsPageSkeleton = () => {
   )
 }
 
-
-const isUndefined = (value: any): value is undefined => isNil(value)
-
 const TransactionsPage: React.FC = () => {
   const { isLoading, ...useTransactionsRest } = useTransactions<TransactionFilters>({
      filteringFunction: filterTransactions,
@@ -62,11 +62,11 @@ const TransactionsPage: React.FC = () => {
     : useTransactionsRest as Defined<typeof useTransactionsRest> // that's weird that this isn't enough to make it defined
 
   const handleFilterChange = (filterName: FilterType, value: keyof Transaction) => {
-    updateFilters!!({ [filtersToKeyMap[filterName]]: value })
+    updateFilters!({ [filtersToKeyMap[filterName]]: value })
   }
 
   const handleSearchChange = (value: string) => {
-    updateFilters!!({ search: value })
+    updateFilters!({ search: value })
   }
 
   // TODO: come up with some grouping solution
@@ -83,7 +83,7 @@ const TransactionsPage: React.FC = () => {
     return <TransactionsPageSkeleton />
   }
 
-  if (isUndefined(filters) || isUndefined(filteredTransactions)) {
+  if (isNil(filters) || isNil(filteredTransactions)) {
     // just a dummy for the TS
     return <TransactionsPageSkeleton />
   }

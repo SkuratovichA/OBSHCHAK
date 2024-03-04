@@ -20,18 +20,14 @@ export const fetcher = async <T, S>(url: string, params: T, timeout = 5000): Pro
 
     clearTimeout(id)
 
-    console.log('DATA ARE FETCHED')
-
     if (!response.ok) {
       console.log('We fucked up')
       // Consider throwing an application-specific error with more details
       throw new Error(`Fetch request to ${url} failed with status: ${response.status}`)
     }
 
-    const jsonResponse = await response.json()
-    console.log('response JSON: ', jsonResponse)
-
-    return jsonResponse
+    return await response.json()
+  // eslint-disable-next-line
   } catch (error: any) {
     if (error.name === 'AbortError') {
       console.log('Request timed out')

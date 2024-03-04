@@ -9,6 +9,8 @@ import { isNil } from 'lodash'
 
 // group-list ts
 interface GroupsListProps {
+  // TODO: tbd
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   groups: any[] | undefined // FIXME: tmp solution before types are in app-common
 }
 

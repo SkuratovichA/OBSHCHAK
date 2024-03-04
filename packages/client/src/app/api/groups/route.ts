@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 import { isArray } from 'lodash'
 
 export type GroupsSearchParams = {
@@ -8,10 +8,11 @@ export type GroupsSearchParams = {
   limit: number
 }>
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type GroupsSearchResponse = any[]
 
-const isGroupSearchParams = (obj: any): obj is GroupsSearchParams =>
-  obj && isArray(obj.usernames)
+const isGroupSearchParams = (obj: object): obj is GroupsSearchParams =>
+  obj && 'usernames' in obj && isArray(obj.usernames)
 
 export async function POST(request: NextRequest) {
   console.log(

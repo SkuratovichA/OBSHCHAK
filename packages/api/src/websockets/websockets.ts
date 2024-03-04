@@ -1,6 +1,6 @@
-import { Socket } from 'socket.io'
+import type { Socket } from 'socket.io'
 import { WebsocketEventType } from 'app-common'
-import { UserSocketsManager } from './socket-manager'
+import type { UserSocketsManager } from './socket-manager'
 
 type SocketFunction = (socket: Socket, userSocketsManager: UserSocketsManager) => void
 
@@ -9,7 +9,7 @@ export const socketConnectionHandler: SocketFunction = (socket, userSocketsManag
     try {
       await handleSocketConnect(socket, userSocketsManager)
 
-      const socketListeners: Record<WebsocketEventType, (data?: any) => void> = {
+      const socketListeners: Record<WebsocketEventType, (data?: object) => void> = {
         [WebsocketEventType.DISCONNECT]: () => handleSocketDisconnect(socket, userSocketsManager),
       }
       Object.entries(socketListeners).forEach(([event, listener]) => {

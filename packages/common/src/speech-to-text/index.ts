@@ -25,7 +25,7 @@ export const speechToText = async (
       headers,
     })
     transcribedText = response.data?.text
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Error transcribing audio:', err)
     throw err
   }

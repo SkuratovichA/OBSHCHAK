@@ -2,8 +2,9 @@
 
 export * from './use-theme'
 export * from './use-app-context'
-export * from './use-websockets'
+export * from './use-websocket'
 export * from './use-filters'
 export * from './use-suspense-swr'
 export * from './use-loading'
 export * from './use-transactions'
+export * from './use-friends'

@@ -3,6 +3,7 @@ import React from 'react'
 
 
 interface GroupItemProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   group: any // FIXME: tmp solution before types are in app-common
 }
 

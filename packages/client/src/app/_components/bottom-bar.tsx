@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import { AppBar, BottomNavigation } from '@mui/material'
+import { BottomNavigation } from '@mui/material'
 import { AddCircleOutline, Group, Groups } from '@mui/icons-material'
 import ListIcon from '@mui/icons-material/List'
 import ProfileIcon from '@mui/icons-material/AccountCircle'
@@ -11,7 +11,7 @@ import { BottomNavActionHighlighted } from './bottom-nav-action-highlighted'
 
 const linkify = (text: string): string => `/${text.toLowerCase()}`
 
-export const BottomBar: React.FC<{}> = () => {
+export const BottomBar: React.FC = () => {
   const pathname = usePathname()
   const router = useRouter()
 
@@ -20,7 +20,7 @@ export const BottomBar: React.FC<{}> = () => {
     console.log('redirecting to', path)
     try {
       router.push(path)
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error(e)
     }
   }

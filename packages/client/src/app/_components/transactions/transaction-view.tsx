@@ -1,6 +1,7 @@
 import React from 'react'
 import { Typography } from '@mui/material'
-import { Loadable, Transaction, TransactionStatusType } from 'app-common'
+import type { Loadable, Transaction} from 'app-common';
+import { TransactionStatusType } from 'app-common'
 
 interface TransactionViewProps {
   transaction: Transaction

@@ -1,6 +1,5 @@
 export * from './react-on-char'
 import { reactOnChar } from './react-on-char'
-import type { Function } from '../types'
 
 const CRITICAL_STRING_LENGTH_RATIO = 1 / 4
 export const hideCriticalString = (str: string) =>

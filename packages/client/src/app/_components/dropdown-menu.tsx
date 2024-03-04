@@ -1,10 +1,10 @@
-import type { Function, Maybe } from 'app-common'
+import type { Maybe } from 'app-common'
 import React, { useCallback } from 'react'
 import { Menu, MenuItem } from '@mui/material'
 
 interface NamedCallback {
   name: string
-  callback: Function<void, Promise<void>>
+  callback: () => Promise<void>
 }
 
 export interface DropdownMenuProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -17,11 +17,10 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ namedCallbacks, anch
   const open = Boolean(anchorEl)
 
   const handleMenuAction = useCallback(async (action: string, callback: NamedCallback['callback']) => {
-    console.log(`action: ${action}`)
     try {
       await callback()
-    } catch (e: any) {
-      console.error(e)
+    } catch (e: unknown) {
+      console.error(`DROPDOWN MENU: failed to perform action ${action}`, e)
     }
     onClose()
   }, [onClose])

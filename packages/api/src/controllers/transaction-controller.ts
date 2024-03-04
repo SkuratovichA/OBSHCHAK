@@ -1,6 +1,3 @@
-import { Context } from 'koa'
-import { UserSocketsManager } from '../websockets'
-
 // export const createDebt = (userSocketsManager: UserSocketsManager) => async (ctx: Context) => {
 //   console.log(`CREATE DEBT`)
 //   // TODO: do auth

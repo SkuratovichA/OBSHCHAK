@@ -1,21 +1,20 @@
 import type { NextRequest } from 'next/server'
-import { Transaction, transactionsMock } from 'app-common'
+import type { Paginatable, Transaction} from 'app-common';
+import { transactionsMock } from 'app-common'
 import { isArray } from 'lodash'
 
 
-export type TransactionsSearchParams = {
+export type TransactionsSearchParams = Paginatable<{
   usernames: string[]
 } & Partial<{
   afterDate: string
   beforeDate: string
   minAmount: number
   maxAmount: number
-  page: number
-  limit: number
-}>
+}>>
 
-const isTransactionsSearchParams = (obj: any): obj is TransactionsSearchParams =>
-  obj && isArray(obj.usernames)
+const isTransactionsSearchParams = (obj: object): obj is TransactionsSearchParams =>
+  obj && 'usernames' in obj && isArray(obj.usernames)
 
 export type TransactionsSearchResponse = Transaction[]
 
@@ -36,7 +35,7 @@ export async function POST(request: NextRequest) {
 
   // const res = await fetch(`/v${API_VER}/transactions`)
   // const data = await res.json()
-  const data = transactionsMock.filter((t) =>
+  const data = transactionsMock().filter((t) =>
     !body.usernames.length || body.usernames.includes(t.from) || t.to.some(({ username }) => body.usernames.includes(username)),
   )
 

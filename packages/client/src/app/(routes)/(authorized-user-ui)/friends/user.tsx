@@ -1,34 +1,15 @@
 'use client'
 
 import React, { useState } from 'react'
+import noop from 'lodash/noop'
 import { Avatar, Box, IconButton, Typography } from '@mui/material'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
-import { Launch } from '@mui/icons-material'
+import { MoreVert, Launch } from '@mui/icons-material'
 import { usePathname, useRouter } from 'next/navigation'
-import { Maybe, ObshchakUser } from 'app-common'
+import type { Maybe, ObshchakUser } from 'app-common'
 
-import { ListItemContainer, TiltedContainer } from '@OBSHCHAK-UI/app/_components'
-import { DropdownMenu, DropdownMenuProps } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
-
-
-const friendActions: DropdownMenuProps['namedCallbacks'] = {
-  remove: {
-    name: 'Remove a friend',
-    callback: async () => console.log('remove'),
-  },
-  createTransaction: {
-    name: 'Create a transaction',
-    callback: async () => console.log('createTransaction'),
-  },
-  createGroup: {
-    name: 'Create a group',
-    callback: async () => console.log('createGroup'),
-  },
-  goToTransactions: {
-    name: 'Go to transactions',
-    callback: async () => console.log('goToTransactions'),
-  },
-}
+import { ListItemContainerPointless, TiltedContainer } from '@OBSHCHAK-UI/app/_components'
+import type { DropdownMenuProps } from '@OBSHCHAK-UI/app/_components/dropdown-menu';
+import { DropdownMenu } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
 
 interface UserProps {
   user: ObshchakUser

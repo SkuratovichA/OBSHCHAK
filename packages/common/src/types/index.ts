@@ -1,22 +1,17 @@
 export * from './chatbot'
 export * from './transactions'
 export * from './old'
+export * from './utils'
+export * from './api'
 
+import type { AsArray, Optional } from './utils'
 
-export type Function<Props = void, Result = void> = (props: Props) => Result
+export type Paginatable<T> = Optional<{
+  page: number
+  limit: number
+}> & T
 
-export type Defined<T> = Required<{
-  [P in keyof T]-?: Exclude<T[P], undefined>
-}>
-export type Undefined<T> = Partial<Record<keyof T, undefined>>
-
-// either all are defined or all are undefined
-export type Optional<T> = T extends object ? Undefined<T> | {
-  [P in keyof T]: T[P]
-} : Partial<T>
-
-
-export type Loadable<T = {}> = ({
+export type Loadable<T = object> = ({
   isLoading: true
 } & {
   [P in keyof T]?: T[P]
@@ -26,8 +21,12 @@ export type Loadable<T = {}> = ({
   isLoading?: boolean
 } & T)
 
-export type WithSize<SIZE_TYPE = {}, T = {}> = T & { size?: SIZE_TYPE }
-export type WithDimensions<T = {}, S extends undefined | number = undefined> = T & ({
+export type Pendable<T = object> = {
+  pending?: boolean
+} & T
+
+export type WithSize<SIZE_TYPE = object, T = object> = T & { size?: SIZE_TYPE }
+export type WithDimensions<T = object, S extends undefined | number = undefined> = T & ({
   width: number
   height: number
 } | {
@@ -35,4 +34,7 @@ export type WithDimensions<T = {}, S extends undefined | number = undefined> = T
   height: S
 })
 
-export type Maybe<T> = T | undefined | null
+
+export const isEmpty = (s: object) => !Object.keys(s).length
+
+export const mapObject = <T extends object, >(obj: T) => (Object.entries(obj) as AsArray<T>)
