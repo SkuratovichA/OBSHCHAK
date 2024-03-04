@@ -13,9 +13,10 @@ import { DropdownMenu } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
 
 interface UserProps {
   user: ObshchakUser
+  actions?: DropdownMenuProps['namedCallbacks']
 }
 
-export const User: React.FC<UserProps> = ({ user }) => {
+export const User: React.FC<UserProps> = ({ user, actions }) => {
   const [anchorEl, setAnchorEl] = useState<Maybe<HTMLElement>>(null)
   const open = Boolean(anchorEl)
   const router = useRouter()
@@ -35,7 +36,7 @@ export const User: React.FC<UserProps> = ({ user }) => {
 
   return (
     <TiltedContainer>
-      <ListItemContainer elevation={1} onClick={() => console.log('Open user details')}>
+      <ListItemContainerPointless elevation={1} onClick={noop}>
         <Avatar alt={user.name} src={user.profileImage} />
         <Box sx={{ flex: 1, ml: 2 }}>
           <Typography variant="body1">{user.name}</Typography>
@@ -43,26 +44,37 @@ export const User: React.FC<UserProps> = ({ user }) => {
             @{user.username}
           </Typography>
         </Box>
-        <Launch
-          fontSize="small"
-          onClick={handleRedirect}
-        />
         <IconButton
-          aria-label="more"
-          id={`user-menu-${user.id}`}
-          aria-controls={open ? 'user-menu' : undefined}
-          aria-expanded={open ? 'true' : undefined}
-          aria-haspopup="true"
-          onClick={handleOpenMenu}
+          aria-label="redirect"
+          id={`user-redirect-${user.id}`}
+          onClick={handleRedirect}
         >
-          <MoreVertIcon />
+          <Launch
+            fontSize="small"
+          />
         </IconButton>
-        <DropdownMenu
-          namedCallbacks={friendActions}
-          anchorEl={anchorEl}
-          onClose={handleCloseMenu}
-        />
-      </ListItemContainer>
+
+        {actions &&
+          <>
+            <IconButton
+              aria-label="more"
+              id={`user-menu-${user.id}`}
+              aria-controls={open ? 'user-menu' : undefined}
+              aria-expanded={open ? 'true' : undefined}
+              aria-haspopup="true"
+              onClick={handleOpenMenu}
+            >
+              <MoreVert />
+            </IconButton>
+            <DropdownMenu
+              namedCallbacks={actions}
+              anchorEl={anchorEl}
+              onClose={handleCloseMenu}
+            />
+          </>
+
+        }
+      </ListItemContainerPointless>
     </TiltedContainer>
   )
 }
