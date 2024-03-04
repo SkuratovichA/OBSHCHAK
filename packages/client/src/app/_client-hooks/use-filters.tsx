@@ -1,7 +1,7 @@
 'use client'
 
-import React, { Context, createContext, PropsWithChildren, useContext, useState } from 'react'
-import { Function } from 'app-common'
+import { useCallback, useState } from 'react'
+import { isFunction } from 'lodash'
 
 // TODO: this should probably be eliminated in the future
 //  because useFilters should be embedded into useTransactions, useGroups, etc

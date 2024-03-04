@@ -1,8 +1,9 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import { isFunction, isNil } from 'lodash'
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import isNil from 'lodash/isNil'
 
 import type { Loadable, Maybe, Transaction } from 'app-common'
-import { FilterContextTypeBase } from '@OBSHCHAK-UI/app/_client-hooks/use-filters'
+import type { FilterContextTypeBase} from '@OBSHCHAK-UI/app/_client-hooks/use-filters';
+import { useFilters } from '@OBSHCHAK-UI/app/_client-hooks/use-filters'
 
 
 interface TransactionsContext {
