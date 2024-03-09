@@ -1,5 +1,5 @@
 import React from 'react'
-import { LandingPage } from '@OBSHCHAK-UI/components'
+import { LandingPage } from './_components'
 
 const Page: React.FC = () => {
   return (

@@ -3,7 +3,7 @@ import type { ChatCompletionChunk } from 'openai/resources'
 import type { Stream } from 'openai/streaming'
 
 import { OPENAI_API_KEY } from '../../config'
-import { CompleteFn } from './types'
+import type { CompleteFn } from './types'
 import { getOpenAIErrorMessage } from './errors'
 
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY })
@@ -16,7 +16,7 @@ export const complete: CompleteFn = async function* ({ systemPrompt, messages, p
       messages: [{ role: 'system', content: systemPrompt }, ...messages],
       stream: true,
     })
-  } catch (err: any) {
+  } catch (err: unknown) {
     if (err instanceof OpenAI.APIError) {
       err.message = getOpenAIErrorMessage(err.status) ?? err.message
     }

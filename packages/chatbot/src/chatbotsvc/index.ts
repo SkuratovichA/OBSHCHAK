@@ -1,10 +1,12 @@
+import type {
+  ChatbotResponse} from 'app-common';
 import {
-  ChatbotResponse,
   ChatbotServiceResponseType,
   OPENAI_GPT_MODEL,
   splitSentence,
 } from 'app-common'
-import { Observable, ReplaySubject, throwError } from 'rxjs'
+import type { Observable} from 'rxjs';
+import { ReplaySubject, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators'
 
 import { LLMSession, parseStream } from '../chatbot-parts'
@@ -17,6 +19,7 @@ export class ChatbotService {
     this.session = new LLMSession({ model: OPENAI_GPT_MODEL })
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   processMessage(message: string): Observable<any> {
     const subject = new ReplaySubject<ChatbotResponse>()
     let textBuffer = ''

@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "types": ["react/experimental"],
     "noEmit": true,
     "jsx": "preserve",
     "incremental": true,
@@ -19,7 +20,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

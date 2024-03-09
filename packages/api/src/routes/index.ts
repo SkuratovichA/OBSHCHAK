@@ -1,5 +1,5 @@
 import Router from 'koa-router'
-import { UserSocketsManager } from '../websockets'
+import type { UserSocketsManager } from '../websockets'
 import { API_PATH, API_VER, CLIENT_PATH } from 'app-common'
 import { GOOGLE_CLOUD_CLIENT_ID, GOOGLE_CLOUD_CLIENT_SECRET } from '../config'
 
@@ -44,6 +44,7 @@ passport.use(
   ),
 )
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 passport.serializeUser((user: any, done) => {
   done(null, (user as User).userId)
 })
@@ -95,6 +96,7 @@ export const setupRoutes = (userSocketsManager: UserSocketsManager) => {
   return router
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getDebtsFunction = (userSocketsManager: UserSocketsManager) => async (ctx: any) => {
   console.log(`GET DEBTS`)
   // TODO: implement authentication
