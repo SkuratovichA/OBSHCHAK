@@ -2,7 +2,6 @@ export * from './chatbot'
 export * from './transactions'
 export * from './old'
 export * from './utils'
-export * from './api'
 
 import type { AsArray, Optional } from './utils'
 
@@ -21,8 +20,9 @@ export type Loadable<T = object> = ({
   isLoading?: boolean
 } & T)
 
+// 'true' | 'false' because "received false for non-boolean attribute"
 export type Pendable<T = object> = {
-  pending?: boolean
+  pending?: 'true' | 'false'
 } & T
 
 export type WithSize<SIZE_TYPE = object, T = object> = T & { size?: SIZE_TYPE }

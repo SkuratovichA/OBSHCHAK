@@ -1,8 +1,8 @@
-
 import React from 'react'
 import { Tilt } from 'react-tilt'
 import styled from '@emotion/styled'
 import { Box, Container, css, List, ListItem, Paper } from '@mui/material'
+import { Pendable } from 'app-common'
 
 export const TiltedContainer: React.FC<React.PropsWithChildren> = ({ children }) => (
   <Tilt
@@ -34,9 +34,15 @@ export const ListItemContainer = styled(Paper)`
     cursor: pointer;
 `
 
-export const ListItemContainerPointless = styled(Paper)`
+
+export const ListItemContainerPointless = styled(Paper)<Pendable>`
     ${listItemContainerBase};
     cursor: default;
+    
+    ${({ pending }) => pending && css`
+        opacity: 0.5;
+        pointer-events: none;
+    `}
 `
 
 export const ListItemTiltable = styled(ListItem)`
@@ -75,8 +81,7 @@ export const FullHeightStackContainer = styled(Box)`
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
-    padding: 2rem;
-    padding-bottom: 0;
+    padding: 2rem 2rem 0;
 `
 
 export const ScrollableBodyContainer = styled(Box)`

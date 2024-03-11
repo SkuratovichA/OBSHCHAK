@@ -95,6 +95,7 @@ export const FriendsList: React.FC = () => {
                   <User
                     user={friend}
                     actions={friendActions(friend)}
+                    pending={friend.pending}
                   />
                 </ListItemTiltable>
               )))
