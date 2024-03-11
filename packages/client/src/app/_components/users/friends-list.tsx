@@ -15,7 +15,7 @@ import type { Maybe, ObshchakUser} from 'app-common';
 import { isEmpty, userDataMock } from 'app-common'
 import { useSession } from 'next-auth/react'
 import { match } from 'ts-pattern'
-import { mapObject } from 'app-common/lib/types'
+import { entries } from 'app-common/lib/types'
 import type { DropdownMenuProps } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
 
 interface UserFilters {
@@ -30,7 +30,7 @@ const fuzzySearch = (search: string, user: object) =>
     .includes(search.toLowerCase())
 
 const filterFriends = (users: Maybe<OptimisticFriends>, filters: Partial<UserFilters>): Maybe<OptimisticFriends> =>
-  users && mapObject(users)
+  users && entries(users)
     .reduce<ReturnType<typeof filterFriends>>(
       (acc, [id, user]) => {
         const userMatchesStringSearch = !filters.search || fuzzySearch(filters.search, user)
@@ -44,7 +44,6 @@ export const FriendsList: React.FC = () => {
   const { data: session, status } = useSession()
 
   const {
-    isLoading,
     friends,
     addFriend,
     removeFriend,
@@ -82,14 +81,14 @@ export const FriendsList: React.FC = () => {
 
   return (
     <FullHeightNonScrollableContainer>
-      <FilterBar searchValue={filters.search || ''} onSearchChange={handleSearchChange} />
+      <FilterBar searchValue={filters.search ?? ''} onSearchChange={handleSearchChange} />
 
       <ScrollableBarlessList>
         <>{
-          match(friends)
+          match(filteredFriends)
             .with(undefined, null, () => <div>loading...</div>) // TODO: add loading
             .when(isEmpty, () => <div>no friends</div>)
-            .otherwise(friends => (mapObject(friends))
+            .otherwise(friends => (entries(friends))
               .map(([id, friend]) => (
                 <ListItemTiltable key={id}>
                   <User
