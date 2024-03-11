@@ -37,4 +37,11 @@ export type WithDimensions<T = object, S extends undefined | number = undefined>
 
 export const isEmpty = (s: object) => !Object.keys(s).length
 
-export const mapObject = <T extends object, >(obj: T) => (Object.entries(obj) as AsArray<T>)
+export const entries = <T extends object, >(obj: T) => (Object.entries(obj) as AsArray<T>)
+
+export type WithId<T extends object = object> = T & { id: string | number }
+
+export type IdMap<T extends WithId = WithId> = Record<T['id'], T>
+
+export const arrayToIdMap = <T extends WithId, >(data: T[]): IdMap<T> =>
+  data.reduce((acc, item) => ({ ...acc, [item.id]: item }), {} as IdMap<T>)
