@@ -1,48 +1,18 @@
 'use client'
 
-import type { FriendsMap, Maybe, ObshchakUser, Pendable } from 'app-common'
-import { useCallback, useEffect, useMemo, useOptimistic, useState } from 'react'
-import { match } from 'ts-pattern'
-import type { State } from 'swr'
-import useSWR from 'swr'
-import { fetcher } from '@OBSHCHAK-UI/app/_client-hooks/use-suspense-swr'
-import type { FriendsRequestBody, FriendsResponse} from '@OBSHCHAK-UI/app/api/friends/types';
+import type { Maybe, ObshchakUser, Pendable} from 'app-common';
+import { arrayToIdMap } from 'app-common'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useSwr } from '@OBSHCHAK-UI/app/_client-hooks/use-suspense-swr'
+import type { FriendsRequestBody, FriendsResponse } from '@OBSHCHAK-UI/app/api/friends/types'
 import { isFriendsResponse } from '@OBSHCHAK-UI/app/api/friends/types'
+import { nextEndpointsMap } from 'app-common/lib/endpoints'
+import { reducer, ReducerActionType, useSafeOptimistic } from '@OBSHCHAK-UI/app/_client-hooks/use-safe-optimistic'
 
 
-enum ReducerActionType {
-  ADD = 'ADD',
-  REMOVE = 'REMOVE',
+export type OptimisticFriends = FriendsResponse<Pendable>
 
-}
-
-type ReducerActionProp<T, S> = {
-  type: T,
-  payload: S
-}
-
-export type OptimisticFriends = FriendsMap<Pendable>
-
-
-type OptimisticReducerAction = ReducerActionProp<ReducerActionType, ObshchakUser>
-
-const reducer = (
-  state: Maybe<OptimisticFriends>,
-  action: OptimisticReducerAction,
-) => match(action)
-  .with({ type: ReducerActionType.ADD }, { type: ReducerActionType.REMOVE },
-    ({ payload }): OptimisticFriends => ({
-      ...state,
-      [payload.id]: {
-        ...payload,
-        pending: true,
-      },
-    }),
-  )
-  .exhaustive()
-
-
-const modifyFriends = async (endpoint: string, friend: ObshchakUser): Promise<Maybe<FriendsMap>> => {
+const modifyFriends = async (endpoint: string, friend: ObshchakUser): Promise<Maybe<FriendsResponse>> => {
   try {
     const friendsPromise = await fetch(
       endpoint, {
@@ -55,13 +25,11 @@ const modifyFriends = async (endpoint: string, friend: ObshchakUser): Promise<Ma
       throw new Error(`Invalid friends response ${JSON.stringify(friendsResponse)}`)
     }
     return friendsResponse
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (e: any) {
-    console.error(e.message)
-    return new Promise(() => null)
+  } catch (e: unknown) {
+    console.error('Error modifying friends', e)
+    return null
   }
 }
-
 
 interface UseFriendsProps {
   userId: FriendsRequestBody['id']
@@ -69,59 +37,47 @@ interface UseFriendsProps {
 
 export const useFriends = ({ userId }: UseFriendsProps) => {
 
-  const swrCallback = useMemo(() => {
-    return function <T, S>([uri, params]: [string, T]) {
-      return fetcher<T, S>(uri, params)
-    }
-  }, [])
-
-  const fetcherProps = useMemo((): FriendsRequestBody => ({
+  const fetcherProps = useMemo(() => ({
     id: userId,
   }), [userId])
 
-  const { data, isLoading } = useSWR(
-    [`/api/friends`, fetcherProps],
-    swrCallback,
-  ) as State<FriendsResponse>
+  const { data, error } = useSwr<FriendsRequestBody, FriendsResponse>(
+    nextEndpointsMap.FRIENDS(), fetcherProps,
+  )
 
-  const [friends, setFriends] = useState<Maybe<FriendsMap>>(data)
-  const [
-    optimisticFriends,
-    dispatchOptimisticFriend,
-  ] = useOptimistic(friends, reducer)
+  const [friends, setFriends] = useState<Maybe<FriendsResponse>>(data)
+  const [optimisticFriends, dispatchOptimisticFriend] = useSafeOptimistic<Maybe<FriendsResponse>, ReducerActionType>(
+    friends, reducer
+  )
 
-  // This stuff actually sets the friends from the API
+  // maybe this is redundant
   useEffect(() => {
-    setFriends(() => data)
-    console.log('useFriends data, friends are set', data)
+    setFriends(data)
   }, [data])
 
   const removeFriend = useCallback(async (friend: ObshchakUser) => {
     console.log('useFriends: REMOVE FRIEND')
     dispatchOptimisticFriend({
       type: ReducerActionType.REMOVE,
-      payload: friend,
+      payload: arrayToIdMap([friend]),
     })
-    const newFriends = await modifyFriends(`/api/friends/delete`, friend)
-    console.log(
-      'useFriends: REMOVE FRIEND - got new frienss', newFriends,
-    )
+    const newFriends = await modifyFriends(nextEndpointsMap.DELETE_FRIEND(), friend)
     setFriends((prev) => newFriends ?? prev)
   }, [dispatchOptimisticFriend, setFriends])
 
   const addFriend = useCallback(() => async (friend: ObshchakUser) => {
     dispatchOptimisticFriend({
       type: ReducerActionType.ADD,
-      payload: friend,
+      payload: arrayToIdMap([friend]),
     })
-    const newFriends = await modifyFriends(`/api/friends/add`, friend)
+    const newFriends = await modifyFriends(nextEndpointsMap.ADD_FRIEND(), friend)
     setFriends(() => newFriends ? newFriends : friends)
   }, [dispatchOptimisticFriend, setFriends, friends])
 
 
   return {
-    isLoading,
-    friends,
+    friends: optimisticFriends,
+    error,
     addFriend,
     removeFriend,
   }

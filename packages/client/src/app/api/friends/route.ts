@@ -1,7 +1,9 @@
 import type { NextRequest } from 'next/server'
-import type { FriendsMap } from 'app-common'
 import { friendsMock } from 'app-common'
-import { isFriendsRequestBody } from '@OBSHCHAK-UI/app/api/friends/types'
+import type { FriendsResponse } from './types'
+import { isFriendsRequestBody } from './types'
+
+
 
 export async function POST(request: NextRequest) {
   const body = (await request.json())
@@ -11,8 +13,8 @@ export async function POST(request: NextRequest) {
 
   // const res = await fetch(`/v${API_VER}/groups`)
   // const data = await res.json()
-  const friendsMap: FriendsMap = friendsMock()
-    .reduce<FriendsMap>((acc, user) => ({
+  const friendsMap: FriendsResponse = friendsMock()
+    .reduce<FriendsResponse>((acc, user) => ({
       ...acc,
       [user.id]: user,
     }), {})
