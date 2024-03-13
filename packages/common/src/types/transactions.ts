@@ -1,11 +1,12 @@
-export interface ObshchakUser {
-  id: string
+import type { WithId } from './index'
+
+export type ObshchakUser = WithId<{
   name: string
   username: string
   email: string
   profileImage: string // so far URL, maybe should go with Bulbs
   mobileNumber: string
-}
+}>
 
 export const isObshchakUser = (user: object): user is ObshchakUser =>
   user &&
