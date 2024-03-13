@@ -8,8 +8,8 @@ export type FilterFn<S, T extends FilterContextTypeBase = FilterContextTypeBase>
   filters: Partial<T>,
 ) => S
 
-type UseFiltering = <S>({
-  items,
+type UseFiltering = <S, >({
+   items,
   filteringFunction,
 }: {
   items: S
