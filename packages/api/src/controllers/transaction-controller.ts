@@ -1,3 +1,5 @@
+export default {}
+
 // export const createDebt = (userSocketsManager: UserSocketsManager) => async (ctx: Context) => {
 //   console.log(`CREATE DEBT`)
 //   // TODO: do auth
