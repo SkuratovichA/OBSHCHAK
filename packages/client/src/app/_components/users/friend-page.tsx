@@ -30,7 +30,7 @@ export const FriendPage: React.FC<FriendPageProps> = ({ username }) => {
 
   const {
     transactions,
-  } = useTransactions({ friendId: username })
+  } = useTransactions({ usernames: [username] })
 
   const {
     data: groups, isLoading: isLoadingGroups, error: errorGroups
