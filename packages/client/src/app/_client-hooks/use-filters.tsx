@@ -3,8 +3,6 @@
 import { useCallback, useState } from 'react'
 import { isFunction } from 'lodash'
 
-// TODO: this should probably be eliminated in the future
-//  because useFilters should be embedded into useTransactions, useGroups, etc.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FilterContextTypeBase<X extends string | number = string, Y = any> = Record<X, Y>
 

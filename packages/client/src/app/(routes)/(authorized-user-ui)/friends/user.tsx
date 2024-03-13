@@ -1,26 +1,44 @@
 'use client'
 
 import React, { useState } from 'react'
-import noop from 'lodash/noop'
-import { Avatar, Box, IconButton, Typography } from '@mui/material'
+import { Avatar, Box, IconButton, Skeleton, Typography } from '@mui/material'
 import { MoreVert, Launch } from '@mui/icons-material'
 import { usePathname, useRouter } from 'next/navigation'
-import type { Maybe, ObshchakUser } from 'app-common'
+import type { Loadable, Maybe, ObshchakUser, Pendable } from 'app-common'
 
 import { ListItemContainerPointless, TiltedContainer } from '@OBSHCHAK-UI/app/_components'
-import type { DropdownMenuProps } from '@OBSHCHAK-UI/app/_components/dropdown-menu';
+import type { DropdownMenuProps } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
 import { DropdownMenu } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
 
-interface UserProps {
-  user: ObshchakUser
-  actions?: DropdownMenuProps['namedCallbacks']
+
+const UserSkeleton = () => {
+  return (
+    <TiltedContainer>
+      <ListItemContainerPointless elevation={1}>
+        <Skeleton variant="circular" width={40} height={40} />
+
+        <Box sx={{ flex: 1, ml: 2 }}>
+          <Skeleton variant="text" width={'20ch'} />
+          <Skeleton variant="text" width={'10ch'} />
+        </Box>
+      </ListItemContainerPointless>
+    </TiltedContainer>
+  )
 }
 
-export const User: React.FC<UserProps> = ({ user, actions }) => {
+type UserProps = Loadable<Pendable<{
+  user: ObshchakUser
+  actions?: DropdownMenuProps['namedCallbacks']
+}>>
+export const User: React.FC<UserProps> = ({ user, actions, pending, isLoading }) => {
   const [anchorEl, setAnchorEl] = useState<Maybe<HTMLElement>>(null)
   const open = Boolean(anchorEl)
   const router = useRouter()
   const pathName = usePathname()
+
+  if (isLoading) {
+    return <UserSkeleton />
+  }
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -36,7 +54,7 @@ export const User: React.FC<UserProps> = ({ user, actions }) => {
 
   return (
     <TiltedContainer>
-      <ListItemContainerPointless elevation={1} onClick={noop}>
+      <ListItemContainerPointless elevation={1} pending={pending}>
         <Avatar alt={user.name} src={user.profileImage} />
         <Box sx={{ flex: 1, ml: 2 }}>
           <Typography variant="body1">{user.name}</Typography>

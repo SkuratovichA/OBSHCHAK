@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 
-import type { OptimisticFriends} from '@OBSHCHAK-UI/app/_client-hooks';
+import type { OptimisticFriends } from '@OBSHCHAK-UI/app/_client-hooks'
 import { useFilters, useFriends } from '@OBSHCHAK-UI/app/_client-hooks'
 import { User } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/friends/user'
 import {
@@ -11,11 +11,11 @@ import {
   ListItemTiltable,
   ScrollableBarlessList,
 } from '@OBSHCHAK-UI/app/_components'
-import type { Maybe, ObshchakUser} from 'app-common';
+import type { Maybe, ObshchakUser } from 'app-common'
 import { isEmpty, userDataMock } from 'app-common'
 import { useSession } from 'next-auth/react'
 import { match } from 'ts-pattern'
-import { mapObject } from 'app-common/lib/types'
+import { entries } from 'app-common/lib/types'
 import type { DropdownMenuProps } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
 
 interface UserFilters {
@@ -30,7 +30,7 @@ const fuzzySearch = (search: string, user: object) =>
     .includes(search.toLowerCase())
 
 const filterFriends = (users: Maybe<OptimisticFriends>, filters: Partial<UserFilters>): Maybe<OptimisticFriends> =>
-  users && mapObject(users)
+  users && entries(users)
     .reduce<ReturnType<typeof filterFriends>>(
       (acc, [id, user]) => {
         const userMatchesStringSearch = !filters.search || fuzzySearch(filters.search, user)
@@ -39,12 +39,24 @@ const filterFriends = (users: Maybe<OptimisticFriends>, filters: Partial<UserFil
       {},
     )
 
+
+const FriendsListSkeleton = () => {
+  return (
+    <ScrollableBarlessList>
+      {Array.from({ length: 3 }).map((_, i) => (
+        <ListItemTiltable key={i}>
+          <User isLoading={true} />
+        </ListItemTiltable>
+      ))}
+    </ScrollableBarlessList>
+  )
+
+}
 export const FriendsList: React.FC = () => {
 
   const { data: session, status } = useSession()
 
   const {
-    isLoading,
     friends,
     addFriend,
     removeFriend,
@@ -82,19 +94,20 @@ export const FriendsList: React.FC = () => {
 
   return (
     <FullHeightNonScrollableContainer>
-      <FilterBar searchValue={filters.search || ''} onSearchChange={handleSearchChange} />
+      <FilterBar searchValue={filters.search ?? ''} onSearchChange={handleSearchChange} />
 
       <ScrollableBarlessList>
         <>{
-          match(friends)
-            .with(undefined, null, () => <div>loading...</div>) // TODO: add loading
-            .when(isEmpty, () => <div>no friends</div>)
-            .otherwise(friends => (mapObject(friends))
+          match(filteredFriends)
+            .with(undefined, null, () => <FriendsListSkeleton />) // TODO: add loading
+            .when(isEmpty, () => <div>no friends</div>) // TODO: add no friends view
+            .otherwise(friends => (entries(friends))
               .map(([id, friend]) => (
                 <ListItemTiltable key={id}>
                   <User
                     user={friend}
                     actions={friendActions(friend)}
+                    pending={friend.pending}
                   />
                 </ListItemTiltable>
               )))
