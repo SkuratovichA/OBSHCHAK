@@ -2,7 +2,7 @@ import React from 'react'
 import { Tilt } from 'react-tilt'
 import styled from '@emotion/styled'
 import { Box, Container, css, List, ListItem, Paper } from '@mui/material'
-import { Pendable } from 'app-common'
+import type { Pendable } from 'app-common'
 
 export const TiltedContainer: React.FC<React.PropsWithChildren> = ({ children }) => (
   <Tilt
@@ -14,6 +14,7 @@ export const TiltedContainer: React.FC<React.PropsWithChildren> = ({ children })
 )
 
 const listItemContainerBase = css`
+    width: 100%;
     padding: 16px;
     display: flex;
     justify-content: space-between;
