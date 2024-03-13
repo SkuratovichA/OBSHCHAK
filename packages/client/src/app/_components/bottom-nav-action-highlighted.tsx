@@ -8,9 +8,11 @@ export const BottomNavActionHighlighted = styled(BottomNavigationAction, {
 })<{
   shouldHighlight?: boolean
   highlightColor?: string
-}>(({ shouldHighlight, highlightColor}) => shouldHighlight
+}>(({ shouldHighlight, highlightColor }) =>
+  shouldHighlight
     ? css`
         background: ${highlightColor};
         border-radius: 8px;
       `
-    : css``)
+    : css``,
+)

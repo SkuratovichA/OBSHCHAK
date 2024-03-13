@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
-  console.log("Users Create:", body)
+  console.log('Users Create:', body)
 
   const data = {}
   // const res = await fetch(`/v${API_VER}/users`)
@@ -11,4 +11,3 @@ export async function POST(request: NextRequest) {
 
   return Response.json(data, { status: 200 })
 }
-

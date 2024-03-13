@@ -10,7 +10,6 @@ import { ListItemContainerPointless, TiltedContainer } from '@OBSHCHAK-UI/app/_c
 import type { DropdownMenuProps } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
 import { DropdownMenu } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
 
-
 const UserSkeleton = () => {
   return (
     <TiltedContainer>
@@ -26,10 +25,12 @@ const UserSkeleton = () => {
   )
 }
 
-type UserProps = Loadable<Pendable<{
-  user: ObshchakUser
-  actions?: DropdownMenuProps['namedCallbacks']
-}>>
+type UserProps = Loadable<
+  Pendable<{
+    user: ObshchakUser
+    actions?: DropdownMenuProps['namedCallbacks']
+  }>
+>
 export const User: React.FC<UserProps> = ({ user, actions, pending, isLoading }) => {
   const [anchorEl, setAnchorEl] = useState<Maybe<HTMLElement>>(null)
   const open = Boolean(anchorEl)
@@ -62,17 +63,11 @@ export const User: React.FC<UserProps> = ({ user, actions, pending, isLoading })
             @{user.username}
           </Typography>
         </Box>
-        <IconButton
-          aria-label="redirect"
-          id={`user-redirect-${user.id}`}
-          onClick={handleRedirect}
-        >
-          <Launch
-            fontSize="small"
-          />
+        <IconButton aria-label="redirect" id={`user-redirect-${user.id}`} onClick={handleRedirect}>
+          <Launch fontSize="small" />
         </IconButton>
 
-        {actions &&
+        {actions && (
           <>
             <IconButton
               aria-label="more"
@@ -84,14 +79,9 @@ export const User: React.FC<UserProps> = ({ user, actions, pending, isLoading })
             >
               <MoreVert />
             </IconButton>
-            <DropdownMenu
-              namedCallbacks={actions}
-              anchorEl={anchorEl}
-              onClose={handleCloseMenu}
-            />
+            <DropdownMenu namedCallbacks={actions} anchorEl={anchorEl} onClose={handleCloseMenu} />
           </>
-
-        }
+        )}
       </ListItemContainerPointless>
     </TiltedContainer>
   )

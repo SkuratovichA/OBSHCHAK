@@ -52,7 +52,7 @@ export class Debt {
   @Column({
     type: 'enum',
     enum: DebtStatusType,
-    default: DebtStatusType.PENDING,
+    default: DebtStatusType.Pending,
   })
   status!: DebtStatusType
 
@@ -65,10 +65,10 @@ export class Debt {
   @AfterInsert()
   setResolvedTimestampBasedOnStatus() {
     switch (this.status) {
-      case DebtStatusType.PENDING:
+      case DebtStatusType.Pending:
         this.resolvedTimestamp = null
         break
-      case DebtStatusType.RESOLVED:
+      case DebtStatusType.Paid:
         this.resolvedTimestamp = this.resolvedTimestamp ?? new Date()
         break
     }

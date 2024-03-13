@@ -1,14 +1,14 @@
-import { Context } from 'koa'
-import { UserSocketsManager } from '../websockets'
+// import { Context } from 'koa'
+// import { UserSocketsManager } from '../websockets'
 
 export default {}
 
-interface CreateDebtBodyProps {
-  name: string
-  description: string
-  totalAmount: number
-  creatorUserId: number
-}
+// interface CreateDebtBodyProps {
+//   name: string
+//   description: string
+//   totalAmount: number
+//   creatorUserId: number
+// }
 
 /**
  * FIXME: тут короче точно не должно быть этог
@@ -195,3 +195,61 @@ export const updateDebt = (userSocketsManager: UserSocketsManager) => async (ctx
 //   // Notify the debt owner about the payment update.
 //   userSocketsManager.emitToUser(ctx.params.id, 'paymentUpdated', ctx.request.body)
 // }
+// export const createDebt = (userSocketsManager: UserSocketsManager) => async (ctx: Context) => {
+//   console.log(`CREATE DEBT`)
+//   // TODO: do auth
+//   // use this to update the Frontend
+//   //   const receiverConnections = userConnections[toUserId!] || ]
+//   //   receiverConnections.forEach(socket => socket.emit('debt', debt))
+// }
+//
+// export const updateDebt = (userSocketsManager: UserSocketsManager) => async (ctx: Context) => {
+//   console.log(`UPDATE DEBT`)
+//   // TODO: do auth
+//   // use this to update the Frontend
+//   //   const receiverConnections = userConnections[toUserId!] || ]
+//   //   receiverConnections.forEach(socket => socket.emit('debt', debt))
+// }
+//
+// router.post('/debts', async (ctx: Koa.ParameterizedContext) => {
+//   const { amount, fromUserId, toUserId } = ctx.request.body as Partial<Debt>
+//   const item: Debt = {
+//     id: 'someId', // Generate a unique ID
+//     amount: amount!,
+//     fromUserId: fromUserId!,
+//     toUserId: toUserId!,
+//     status: 'PENDING',
+//   }
+//
+//   debts.push(item)
+//
+//   // Notify the receiver about the new item
+//   const receiverConnections = userConnections[toUserId!] || []
+//   receiverConnections.forEach(socket => socket.emit('new_debt', item))
+//
+//   ctx.status = 201
+//   ctx.body = item
+// })
+//
+// router.patch('/debts/:id', async (ctx: Koa.ParameterizedContext) => {
+//   const { id } = ctx.params
+//   const { status } = ctx.request.body as { status: Debt['status'] }
+//   const item = debts.find(t => t.id === id)
+//
+//   if (!item) {
+//     ctx.status = 404
+//     return
+//   }
+//
+//   item.status = status
+//
+//   // Notify the involved users about the status change
+//   const involvedUsers = [ item.fromUserId, item.toUserId ]
+//   involvedUsers.forEach(userId => {
+//     const connections = userConnections[userId] || []
+//     connections.forEach(socket => socket.emit('debt_updated', item))
+//   })
+//
+//   ctx.status = 200
+//   ctx.body = item
+// })

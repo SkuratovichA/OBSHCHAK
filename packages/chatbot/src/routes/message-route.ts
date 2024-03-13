@@ -1,5 +1,5 @@
 import Router from 'koa-router'
-import type { ChatbotResponse} from 'app-common';
+import type { ChatbotResponse } from 'app-common'
 import { isChatbotMessageQuery } from 'app-common'
 
 import { ChatbotService } from '../chatbotsvc'

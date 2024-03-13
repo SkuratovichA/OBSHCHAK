@@ -6,7 +6,6 @@ import { ScrollableBarlessList, ListItemTiltable } from '@OBSHCHAK-UI/app/_compo
 import { useLoading } from '@OBSHCHAK-UI/app/_client-hooks'
 import { isNil } from 'lodash'
 
-
 // group-list ts
 interface GroupsListProps {
   // TODO: tbd
@@ -14,8 +13,7 @@ interface GroupsListProps {
   groups: any[] | undefined // FIXME: tmp solution before types are in app-common
 }
 
-export const GroupsList: React.FC<GroupsListProps> = ({ groups }) =>{
-
+export const GroupsList: React.FC<GroupsListProps> = ({ groups }) => {
   const { isLoading } = useLoading()
 
   if (isLoading) {

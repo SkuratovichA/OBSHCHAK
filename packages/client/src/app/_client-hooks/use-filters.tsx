@@ -11,9 +11,14 @@ export type FilterContextTypeBase<X extends string | number = string, Y = any> =
  */
 export const useFilters = <T extends FilterContextTypeBase>() => {
   const [filters, setFilters] = useState<Partial<T>>({})
-  const updateFilters = useCallback((update: Partial<T> | ((oldFilters: Partial<T>) => Partial<T>)) => {
-    setFilters((oldFilters) => isFunction(update) ? update(oldFilters) : { ...oldFilters, ...update })
-  }, [])
+  const updateFilters = useCallback(
+    (update: Partial<T> | ((oldFilters: Partial<T>) => Partial<T>)) => {
+      setFilters((oldFilters) =>
+        isFunction(update) ? update(oldFilters) : { ...oldFilters, ...update },
+      )
+    },
+    [],
+  )
 
   return { filters, updateFilters }
 }

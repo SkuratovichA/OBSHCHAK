@@ -8,7 +8,7 @@ const Page: React.FC = () => {
   //  fetch the data first based on the username
   //  and then pass the friends to the component.
   //  component should be suspended while fetching the data btw.
-  return <FriendsList/>
+  return <FriendsList />
 }
 
 export default Page

@@ -2,21 +2,18 @@
 
 import React from 'react'
 
-import { LoadingProvider, useTransactions } from '@OBSHCHAK-UI/app/_client-hooks'
-import { TransactionsPage } from '@OBSHCHAK-UI/app/_components'
+import { LoadingProvider, useDebts } from '@OBSHCHAK-UI/app/_client-hooks'
+import { DebtsPage } from '@OBSHCHAK-UI/app/_components'
 
 const Page: React.FC = () => {
-
-  const {
-    transactions
-  } = useTransactions()
+  const { debts } = useDebts()
   // TODO: we need to have another layer of abstraction (xD) here and
   //  fetch the data first based on the username
-  //  and then pass the transactions to the component
+  //  and then pass the debts to the component
   //  component should be suspended while fetching the data btw.
   return (
-    <LoadingProvider isLoading={!transactions}>
-      <TransactionsPage transactions={transactions} />)
+    <LoadingProvider isLoading={!debts}>
+      <DebtsPage items={debts} />)
     </LoadingProvider>
   )
 }

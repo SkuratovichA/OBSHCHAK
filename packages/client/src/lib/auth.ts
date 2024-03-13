@@ -5,8 +5,6 @@ import { GOOGLE_CLOUD_CLIENT_ID, GOOGLE_CLOUD_CLIENT_SECRET } from '../config'
 
 import { pick } from 'lodash'
 
-
-
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt' as const,
@@ -19,7 +17,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session, user: _user, token }) {
-
       // TODO: auth - return the user from the api.
       // if no user has existed before, a new is gonna be created and returned,
 
@@ -42,7 +39,7 @@ export const authOptions: NextAuthOptions = {
 
       const user: ObshchakUser = {
         ...userDataMock(),
-        ...(pick(_user, ['email', 'name']) as Pick<ObshchakUser, | 'email' | 'name'>)
+        ...(pick(_user, ['email', 'name']) as Pick<ObshchakUser, 'email' | 'name'>),
       }
 
       return {
@@ -51,7 +48,7 @@ export const authOptions: NextAuthOptions = {
       }
     },
     async redirect({ url, baseUrl }: any) {
-      return Promise.resolve(baseUrl + '/transactions')
+      return Promise.resolve(baseUrl + '/debts')
     },
   },
 }

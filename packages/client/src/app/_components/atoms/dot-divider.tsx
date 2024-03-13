@@ -9,14 +9,11 @@ export enum DotDividerSizeType {
   large = '15px',
 }
 
-
 const DEFAULT_SIZE: DotDividerSizeType = DotDividerSizeType.small
 
 export type DotDividerProps = Loadable<WithSize<DotDividerSizeType>>
 
-
-export const DotDivider: React.FC<DotDividerProps> = ({size: nullableSize, isLoading}) => {
-
+export const DotDivider: React.FC<DotDividerProps> = ({ size: nullableSize, isLoading }) => {
   const size = nullableSize ?? DEFAULT_SIZE
 
   return isLoading ? (
@@ -27,9 +24,9 @@ export const DotDivider: React.FC<DotDividerProps> = ({size: nullableSize, isLoa
 }
 
 const DotDividerStyled = styled.div<Required<WithSize<DotDividerSizeType>>>`
-  width: ${({size}) => size};
-  height: ${({size}) => size};
-  
+  width: ${({ size }) => size};
+  height: ${({ size }) => size};
+
   background-color: currentColor;
   border-radius: 50%;
   pointer-events: none;

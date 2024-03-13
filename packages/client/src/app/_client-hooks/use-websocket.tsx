@@ -1,9 +1,9 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import type { Socket } from 'socket.io-client';
+import type { Socket } from 'socket.io-client'
 import io from 'socket.io-client'
-import type { Maybe, Optional } from 'app-common';
+import type { Maybe, Optional } from 'app-common'
 import { API_ORIGIN } from 'app-common'
 
 interface UseWebsocketProps {
@@ -26,14 +26,11 @@ export const useWebsocket: WebsocketFn = ({ username }) => {
       return
     }
     const query = username ? { username } : {}
-    const newSocket = io(
-      API_ORIGIN, {
-        transports: ['websocket'],
-        query,
-      },
-    )
+    const newSocket = io(API_ORIGIN, {
+      transports: ['websocket'],
+      query,
+    })
     setSocket(newSocket)
-
   }, [socket, username])
 
   const disconnectSocket = useCallback(() => {
