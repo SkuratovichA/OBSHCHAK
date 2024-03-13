@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
 
 import {
@@ -9,7 +9,7 @@ import {
   ScrollableBarlessList,
   UserProfile,
 } from '@OBSHCHAK-UI/app/_components'
-import { fetcher, LoadingProvider, useSwr, useTransactions } from '@OBSHCHAK-UI/app/_client-hooks'
+import { LoadingProvider, useSwr, useTransactions } from '@OBSHCHAK-UI/app/_client-hooks'
 import type { UserSearchParams, UsersSearchResponse } from '@OBSHCHAK-UI/app/api/users/route'
 import type { GroupsSearchResponse } from '@OBSHCHAK-UI/app/api/groups/route'
 import { nextEndpointsMap } from 'app-common/lib/endpoints'
@@ -22,18 +22,6 @@ export interface FriendPageProps {
 export const FriendPage: React.FC<FriendPageProps> = ({ username }) => {
   const usernames: UserSearchParams = { usernames: [username] }
 
-  const swrCallback = useMemo(() => {
-    return function <T, S>([uri, params]: [string, T]) {
-      return fetcher<T, S>(uri, params)
-    }
-  }, [])
-
-
-  // const { data: users, isLoading: isLoadingUser, error: errorUser } = useSWR(
-  //   [`/api/users`, usernames],
-  //   swrCallback,
-  //   {},
-  // ) as State<UsersSearchResponse>
   const {
     data: users, isLoading: isLoadingUser, error: errorUser
   } = useSwr<UserSearchParams, UsersSearchResponse>(

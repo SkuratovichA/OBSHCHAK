@@ -1,6 +1,6 @@
 'use client'
 
-import type { Maybe, ObshchakUser, Pendable} from 'app-common';
+import type { Maybe, ObshchakUser, Pendable, WithId } from 'app-common'
 import { arrayToIdMap } from 'app-common'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSwr } from '@OBSHCHAK-UI/app/_client-hooks/use-suspense-swr'
@@ -12,12 +12,12 @@ import { reducer, ReducerActionType, useSafeOptimistic } from '@OBSHCHAK-UI/app/
 
 export type OptimisticFriends = FriendsResponse<Pendable>
 
-const modifyFriends = async (endpoint: string, friend: ObshchakUser): Promise<Maybe<FriendsResponse>> => {
+const modifyFriends = async (endpoint: string, body: ObshchakUser): Promise<Maybe<FriendsResponse>> => {
   try {
     const friendsPromise = await fetch(
       endpoint, {
         method: 'POST',
-        body: JSON.stringify(friend),
+        body: JSON.stringify(body),
       },
     )
     const friendsResponse = await friendsPromise.json()
