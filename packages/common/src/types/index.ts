@@ -3,7 +3,7 @@ export * from './transactions'
 export * from './old'
 export * from './utils'
 
-import type { AsArray, Optional } from './utils'
+import type { AsArray, Maybe, Optional } from './utils'
 
 export type Paginatable<T> = Optional<{
   page: number
@@ -37,7 +37,7 @@ export type WithDimensions<T = object, S extends undefined | number = undefined>
 
 export const isEmpty = (s: object) => !Object.keys(s).length
 
-export const entries = <T extends object, >(obj: T) => (Object.entries(obj) as AsArray<T>)
+export const entries = <T extends object, >(obj: Maybe<T>): AsArray<T> => (obj ? Object.entries(obj) as AsArray<T> : [])
 
 export type WithId<T extends object = object> = T & { id: string | number }
 
