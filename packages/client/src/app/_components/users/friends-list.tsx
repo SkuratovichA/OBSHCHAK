@@ -23,22 +23,17 @@ interface UserFilters {
 }
 
 const fuzzySearch = (search: string, user: object) =>
-  Object
-    .values(user)
-    .join('')
-    .toLowerCase()
-    .includes(search.toLowerCase())
+  Object.values(user).join('').toLowerCase().includes(search.toLowerCase())
 
-const filterFriends = (users: Maybe<OptimisticFriends>, filters: Partial<UserFilters>): Maybe<OptimisticFriends> =>
-  users && entries(users)
-    .reduce<ReturnType<typeof filterFriends>>(
-      (acc, [id, user]) => {
-        const userMatchesStringSearch = !filters.search || fuzzySearch(filters.search, user)
-        return userMatchesStringSearch ? { ...acc, [id]: user } : acc
-      },
-      {},
-    )
-
+const filterFriends = (
+  users: Maybe<OptimisticFriends>,
+  filters: Partial<UserFilters>,
+): Maybe<OptimisticFriends> =>
+  users &&
+  entries(users).reduce<ReturnType<typeof filterFriends>>((acc, [id, user]) => {
+    const userMatchesStringSearch = !filters.search || fuzzySearch(filters.search, user)
+    return userMatchesStringSearch ? { ...acc, [id]: user } : acc
+  }, {})
 
 const FriendsListSkeleton = () => {
   return (
@@ -50,17 +45,13 @@ const FriendsListSkeleton = () => {
       ))}
     </ScrollableBarlessList>
   )
-
 }
 export const FriendsList: React.FC = () => {
-
   const { data: session, status } = useSession()
 
-  const {
-    friends,
-    addFriend,
-    removeFriend,
-  } = useFriends({ userId: userDataMock().id })
+  console.log('SESSION: ', session, '\n', 'STATUS: ', status)
+
+  const { friends, removeFriend } = useFriends({ userId: userDataMock().id })
 
   const { filters, updateFilters } = useFilters<UserFilters>()
   const [filteredFriends, setFilteredFriends] = useState<Maybe<OptimisticFriends>>(friends)
@@ -75,15 +66,14 @@ export const FriendsList: React.FC = () => {
   }
 
   const friendActions = (friend: ObshchakUser): DropdownMenuProps['namedCallbacks'] => {
-
     return {
       remove: {
         name: 'Remove a friend',
         callback: () => removeFriend(friend),
       },
-      createTransaction: {
-        name: 'Create a transaction',
-        callback: async () => console.log('createTransaction'),
+      createDebt: {
+        name: 'Create a item',
+        callback: async () => console.log('createDebt'),
       },
       createGroup: {
         name: 'Create a group',
@@ -97,21 +87,18 @@ export const FriendsList: React.FC = () => {
       <FilterBar searchValue={filters.search ?? ''} onSearchChange={handleSearchChange} />
 
       <ScrollableBarlessList>
-        <>{
-          match(filteredFriends)
+        <>
+          {match(filteredFriends)
             .with(undefined, null, () => <FriendsListSkeleton />) // TODO: add loading
             .when(isEmpty, () => <div>no friends</div>) // TODO: add no friends view
-            .otherwise(friends => (entries(friends))
-              .map(([id, friend]) => (
+            .otherwise((friends) =>
+              entries(friends).map(([id, friend]) => (
                 <ListItemTiltable key={id}>
-                  <User
-                    user={friend}
-                    actions={friendActions(friend)}
-                    pending={friend.pending}
-                  />
+                  <User user={friend} actions={friendActions(friend)} pending={friend.pending} />
                 </ListItemTiltable>
-              )))
-        }</>
+              )),
+            )}
+        </>
       </ScrollableBarlessList>
     </FullHeightNonScrollableContainer>
   )

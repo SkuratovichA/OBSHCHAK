@@ -15,10 +15,8 @@ const isGroupSearchParams = (obj: object): obj is GroupsSearchParams =>
   obj && 'usernames' in obj && isArray(obj.usernames)
 
 export async function POST(request: NextRequest) {
-  console.log(
-    'Hello in group fetching',
-  )
-  const body: GroupsSearchParams = (await request.json())
+  console.log('Hello in group fetching')
+  const body: GroupsSearchParams = await request.json()
 
   if (!isGroupSearchParams(body)) {
     return Response.json(undefined, { status: 400 })

@@ -3,7 +3,7 @@ import type { ChatCompletionMessageParam } from 'openai/resources'
 import type { ChatCompletionCreateParams } from 'openai/resources/chat/completions'
 
 import { logger } from '../../loggers'
-import type { CompletionParams } from '../openai-wrapper';
+import type { CompletionParams } from '../openai-wrapper'
 import { complete } from '../openai-wrapper'
 import type { ChatGPTBlockDataGeneratorProps } from './types'
 import {

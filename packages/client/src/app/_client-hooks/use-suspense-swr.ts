@@ -1,6 +1,5 @@
 'use client'
 
-
 import type { State } from 'swr'
 import useSWR from 'swr'
 import type { Maybe } from 'app-common'
@@ -11,13 +10,8 @@ export const swrCallback = <T, S>([uri, params]: [string, T]) => fetcher<T, S>(u
 export const useSwr = <P extends object, R extends Maybe<object>>(endpoint: string, params: P) => {
   // todo: looks like shit :) Why would I need it?
   console.log('USE SUSPENSE SWR CALLED')
-  return useSWR(
-    [endpoint, params],
-    swrCallback<P, R>,
-    {},
-  ) as State<R>
+  return useSWR([endpoint, params], swrCallback<P, R>, {}) as State<R>
 }
-
 
 // TODO: not tested
 export const fetcher = async <T, S>(url: string, params: T, timeout = 5000): Promise<S> => {

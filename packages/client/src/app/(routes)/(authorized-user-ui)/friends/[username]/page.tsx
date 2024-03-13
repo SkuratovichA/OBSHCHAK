@@ -9,9 +9,7 @@ interface PageProps {
 }
 
 const Page: React.FC<PageProps> = ({ params: { username } }) => {
-  return (
-    <FriendPage username={username} />
-  )
+  return <FriendPage username={username} />
 }
 
 export default Page

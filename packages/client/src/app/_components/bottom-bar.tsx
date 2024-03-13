@@ -26,12 +26,12 @@ export const BottomBar: React.FC = () => {
   }
 
   return (
-    <BottomNavigation showLabels style={{ justifyContent: 'center', justifySelf: 'flex-end'}}>
+    <BottomNavigation showLabels style={{ justifyContent: 'center', justifySelf: 'flex-end' }}>
       {[
         { Friends: { icon: <Group /> } },
         { Groups: { icon: <Groups /> } },
-        { 'New Transaction': { icon: <AddCircleOutline fontSize="large" color="primary" /> } },
-        { Transactions: { icon: <ListIcon /> } },
+        { 'New Debt': { icon: <AddCircleOutline fontSize="large" color="primary" /> } },
+        { Debts: { icon: <ListIcon /> } },
         { Account: { icon: <ProfileIcon /> } },
       ]
         .map((a) => Object.entries(a)[0])

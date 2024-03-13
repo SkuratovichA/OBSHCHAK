@@ -1,10 +1,14 @@
 import React from 'react'
-import { IconButton, } from '@mui/material'
+import { IconButton } from '@mui/material'
 import { MicNone, NotificationsNone } from '@mui/icons-material'
-import { BottomBar, FullHeightStackContainer, ScrollableBodyContainer, TopBar } from '@OBSHCHAK-UI/app/_components'
+import {
+  BottomBar,
+  FullHeightStackContainer,
+  ScrollableBodyContainer,
+  TopBar,
+} from '@OBSHCHAK-UI/app/_components'
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
-
   return (
     <FullHeightStackContainer>
       <TopBar>
@@ -16,9 +20,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
         </IconButton>
       </TopBar>
 
-      <ScrollableBodyContainer component="main">
-        {children}
-      </ScrollableBodyContainer>
+      <ScrollableBodyContainer component="main">{children}</ScrollableBodyContainer>
 
       <BottomBar />
     </FullHeightStackContainer>

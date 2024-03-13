@@ -2,7 +2,7 @@
 
 export * from './landing-page'
 export * from './filter-bar'
-export * from './transactions'
+export * from './debts'
 export * from './groups'
 export * from './top-bar'
 export * from './bottom-bar'

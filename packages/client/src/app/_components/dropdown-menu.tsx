@@ -13,17 +13,25 @@ export interface DropdownMenuProps extends React.HTMLAttributes<HTMLDivElement> 
   onClose: () => void
 }
 
-export const DropdownMenu: React.FC<DropdownMenuProps> = ({ namedCallbacks, anchorEl, onClose, ...props }) => {
+export const DropdownMenu: React.FC<DropdownMenuProps> = ({
+  namedCallbacks,
+  anchorEl,
+  onClose,
+  ...props
+}) => {
   const open = Boolean(anchorEl)
 
-  const handleMenuAction = useCallback(async (action: string, callback: NamedCallback['callback']) => {
-    try {
-      await callback()
-    } catch (e: unknown) {
-      console.error(`DROPDOWN MENU: failed to perform action ${action}`, e)
-    }
-    onClose()
-  }, [onClose])
+  const handleMenuAction = useCallback(
+    async (action: string, callback: NamedCallback['callback']) => {
+      try {
+        await callback()
+      } catch (e: unknown) {
+        console.error(`DROPDOWN MENU: failed to perform action ${action}`, e)
+      }
+      onClose()
+    },
+    [onClose],
+  )
 
   return (
     <Menu
@@ -34,11 +42,11 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ namedCallbacks, anch
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       {...props}
     >
-      {Object.entries(namedCallbacks).map(
-        ([actionName, { name: displayName, callback }]) => (
-          <MenuItem key={actionName} onClick={() => handleMenuAction(actionName, callback)}>{displayName}</MenuItem>
-        ),
-      )}
+      {Object.entries(namedCallbacks).map(([actionName, { name: displayName, callback }]) => (
+        <MenuItem key={actionName} onClick={() => handleMenuAction(actionName, callback)}>
+          {displayName}
+        </MenuItem>
+      ))}
     </Menu>
   )
 }

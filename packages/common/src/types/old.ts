@@ -16,10 +16,10 @@ export enum DebtGroupStatusType {
   RESOLVED = 'RESOLVED',
 }
 
-export enum DebtStatusType {
-  PENDING = 'PENDING',
-  RESOLVED = 'RESOLVED',
-}
+// export enum DebtStatusType {
+//   PENDING = 'PENDING',
+//   RESOLVED = 'RESOLVED',
+// }
 
 export enum PaymentStatusType {
   PENDING = 'PENDING',

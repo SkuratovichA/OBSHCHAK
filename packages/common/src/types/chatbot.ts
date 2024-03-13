@@ -4,9 +4,14 @@ export interface ChatbotMessageQuery {
 }
 
 export const isChatbotMessageQuery = (obj: object): obj is ChatbotMessageQuery => {
-  return (!!obj &&
-    'message' in obj && obj && typeof obj.message === 'string' &&
-    'userId' in obj && obj && typeof obj.userId === 'string'
+  return (
+    !!obj &&
+    'message' in obj &&
+    obj &&
+    typeof obj.message === 'string' &&
+    'userId' in obj &&
+    obj &&
+    typeof obj.userId === 'string'
   )
 }
 

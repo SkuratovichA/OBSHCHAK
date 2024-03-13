@@ -9,7 +9,6 @@ import { NameField } from './name-field'
 import { ContactInfo } from './contact-info'
 import { UserAvatar } from './user-avatar'
 
-
 export type Contacts = Pick<ObshchakUser, 'username' | 'email' | 'mobileNumber'>
 
 const UserProfileSkeleton: React.FC = () => {
@@ -36,9 +35,7 @@ interface UserProfileProps {
 export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
   const { isLoading } = useLoading()
 
-  console.log(
-    `isLoading: ${isLoading}, user: `, user,
-  )
+  console.log(`isLoading: ${isLoading}, user: `, user)
 
   if (isLoading) {
     return <UserProfileSkeleton />
@@ -52,10 +49,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
     <Box padding={'16px'}>
       <>
         <CenteredBox>
-          <UserAvatar
-            alt={user.name}
-            src={user.profileImage}
-          />
+          <UserAvatar alt={user.name} src={user.profileImage} />
         </CenteredBox>
 
         <CenteredBox>
@@ -63,9 +57,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
         </CenteredBox>
 
         <CenteredBox>
-          <ContactInfo
-            contacts={pick(user, ['username', 'email', 'mobileNumber']) as Contacts}
-          />
+          <ContactInfo contacts={pick(user, ['username', 'email', 'mobileNumber']) as Contacts} />
         </CenteredBox>
       </>
     </Box>

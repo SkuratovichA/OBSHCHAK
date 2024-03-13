@@ -12,5 +12,5 @@ export type FriendsRequestBody = Paginatable<{
 export const isFriendsRequestBody = (obj: object): obj is FriendsRequestBody =>
   obj && 'id' in obj && typeof obj.id === 'string'
 
-
-export const isFriendsResponse = (obj: object): obj is FriendsResponse => Object.entries(obj).every(([id, user]) => id === user.id && isObshchakUser(user))
+export const isFriendsResponse = (obj: object): obj is FriendsResponse =>
+  Object.entries(obj).every(([id, user]) => id === user.id && isObshchakUser(user))

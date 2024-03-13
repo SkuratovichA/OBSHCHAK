@@ -7,9 +7,13 @@ export type Defined<T> = Required<{
 export type Undefined<T> = Partial<Record<keyof T, undefined>>
 
 // either all are defined or all are undefined
-export type Optional<T> = T extends object ? Undefined<T> | {
-  [P in keyof T]: T[P]
-} : Partial<T>
+export type Optional<T> = T extends object
+  ?
+      | Undefined<T>
+      | {
+          [P in keyof T]: T[P]
+        }
+  : Partial<T>
 
 export type Maybe<T> = T | undefined | null
 export type AsArray<T extends object> = {

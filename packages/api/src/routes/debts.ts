@@ -5,7 +5,7 @@ import type { UserSocketsManager } from '../websockets'
 export const createDebt = async (ctx: any, userSocketsManager: UserSocketsManager) => {
   console.log(`CREATE DEBT`)
   // print request payload
-
+  userSocketsManager.emitToUser('test', 'debt', { test: 'test' })
   console.log(ctx)
   console.log(ctx.request)
   console.log(ctx.request.body)

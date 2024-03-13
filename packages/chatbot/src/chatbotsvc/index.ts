@@ -1,11 +1,6 @@
-import type {
-  ChatbotResponse} from 'app-common';
-import {
-  ChatbotServiceResponseType,
-  OPENAI_GPT_MODEL,
-  splitSentence,
-} from 'app-common'
-import type { Observable} from 'rxjs';
+import type { ChatbotResponse } from 'app-common'
+import { ChatbotServiceResponseType, OPENAI_GPT_MODEL, splitSentence } from 'app-common'
+import type { Observable } from 'rxjs'
 import { ReplaySubject, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators'
 

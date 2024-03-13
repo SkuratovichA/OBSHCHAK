@@ -1,17 +1,16 @@
-import type { ObshchakUser, Transaction } from '../types'
-import { CurrencyType, TransactionStatusType } from '../types'
+import type { ObshchakUser, Debt } from '../types'
+import { CurrencyType, DebtStatusType } from '../types'
 
-let _transactionsMock: Transaction[] = [
+let _debtsMock: Debt[] = [
   {
     id: 'txn1',
     description: 'Payment for services rendered',
-    name: 'Transaction 1',
+    name: 'Debt 1',
     currency: CurrencyType.USD,
     from: 'mister_bulochka',
     to: [{ username: 'username', amount: 200 }],
     amount: 200,
-    status: TransactionStatusType.Paid,
-    transactionDate: new Date('2023-01-01'),
+    status: DebtStatusType.Paid,
     createdDate: new Date('2023-01-01'),
     resolvedDate: new Date('2023-01-02'),
     categories: ['Services'],
@@ -20,13 +19,12 @@ let _transactionsMock: Transaction[] = [
   {
     id: 'txn2',
     description: 'Monthly subscription fee',
-    name: 'Transaction 2',
+    name: 'Debt 2',
     currency: CurrencyType.EUR,
     from: 'username',
     to: [{ username: 'mister_bulochka', amount: 150 }],
     amount: 150,
-    status: TransactionStatusType.Active,
-    transactionDate: new Date('2023-02-01'),
+    status: DebtStatusType.Active,
     createdDate: new Date('2023-02-01'),
     resolvedDate: null,
     categories: ['Subscription'],
@@ -35,13 +33,12 @@ let _transactionsMock: Transaction[] = [
   {
     id: 'txn3',
     description: 'Gift',
-    name: 'Transaction 3',
+    name: 'Debt 3',
     currency: CurrencyType.CZK,
     from: 'username',
     to: [{ username: 'mister_bulochka', amount: 1000 }],
     amount: 1000,
-    status: TransactionStatusType.Pending,
-    transactionDate: new Date('2023-03-01'),
+    status: DebtStatusType.Pending,
     createdDate: new Date('2023-03-01'),
     resolvedDate: null,
     categories: ['Gift'],
@@ -50,13 +47,12 @@ let _transactionsMock: Transaction[] = [
   {
     id: 'txn4',
     description: 'Lunch reimbursement',
-    name: 'Transaction 4',
+    name: 'Debt 4',
     currency: CurrencyType.USD,
     from: 'mister_bulochka',
     to: [{ username: 'Pushchair_Andrei', amount: 50 }],
     amount: 50,
-    status: TransactionStatusType.Paid,
-    transactionDate: new Date('2023-01-15'),
+    status: DebtStatusType.Paid,
     createdDate: new Date('2023-01-14'),
     resolvedDate: new Date('2023-01-15'),
     categories: ['Reimbursement', 'Food'],
@@ -65,13 +61,12 @@ let _transactionsMock: Transaction[] = [
   {
     id: 'txn5',
     description: 'Gift for Tatiana',
-    name: 'Transaction 5',
+    name: 'Debt 5',
     currency: CurrencyType.EUR,
     from: 'mister_bulochka',
     to: [{ username: 'fxffffffff', amount: 100 }],
     amount: 100,
-    status: TransactionStatusType.Pending,
-    transactionDate: new Date('2023-02-14'),
+    status: DebtStatusType.Pending,
     createdDate: new Date('2023-02-13'),
     resolvedDate: null,
     categories: ['Gift'],
@@ -80,7 +75,7 @@ let _transactionsMock: Transaction[] = [
   {
     id: 'txn6',
     description: 'Shared hosting fees',
-    name: 'Transaction 6',
+    name: 'Debt 6',
     currency: CurrencyType.CZK,
     from: 'mister_bulochka',
     to: [
@@ -89,8 +84,7 @@ let _transactionsMock: Transaction[] = [
       { username: 'gxggggg', amount: 300 },
     ],
     amount: 900,
-    status: TransactionStatusType.Active,
-    transactionDate: new Date('2023-03-01'),
+    status: DebtStatusType.Active,
     createdDate: new Date('2023-02-28'),
     resolvedDate: null,
     categories: ['Hosting', 'Shared Expenses'],
@@ -99,13 +93,12 @@ let _transactionsMock: Transaction[] = [
   {
     id: 'txn7',
     description: 'Charity Donation',
-    name: 'Transaction 7',
+    name: 'Debt 7',
     currency: CurrencyType.USD,
     from: 'mister_bulochka',
     to: [{ username: 'CharityFoundation', amount: 200 }],
     amount: 200,
-    status: TransactionStatusType.Paid,
-    transactionDate: new Date('2023-04-01'),
+    status: DebtStatusType.Paid,
     createdDate: new Date('2023-03-31'),
     resolvedDate: new Date('2023-04-02'),
     categories: ['Donation'],
@@ -114,13 +107,12 @@ let _transactionsMock: Transaction[] = [
   {
     id: 'txn8',
     description: 'Andrei',
-    name: 'Transaction 8',
+    name: 'Debt 8',
     currency: CurrencyType.USD,
     from: 'mister_bulochka',
     to: [{ username: 'Pushchair_Andrei', amount: 50 }],
     amount: 50,
-    status: TransactionStatusType.Paid,
-    transactionDate: new Date('2023-01-15'),
+    status: DebtStatusType.Paid,
     createdDate: new Date('2023-01-14'),
     resolvedDate: new Date('2023-01-15'),
     categories: ['Reimbursement', 'Food'],
@@ -129,13 +121,12 @@ let _transactionsMock: Transaction[] = [
   {
     id: 'txn9',
     description: 'Lunch reimbursement 2',
-    name: 'Transaction 9',
+    name: 'Debt 9',
     currency: CurrencyType.USD,
     from: 'mister_bulochka',
     to: [{ username: 'Pushchair_Andrei', amount: 50 }],
     amount: 50,
-    status: TransactionStatusType.Paid,
-    transactionDate: new Date('2023-01-15'),
+    status: DebtStatusType.Paid,
     createdDate: new Date('2023-01-14'),
     resolvedDate: new Date('2023-01-15'),
     categories: ['Reimbursement', 'Food'],
@@ -144,13 +135,12 @@ let _transactionsMock: Transaction[] = [
   {
     id: 'txn10',
     description: 'reimbursement Andrei',
-    name: 'Transaction 10',
+    name: 'Debt 10',
     currency: CurrencyType.USD,
     from: 'mister_bulochka',
     to: [{ username: 'Pushchair_Andrei', amount: 50 }],
     amount: 50,
-    status: TransactionStatusType.Paid,
-    transactionDate: new Date('2023-01-15'),
+    status: DebtStatusType.Paid,
     createdDate: new Date('2023-01-14'),
     resolvedDate: new Date('2023-01-15'),
     categories: ['Reimbursement', 'Food'],
@@ -159,13 +149,12 @@ let _transactionsMock: Transaction[] = [
   {
     id: 'txn11',
     description: 'Utility bills',
-    name: 'Transaction 11',
+    name: 'Debt 11',
     currency: CurrencyType.USD,
     from: 'mister_bulochka',
     to: [{ username: 'Pushchair_Andrei', amount: 50 }],
     amount: 50,
-    status: TransactionStatusType.Paid,
-    transactionDate: new Date('2023-01-15'),
+    status: DebtStatusType.Paid,
     createdDate: new Date('2023-01-14'),
     resolvedDate: new Date('2023-01-15'),
     categories: ['Reimbursement', 'Food'],
@@ -174,13 +163,12 @@ let _transactionsMock: Transaction[] = [
   {
     id: 'txn12',
     description: 'Lunch reimbursement',
-    name: 'Transaction 12',
+    name: 'Debt 12',
     currency: CurrencyType.USD,
     from: 'mister_bulochka',
     to: [{ username: 'Pushchair_Andrei', amount: 50 }],
     amount: 50,
-    status: TransactionStatusType.Paid,
-    transactionDate: new Date('2023-01-15'),
+    status: DebtStatusType.Paid,
     createdDate: new Date('2023-01-14'),
     resolvedDate: new Date('2023-01-15'),
     categories: ['Reimbursement', 'Food'],
@@ -189,13 +177,12 @@ let _transactionsMock: Transaction[] = [
   {
     id: 'txn13',
     description: 'Lunch reimbursement',
-    name: 'Transaction 13',
+    name: 'Debt 13',
     currency: CurrencyType.USD,
     from: 'mister_bulochka',
     to: [{ username: 'Pushchair_Andrei', amount: 50 }],
     amount: 50,
-    status: TransactionStatusType.Paid,
-    transactionDate: new Date('2023-01-15'),
+    status: DebtStatusType.Paid,
     createdDate: new Date('2023-01-14'),
     resolvedDate: new Date('2023-01-15'),
     categories: ['Reimbursement', 'Food'],
@@ -204,13 +191,12 @@ let _transactionsMock: Transaction[] = [
   {
     id: 'txn14',
     description: 'Lunch reimbursement',
-    name: 'Transaction 14',
+    name: 'Debt 14',
     currency: CurrencyType.USD,
     from: 'mister_bulochka',
     to: [{ username: 'Pushchair_Andrei', amount: 50 }],
     amount: 50,
-    status: TransactionStatusType.Paid,
-    transactionDate: new Date('2023-01-15'),
+    status: DebtStatusType.Paid,
     createdDate: new Date('2023-01-14'),
     resolvedDate: new Date('2023-01-15'),
     categories: ['Reimbursement', 'Food'],
@@ -224,8 +210,7 @@ let _transactionsMock: Transaction[] = [
     from: 'mister_bulochka',
     to: [{ username: 'Pushchair_Andrei', amount: 50 }],
     amount: 50,
-    status: TransactionStatusType.Paid,
-    transactionDate: new Date('2023-01-15'),
+    status: DebtStatusType.Paid,
     createdDate: new Date('2023-01-14'),
     resolvedDate: new Date('2023-01-15'),
     categories: ['Reimbursement', 'Food'],
@@ -233,11 +218,11 @@ let _transactionsMock: Transaction[] = [
   },
 ]
 
-export const transactionsMock = () => _transactionsMock
+export const debtsMock = () => _debtsMock
 
-export const updateTransactionMock = (newValue: typeof _transactionsMock) => {
-  _transactionsMock = newValue
-  return _transactionsMock
+export const updateDebtsMock = (newValue: typeof _debtsMock) => {
+  _debtsMock = newValue
+  return _debtsMock
 }
 
 let _friendsMock: ObshchakUser[] = [

@@ -6,7 +6,7 @@ import { GOOGLE_CLOUD_CLIENT_ID, GOOGLE_CLOUD_CLIENT_SECRET } from '../config'
 import passport from 'koa-passport'
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 import { dataSource, User } from '../model'
-import * as transactionFunctions from './transactions'
+import * as debtsFns from './debts'
 
 passport.use(
   new GoogleStrategy(
@@ -89,8 +89,8 @@ export const setupRoutes = (userSocketsManager: UserSocketsManager) => {
       ctx.body = { error: 'Not authenticated' }
     }
   })
-  router.post(`/v${API_VER}/create-transaction`, async (ctx) =>
-    transactionFunctions.createDebt(ctx, userSocketsManager),
+  router.post(`/v${API_VER}/create-debt`, async (ctx) =>
+    debtsFns.createDebt(ctx, userSocketsManager),
   )
 
   return router
@@ -107,7 +107,7 @@ const getDebtsFunction = (userSocketsManager: UserSocketsManager) => async (ctx:
   // }
 
   // const userController = dataSource.getRepository(User)
-  // TODO: implement transactions by user, and find them
+  // TODO: implement debts by user, and find them
   // const user = await userController.findOne({
   //   where: {
   //     userId: ctx.state.user.userId,
@@ -118,8 +118,8 @@ const getDebtsFunction = (userSocketsManager: UserSocketsManager) => async (ctx:
   //   ctx.body = { error: 'User not found' }
   //   return
   // }
-  // const transactions = await user.transactions
-  // ctx.body = transactions
+  // const debts = await user.debts
+  // ctx.body = debts
   // ctx.status = 200
 }
 
@@ -183,19 +183,19 @@ const getDebtsFunction = (userSocketsManager: UserSocketsManager) => async (ctx:
 // router.post(`/v${API_VER}/users`, userController.createUser)
 // router.get('/v${API_VER}/users/:userId', userController.getUser)
 //
-// router.post('/v${API_VER}/transactions', transactionController.createDebt)
-// router.get('/v${API_VER}/transactions/:transactionId', transactionController.getDebt)
-// router.put('/v${API_VER}/transactions/:transactionId', transactionController.updateDebt)
-// router.delete('/v${API_VER}/transactions/:transactionId', transactionController.deleteDebt)
+// router.post('/v${API_VER}/debts', debtController.createDebt)
+// router.get('/v${API_VER}/debts/:debtId', debtController.getDebt)
+// router.put('/v${API_VER}/debts/:debtId', debtController.updateDebt)
+// router.delete('/v${API_VER}/debts/:debtId', debtController.deleteDebt)
 //
-// router.post('/v${API_VER}/transactions/:transactionId/participations', participationController.createParticipation)
-// router.get('/v${API_VER}/transactions/:transactionId/participations', participationController.listParticipations)
-// router.put('/v${API_VER}/transactions/:transactionId/participations/:participationId', participationController.updateParticipation)
+// router.post('/v${API_VER}/debts/:debtId/participations', participationController.createParticipation)
+// router.get('/v${API_VER}/debts/:debtId/participations', participationController.listParticipations)
+// router.put('/v${API_VER}/debts/:debtId/participations/:participationId', participationController.updateParticipation)
 //
-// router.post('/v${API_VER}/transactions/:transactionId/payments', paymentController.makePayment)
-// router.get('/v${API_VER}/transactions/:transactionId/payments', paymentController.listPayments)
+// router.post('/v${API_VER}/debts/:debtId/payments', paymentController.makePayment)
+// router.get('/v${API_VER}/debts/:debtId/payments', paymentController.listPayments)
 // router.get('/v${API_VER}/payments/:paymentId', paymentController.getPayment)
 //
-// router.post('/v${API_VER}/transaction-groups', transactionGroupController.createDebtGroup)
-// router.get('/v${API_VER}/transaction-groups/:groupId', transactionGroupController.getDebtGroup)
-// router.put('/v${API_VER}/transaction-groups/:groupId', transactionGroupController.updateDebtGroup)
+// router.post('/v${API_VER}/item-groups', debtGroupController.createDebtGroup)
+// router.get('/v${API_VER}/item-groups/:groupId', debtGroupController.getDebtGroup)
+// router.put('/v${API_VER}/item-groups/:groupId', debtGroupController.updateDebtGroup)
