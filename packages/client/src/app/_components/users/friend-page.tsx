@@ -24,7 +24,6 @@ export const FriendPage: React.FC<FriendPageProps> = ({ username }) => {
   const {
     data: users,
     isLoading: isLoadingUser,
-    error: errorUser,
   } = useSwr<UserSearchParams, UsersSearchResponse>(nextEndpointsMap.USERS(), usernames)
 
   const { debts } = useDebts({ usernames: [username] })
@@ -32,7 +31,6 @@ export const FriendPage: React.FC<FriendPageProps> = ({ username }) => {
   const {
     data: groups,
     isLoading: isLoadingGroups,
-    error: errorGroups,
   } = useSwr<UserSearchParams, GroupsSearchResponse>(nextEndpointsMap.GROUPS(), usernames)
 
   return (
