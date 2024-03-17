@@ -13,8 +13,8 @@ import { match } from 'ts-pattern'
 const getColorByStatus = (status: DebtStatusType): string =>
   match(status)
     .with(DebtStatusType.Paid, () => green[500])
-    .with(DebtStatusType.Pending, () => purple[800])
-    .with(DebtStatusType.Active, () => grey[500])
+    .with(DebtStatusType.Pending, () => grey[500])
+    .with(DebtStatusType.Active, () => purple[500])
     .otherwise(() => grey[300])
 
 enum DebtParticipantsType {
