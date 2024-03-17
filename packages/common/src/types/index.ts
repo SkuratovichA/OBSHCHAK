@@ -1,5 +1,7 @@
 export * from './chatbot'
-export * from './debts'
+export * from './debt'
+export * from './group'
+export * from './obshchak-user'
 export * from './old'
 export * from './utils'
 
