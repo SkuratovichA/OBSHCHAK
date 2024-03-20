@@ -7,11 +7,19 @@ export * from './utils'
 
 import type { AsArray, Maybe, Optional } from './utils'
 
-export type Paginatable<T> = Optional<{
+export type Paginatable<T extends object = object> = Optional<{
   page: number
   limit: number
 }> &
   T
+
+export const isPaginatable = (obj: object): obj is Paginatable =>
+  !obj ||
+  typeof obj === 'object' && (
+    'page' in obj && 'limit' in obj ||
+    !('page' in obj) && !('limit' in obj)
+  )
+
 
 export type Loadable<T = object> =
   | ({
