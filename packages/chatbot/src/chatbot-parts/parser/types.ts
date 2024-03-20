@@ -1,4 +1,4 @@
-export type FunctionCallProps<T extends {}> = {
+export type FunctionCallProps<T extends object> = {
   functionName: string
   args: T
 }

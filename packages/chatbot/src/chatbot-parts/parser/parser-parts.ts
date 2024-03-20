@@ -1,4 +1,4 @@
-import { ParseLines, ProcessBuffer, ProcessBufferProps } from './types'
+import type { ParseLines, ProcessBuffer, ProcessBufferProps } from './types'
 import { EmbeddedFunctionType, isEmbeddedFunction } from './function-calling'
 
 const END_TOKEN_IF_EMPTY = 'Done'

@@ -1,4 +1,4 @@
-import { IsEmbeddedFunction, IsEmbeddedOperationResult } from './types'
+import type { IsEmbeddedFunction, IsEmbeddedOperationResult } from './types'
 
 export * from './types'
 

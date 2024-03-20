@@ -5,7 +5,7 @@ import { Button, TextField, Typography } from '@mui/material'
 import { motion } from 'framer-motion'
 import { useCallback, useEffect, useState } from 'react'
 import NextLink from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 
 import { CredentialsContainer } from '../components'
 

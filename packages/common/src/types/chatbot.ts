@@ -3,12 +3,14 @@ export interface ChatbotMessageQuery {
   userId: string
 }
 
-export const isChatbotMessageQuery = (obj: any): obj is ChatbotMessageQuery => {
+export const isChatbotMessageQuery = (obj: object): obj is ChatbotMessageQuery => {
   return (
+    !!obj &&
+    'message' in obj &&
     obj &&
-    obj.message &&
-    obj.userId &&
     typeof obj.message === 'string' &&
+    'userId' in obj &&
+    obj &&
     typeof obj.userId === 'string'
   )
 }

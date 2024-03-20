@@ -1,5 +1,6 @@
 import Router from 'koa-router'
-import { ChatbotResponse, isChatbotMessageQuery } from 'app-common'
+import type { ChatbotResponse } from 'app-common'
+import { isChatbotMessageQuery } from 'app-common'
 
 import { ChatbotService } from '../chatbotsvc'
 import { sseMiddleware } from '../sse'
@@ -60,6 +61,7 @@ messageRouter.get('/message', async (ctx) => {
       logger.debug('Client disconnected, closing subscription')
       subscription.unsubscribe()
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
     logger.error(`Error in SSE logic: ${e.message}`)
     ctx.status = 500
