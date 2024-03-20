@@ -1,4 +1,4 @@
-import type { ObshchakUser } from './obshchakUser'
+import type { ObshchakUser } from './obshchak-user'
 import { isWithId } from './index'
 import { isArray } from 'lodash'
 
@@ -37,7 +37,6 @@ export interface Debt {
   groups?: string[]
 }
 
-
 // TODO: move to common. It looks like shit btw
 export const isDebt = (obj: object): obj is Debt =>
   obj &&
@@ -56,4 +55,3 @@ export const isDebt = (obj: object): obj is Debt =>
 // 'createdDate' in obj && obj.createdDate instanceof Date &&
 // 'resolvedDate' in obj && (obj.resolvedDate === null || obj.resolvedDate instanceof Date)
 // 'description' in obj && typeof obj.description === 'string' &&
-
