@@ -28,31 +28,33 @@ export const BottomBar: React.FC = () => {
   }
 
   // todo: add some toggle with motion stuff
-  return <>
-    {/*{<div onClick={() => setOpen(op => !op)}>{open ? 'close' : 'open'}</div>}*/}
-    {open && (
-      <BottomNavigation showLabels style={{ justifyContent: 'center', justifySelf: 'flex-end' }}>
-        {[
-          { Friends: { icon: <Group /> } },
-          { Groups: { icon: <Groups /> } },
-          { 'New Debt': { icon: <AddCircleOutline fontSize="large" color="primary" /> } },
-          { Debts: { icon: <ListIcon /> } },
-          { Account: { icon: <ProfileIcon /> } },
-        ]
-          .map((a) => Object.entries(a)[0])
-          .map(([text, props]) => ({ ...props, label: text }))
-          .map((props, idx) => (
-            <BottomNavActionHighlighted
-              onClick={() => handleRedirect(linkify(props.label))}
-              // TODO: fucked up constants
-              shouldHighlight={shouldHl(props.label)}
-              highlightColor={'rgba(151,71,255,0.43)'}
-              key={idx}
-              icon={props.icon}
-              label={props.label}
-            />
-          ))}
-      </BottomNavigation>
-    )}
+  return (
+    <>
+      {/*{<div onClick={() => setOpen(op => !op)}>{open ? 'close' : 'open'}</div>}*/}
+      {open && (
+        <BottomNavigation showLabels style={{ justifyContent: 'center', justifySelf: 'flex-end' }}>
+          {[
+            { Friends: { icon: <Group /> } },
+            { Groups: { icon: <Groups /> } },
+            { 'New Debt': { icon: <AddCircleOutline fontSize="large" color="primary" /> } },
+            { Debts: { icon: <ListIcon /> } },
+            { Account: { icon: <ProfileIcon /> } },
+          ]
+            .map((a) => Object.entries(a)[0])
+            .map(([text, props]) => ({ ...props, label: text }))
+            .map((props, idx) => (
+              <BottomNavActionHighlighted
+                onClick={() => handleRedirect(linkify(props.label))}
+                // TODO: fucked up constants
+                shouldHighlight={shouldHl(props.label)}
+                highlightColor={'rgba(151,71,255,0.43)'}
+                key={idx}
+                icon={props.icon}
+                label={props.label}
+              />
+            ))}
+        </BottomNavigation>
+      )}
     </>
+  )
 }
