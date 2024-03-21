@@ -1,14 +1,13 @@
 import type { Maybe, Debt, WithId } from 'app-common'
 import { nextEndpointsMap } from 'app-common'
 import { arrayToIdMap } from 'app-common'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useSwr } from '@OBSHCHAK-UI/app/_client-hooks/use-suspense-swr'
+import { useCallback } from 'react'
 import {
   reducer,
   ReducerActionType,
   useSafeOptimistic,
 } from '@OBSHCHAK-UI/app/_client-hooks/use-safe-optimistic'
-import type { DebtsResponse, DebtsSearchParams } from '@OBSHCHAK-UI/app/api/debts/utils'
+import type { DebtsResponse } from '@OBSHCHAK-UI/app/api/debts/utils'
 import { isDebtsResponse } from '@OBSHCHAK-UI/app/api/debts/utils'
 
 type UseDebtsResult = {
@@ -42,36 +41,15 @@ const modifyDebts = async (
 
 // filter by user id (debts for a friend)
 // filter by a group id (debts for a group)
-type UseDebtsProps = {
-  usernames?: string[]
-  groups?: string[]
-}
+type UseDebtsProps = DebtsResponse
 
 type UseDebts = (props?: UseDebtsProps) => UseDebtsResult
 
-// TODO: KAN-37 move debts fetching outside the hook.
-export const useDebts: UseDebts = (props) => {
-  const { usernames, groups } = useMemo(() => props ?? {}, [props])
-
-  // TODO: when using not mocks, somehow add the username of an authenticated user. But probably on the NEXT server side. Idk
-  const debtsFetchBody: DebtsSearchParams = {
-    usernames: usernames ?? [],
-    groups: groups ?? [],
-  } as DebtsSearchParams
-
-  const { data, error } = useSwr<DebtsSearchParams, DebtsResponse>(
-    nextEndpointsMap.DEBTS(),
-    debtsFetchBody,
-  )
-  const [debts, setDebts] = useState<Maybe<DebtsResponse>>(data)
+export const useDebts: UseDebts = (debts) => {
   const [optimisticDebts, dispatchOptimisticDebts] = useSafeOptimistic<
     UseDebtsResult['debts'],
     ReducerActionType
   >(debts, reducer)
-
-  useEffect(() => {
-    setDebts(data)
-  }, [data])
 
   const createDebt = useCallback(
     async (debt: Parameters<UseDebtsResult['createDebt']>[0]) => {
@@ -82,7 +60,7 @@ export const useDebts: UseDebts = (props) => {
       })
 
       const newDebt = await modifyDebts(nextEndpointsMap.CREATE_DEBT(), debt)
-      setDebts((prev) => newDebt ?? prev)
+      // setDebts((prev) => newDebt ?? prev)
     },
     [dispatchOptimisticDebts],
   )
@@ -96,7 +74,7 @@ export const useDebts: UseDebts = (props) => {
       })
 
       const newDebts = await modifyDebts(nextEndpointsMap.UPDATE_DEBT(), debt)
-      setDebts((prev) => newDebts ?? prev)
+      // setDebts((prev) => newDebts ?? prev)
     },
     [dispatchOptimisticDebts],
   )
@@ -110,7 +88,7 @@ export const useDebts: UseDebts = (props) => {
       })
 
       const newDebts = await modifyDebts(nextEndpointsMap.UPDATE_DEBT(), debt)
-      setDebts((prev) => newDebts ?? prev)
+      // setDebts((prev) => newDebts ?? prev)
     },
     [dispatchOptimisticDebts],
   )

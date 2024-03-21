@@ -3,9 +3,8 @@
 import type { Maybe, ObshchakUser, Pendable } from 'app-common'
 import { nextEndpointsMap } from 'app-common'
 import { arrayToIdMap } from 'app-common'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useSwr } from '@OBSHCHAK-UI/app/_client-hooks/use-suspense-swr'
-import type { FriendsRequestBody, FriendsResponse } from '@OBSHCHAK-UI/app/api/friends/utils'
+import { useCallback } from 'react'
+import type { FriendsResponse } from '@OBSHCHAK-UI/app/api/friends/utils'
 import { isFriendsResponse } from '@OBSHCHAK-UI/app/api/friends/utils'
 import {
   reducer,
@@ -35,34 +34,20 @@ const modifyFriends = async (
   }
 }
 
-interface UseFriendsProps {
-  userId: FriendsRequestBody['id']
+export type UseFriendsResult = {
+  friends: Maybe<FriendsResponse>
+  addFriend: (friend: ObshchakUser) => Promise<void>
+  removeFriend: (friend: ObshchakUser) => Promise<void>
 }
 
-// TODO: KAN-37 move friends fetching outside the hook.
-export const useFriends = ({ userId }: UseFriendsProps) => {
-  const fetcherProps = useMemo(
-    () => ({
-      id: userId,
-    }),
-    [userId],
-  )
+type UseFriends = (friends: Maybe<FriendsResponse>) => UseFriendsResult
 
-  const { data, error } = useSwr<FriendsRequestBody, FriendsResponse>(
-    nextEndpointsMap.FRIENDS(),
-    fetcherProps,
-  )
-
-  const [friends, setFriends] = useState<Maybe<FriendsResponse>>(data)
+export const useFriends: UseFriends = (friends) => {
   const [optimisticFriends, dispatchOptimisticFriend] = useSafeOptimistic<
     Maybe<FriendsResponse>,
     ReducerActionType
   >(friends, reducer)
 
-  // maybe this is redundant
-  useEffect(() => {
-    setFriends(data)
-  }, [data])
 
   const removeFriend = useCallback(
     async (friend: ObshchakUser) => {
@@ -72,26 +57,23 @@ export const useFriends = ({ userId }: UseFriendsProps) => {
         payload: arrayToIdMap([friend]),
       })
       const newFriends = await modifyFriends(nextEndpointsMap.DELETE_FRIEND(), friend)
-      setFriends((prev) => newFriends ?? prev)
     },
-    [dispatchOptimisticFriend, setFriends],
+    [dispatchOptimisticFriend],
   )
 
   const addFriend = useCallback(
-    () => async (friend: ObshchakUser) => {
+    async (friend: ObshchakUser) => {
       dispatchOptimisticFriend({
         type: ReducerActionType.ADD,
         payload: arrayToIdMap([friend]),
       })
       const newFriends = await modifyFriends(nextEndpointsMap.ADD_FRIEND(), friend)
-      setFriends(() => (newFriends ? newFriends : friends))
     },
-    [dispatchOptimisticFriend, setFriends, friends],
+    [dispatchOptimisticFriend],
   )
 
   return {
     friends: optimisticFriends,
-    error,
     addFriend,
     removeFriend,
   }
