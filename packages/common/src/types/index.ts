@@ -54,6 +54,8 @@ export type WithDimensions<T = object, S extends undefined | number = undefined>
 
 export const isSomeEmpty = (s: object) => !Object.keys(s).length
 
+export const isAnyEmpty = (s: unknown) => !s || isSomeEmpty(s)
+
 export const entries = <T extends object>(obj: Maybe<T>): AsArray<T> =>
   obj ? (Object.entries(obj) as AsArray<T>) : []
 
