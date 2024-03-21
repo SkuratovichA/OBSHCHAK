@@ -1,11 +1,13 @@
 'use client'
 import React from 'react'
+import type { Group, Pendable } from 'app-common'
+import type { DropdownMenuProps } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
+import { Typography } from '@mui/material'
 
-interface GroupItemProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  group: any // FIXME: tmp solution before types are in app-common
-}
-
+type GroupItemProps = Pendable<{
+  group: Group
+  actions: DropdownMenuProps['namedCallbacks']
+}>
 export const GroupItem: React.FC<GroupItemProps> = ({ group }) => {
   return (
     <div
@@ -17,7 +19,32 @@ export const GroupItem: React.FC<GroupItemProps> = ({ group }) => {
         background: '#ebebeb',
       }}
     >
-      hello world from the group item
+      <div>
+        <Typography variant={'h6'}>
+          {group.name}
+        </Typography>
+
+        <Typography variant={'caption'}>
+          {group.description}
+        </Typography>
+
+        <Typography variant={'caption'}>
+          {new Date(group.creationDate).toLocaleDateString()}
+        </Typography>
+      </div>
+
+      <p>
+        admin: {JSON.stringify(group.admin)}
+      </p>
+
+      <p>
+        creation date: {JSON.stringify(group.creationDate)}
+      </p>
+
+      <div>
+        {group.members.length} members
+      </div>
+
     </div>
   )
 }
