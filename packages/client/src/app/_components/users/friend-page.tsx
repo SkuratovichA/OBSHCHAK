@@ -1,21 +1,25 @@
 'use client'
 
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
 import type { ObshchakUser } from 'app-common'
 import { nextEndpointsMap } from 'app-common'
 
 import {
-  DebtsPage, GroupListSkeleton,
+  DebtsPage,
+  DebtsPageSkeleton,
+  GroupListSkeleton,
   GroupsList,
   ScrollableBarlessList,
   UserProfile,
 } from '@OBSHCHAK-UI/app/_components'
-import { LoadingProvider, useSwr, useDebts } from '@OBSHCHAK-UI/app/_client-hooks'
+import { LoadingProvider, useSwr } from '@OBSHCHAK-UI/app/_client-hooks'
 import type { UserSearchParams, UsersSearchResponse } from '@OBSHCHAK-UI/app/api/users/route'
-import type { GroupsRequestBody, GroupsResponse } from '@OBSHCHAK-UI/app/api/groups/utils';
+import type { GroupsRequestBody, GroupsResponse } from '@OBSHCHAK-UI/app/api/groups/utils'
 import { deserializeGroupsResponse } from '@OBSHCHAK-UI/app/api/groups/utils'
 import { match, P } from 'ts-pattern'
+import type { DebtsResponse, DebtsSearchParams } from '@OBSHCHAK-UI/app/api/debts/utils'
+
 
 export type FriendPageProps = {
   username: ObshchakUser['username']
@@ -30,20 +34,23 @@ export const FriendPage: React.FC<FriendPageProps> = ({ username }) => {
     usernames,
   )
 
-  const { debts } = useDebts({ usernames: [username] })
+  const {
+    data: debts,
+    isLoading: isDebtsLoading,
+    isValidating: isDebtsValidating,
+  } = useSwr<DebtsSearchParams, DebtsResponse>(
+    nextEndpointsMap.DEBTS(),
+    { ...usernames, groups: [] },
+  )
 
   const {
-    data: groupsSerialized,
-    isLoading: isGroupsloading,
+    data: groups,
+    isLoading: isGroupsLoading,
     isValidating: isGroupsValidating,
   } = useSwr<GroupsRequestBody, GroupsResponse>(
     nextEndpointsMap.GROUPS(),
     usernames,
   )
-  const groups = useMemo(() => groupsSerialized
-      ? deserializeGroupsResponse(groupsSerialized)
-      : groupsSerialized
-    , [groupsSerialized])
 
   return (
     <ScrollableBarlessList>
@@ -51,29 +58,24 @@ export const FriendPage: React.FC<FriendPageProps> = ({ username }) => {
         <UserProfile user={users?.length ? users[0] : undefined} />
       </LoadingProvider>
 
-      <LoadingProvider isLoading={!debts}>
-        <FriendsDebts items={debts} />
-      </LoadingProvider>
+      {match([isDebtsLoading, isDebtsValidating, debts])
+        .returnType<React.ReactNode>()
+        .with(
+          [false, false, P.select('debts', P.not(P.nullish))],
+          ({ debts }) => <FriendsDebts debts={debts} />,
+        )
+        .otherwise(() => <DebtsPageSkeleton />)
+      }
 
+      {match([isGroupsLoading, isGroupsValidating, groups])
+        .returnType<React.ReactNode>()
+        .with(
+          [false, false, P.select('groups', P.not(P.nullish))],
+          ({ groups }) => <GroupsList groups={deserializeGroupsResponse(groups)} />,
+        )
+        .otherwise(() => <GroupListSkeleton />)
+      }
 
-      <>
-        {
-          match([isGroupsloading, isGroupsValidating, groups])
-            .with(
-              [true, true, undefined],
-              () => <GroupListSkeleton />,
-            )
-            .with(
-              [false, true, undefined],
-              () => <div>Groups are validating</div>,
-            )
-            .with(
-              [false, false, P.select('groups', P.not(P.nullish))],
-              ({ groups }) => <GroupsList groups={groups} />,
-            )
-        }
-      </>
-      {/*<GroupsList groups={groups} />*/}
     </ScrollableBarlessList>
   )
 }

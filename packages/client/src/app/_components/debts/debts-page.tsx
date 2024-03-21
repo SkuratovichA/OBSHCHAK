@@ -2,14 +2,13 @@
 
 import React, { useMemo } from 'react'
 import type { FilterContextTypeBase, FilterFn } from '@OBSHCHAK-UI/app/_client-hooks'
-import { useLoading } from '@OBSHCHAK-UI/app/_client-hooks'
 import { useFiltering } from '@OBSHCHAK-UI/app/_client-hooks'
 import {
   FilterBar,
   FullHeightNonScrollableContainer,
   DebtsList,
 } from '@OBSHCHAK-UI/app/_components'
-import type { Defined, Maybe, Debt } from 'app-common'
+import type { Maybe, Debt } from 'app-common'
 import { entries } from 'app-common'
 import { DebtStatusType } from 'app-common'
 import type { DebtsResponse } from '@OBSHCHAK-UI/app/api/debts/utils'
@@ -43,7 +42,7 @@ const filterDebts: FilterFn<Maybe<DebtsResponse>, DebtFilters> = (
     return matchesStatus && matchesSearch ? { ...acc, [id]: entry } : acc
   }, {})
 
-const DebtsPageSkeleton = () => {
+export const DebtsPageSkeleton = () => {
   return (
     <FullHeightNonScrollableContainer>
       <FilterBar
@@ -58,22 +57,20 @@ const DebtsPageSkeleton = () => {
 }
 
 interface DebtsPageProps {
-  items: Maybe<DebtsResponse>
+  debts: DebtsResponse
 }
 
-export const DebtsPage: React.FC<DebtsPageProps> = ({ items }) => {
+export const DebtsPage: React.FC<DebtsPageProps> = ({ debts }) => {
   const result = useFiltering({
-    items,
+    items: debts,
     filteringFunction: filterDebts,
   })
-
-  const { isLoading } = useLoading()
 
   const {
     updateFilters,
     filteredItems: filteredDebts,
     filters,
-  } = isLoading ? result : (result as Defined<typeof result>) // that's weird that this isn't enough to make it defined
+  } = result // that's weird that this isn't enough to make it defined
 
   const handleFilterChange = (filterName: FilterType, value: keyof Debt) => {
     updateFilters!({ [filtersToKeyMap[filterName]]: value })
@@ -94,10 +91,6 @@ export const DebtsPage: React.FC<DebtsPageProps> = ({ items }) => {
     ],
     [],
   )
-
-  if (isLoading) {
-    return <DebtsPageSkeleton />
-  }
 
   return (
     <FullHeightNonScrollableContainer>
