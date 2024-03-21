@@ -49,6 +49,7 @@ type UseDebtsProps = {
 
 type UseDebts = (props?: UseDebtsProps) => UseDebtsResult
 
+// TODO: KAN-37 move debts fetching outside the hook.
 export const useDebts: UseDebts = (props) => {
   const { usernames, groups } = useMemo(() => props ?? {}, [props])
 

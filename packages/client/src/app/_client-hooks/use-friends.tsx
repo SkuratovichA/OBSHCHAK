@@ -1,7 +1,7 @@
 'use client'
 
 import type { Maybe, ObshchakUser, Pendable } from 'app-common'
-import { nextEndpointsMap, WithId } from 'app-common'
+import { nextEndpointsMap } from 'app-common'
 import { arrayToIdMap } from 'app-common'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSwr } from '@OBSHCHAK-UI/app/_client-hooks/use-suspense-swr'
@@ -39,6 +39,7 @@ interface UseFriendsProps {
   userId: FriendsRequestBody['id']
 }
 
+// TODO: KAN-37 move friends fetching outside the hook.
 export const useFriends = ({ userId }: UseFriendsProps) => {
   const fetcherProps = useMemo(
     () => ({
