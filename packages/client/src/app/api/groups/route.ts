@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
 import type { ObshchakUser } from 'app-common'
 import { arrayToIdMap, groupsMock } from 'app-common'
-import type { GroupsResponse} from '@OBSHCHAK-UI/app/api/groups/utils';
+import type { GroupsResponse } from '@OBSHCHAK-UI/app/api/groups/utils'
 import { serializeGroup } from '@OBSHCHAK-UI/app/api/groups/utils'
 import { isGroupsRequestBody } from '@OBSHCHAK-UI/app/api/groups/utils'
 

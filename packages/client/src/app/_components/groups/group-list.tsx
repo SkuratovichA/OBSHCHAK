@@ -8,7 +8,7 @@ import {
   GroupItem,
 } from '@OBSHCHAK-UI/app/_components'
 import { Box, Skeleton } from '@mui/material'
-import type { Group} from 'app-common'
+import type { Group } from 'app-common'
 import { entries, isSomeEmpty } from 'app-common'
 import type { GroupsMap } from '@OBSHCHAK-UI/app/api/groups/utils'
 import type { DropdownMenuProps } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
@@ -64,22 +64,20 @@ export const GroupsList: React.FC<GroupsListProps> = ({
   //   updateFilters({ search: value })
   // }
 
-  const groupActions = (group: Group): DropdownMenuProps['namedCallbacks'] => {
-    return {
-      delete: {
-        name: 'Delete group',
-        callback: () => deleteGroup(group),
-      },
-      createDebt: {
-        name: 'Create a debt',
-        callback: async () => createGroup(group),
-      },
-      addMembers: {
-        name: 'Add members',
-        callback: async () => console.log('addMembers'),
-      },
-    }
-  }
+  const groupActions = (group: Group): DropdownMenuProps['namedCallbacks'] => ({
+    delete: {
+      name: 'Delete group',
+      callback: () => deleteGroup(group),
+    },
+    createDebt: {
+      name: 'Create a debt',
+      callback: async () => createGroup(group),
+    },
+    addMembers: {
+      name: 'Add members',
+      callback: async () => console.log('addMembers'),
+    },
+  })
 
   return (
     <FullHeightNonScrollableContainer>
