@@ -1,4 +1,4 @@
-import type { Debt, IdMap, ObshchakUser, Paginatable } from 'app-common';
+import type { Debt, IdMap, ObshchakUser, Paginatable } from 'app-common'
 import { isDebt } from 'app-common'
 import { isArray } from 'lodash'
 
