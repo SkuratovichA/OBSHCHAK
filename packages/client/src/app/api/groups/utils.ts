@@ -1,15 +1,53 @@
-import type { Debt, IdMap, Paginatable } from 'app-common';
-import { isGroup } from 'app-common'
+import type { Group, IdMap, ObshchakUser, Paginatable, SerializedGroup } from 'app-common'
+import { entries } from 'app-common'
+import { isSerializedGroup } from 'app-common'
+import { isPaginatable } from 'app-common'
+
+export type GroupsResponse = IdMap<SerializedGroup>
+
+export type GroupsMap = IdMap<Group>
 
 
-export type GroupsResponse<T extends object = object> = IdMap<Debt & T>
+export const deserializeGroup = (group: SerializedGroup): Group => ({
+  ...group,
+  creationDate: new Date(group.creationDate),
+})
+
+export const serializeGroup = (group: Group): SerializedGroup => ({
+  ...group,
+  creationDate: group.creationDate.toISOString(),
+})
+
+export const deserializeGroupsResponse = (groupsResponse: GroupsResponse): GroupsMap =>
+  entries(groupsResponse)
+    .reduce<GroupsMap>((acc, [id, group]) => ({
+      ...acc,
+      [id]: deserializeGroup(group),
+    }), {})
+
 
 export type GroupsRequestBody = Paginatable<{
-  id: Debt['id']
+  usernames: Array<ObshchakUser['username']> | null
 }>
 
-export const isGroupsRequestBody = (obj: object): obj is GroupsRequestBody =>
-  obj && 'id' in obj && typeof obj.id === 'string'
-
 export const isGroupsResponse = (obj: object): obj is GroupsResponse =>
-  Object.entries(obj).every(([id, group]) => id === group.id && isGroup(group))
+  Object.entries(obj).every(([id, group]) => id === group.id && isSerializedGroup(group))
+
+
+export type GroupsAddRequestBody = {
+  groups: SerializedGroup[]
+}
+export const isGroupsAddRequestBody = (obj: object): obj is GroupsAddRequestBody =>
+  'groups' in obj && Array.isArray(obj.groups) && obj.groups.every(isSerializedGroup)
+
+export type GroupsDeleteRequestBody = {
+  groupIds: Array<Group['id']>
+}
+export const isGroupsDeleteRequestBody = (obj: object): obj is GroupsDeleteRequestBody =>
+  'groupIds' in obj && Array.isArray(obj.groupIds) && obj.groupIds.every(id => typeof id === 'string')
+
+
+export const isGroupsRequestBody = (obj: object): obj is GroupsRequestBody =>
+  isPaginatable(obj) &&
+  typeof obj === 'object' &&
+  'usernames' in obj && (Array.isArray(obj.usernames) || obj.usernames === null)
