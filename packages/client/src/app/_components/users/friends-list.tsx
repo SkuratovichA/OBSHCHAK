@@ -12,7 +12,7 @@ import {
   ScrollableBarlessList,
 } from '@OBSHCHAK-UI/app/_components'
 import type { Maybe, ObshchakUser } from 'app-common'
-import { isEmpty, userDataMock } from 'app-common'
+import { isSomeEmpty, userDataMock } from 'app-common'
 import { useSession } from 'next-auth/react'
 import { match } from 'ts-pattern'
 import { entries } from 'app-common/lib/types'
@@ -89,8 +89,8 @@ export const FriendsList: React.FC = () => {
       <ScrollableBarlessList>
         <>
           {match(filteredFriends)
-            .with(undefined, null, () => <FriendsListSkeleton />) // TODO: add loading
-            .when(isEmpty, () => <div>no friends</div>) // TODO: add no friends view
+            .with(undefined, null, () => <FriendsListSkeleton />)
+            .when(isSomeEmpty, () => <div>no friends</div>) // TODO: add no friends view
             .otherwise((friends) =>
               entries(friends).map(([id, friend]) => (
                 <ListItemTiltable key={id}>
