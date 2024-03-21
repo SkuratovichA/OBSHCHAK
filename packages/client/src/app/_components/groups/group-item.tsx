@@ -15,8 +15,9 @@ export const GroupItem: React.FC<GroupItemProps> = ({ group }) => {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        height: '50px',
         background: '#ebebeb',
+        borderRadius: '10px',
+        padding: '10px',
       }}
     >
       <div>
