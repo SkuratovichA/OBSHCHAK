@@ -105,7 +105,6 @@ export const Row = styled(Container)`
     padding: 0 !important;
     display: flex;
     width: 100%;
-    justify-content: space-between;
     align-items: center;
     height: 100%;
 `
