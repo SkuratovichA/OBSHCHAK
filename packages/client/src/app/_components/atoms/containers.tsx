@@ -12,6 +12,7 @@ export const TiltedContainer: React.FC<React.PropsWithChildren> = ({ children })
     {children}
   </Tilt>
 )
+TiltedContainer.displayName = 'TiltedContainer'
 
 const listItemContainerBase = css`
   width: 100%;
@@ -29,13 +30,14 @@ const listItemContainerBase = css`
 `
 
 // TODO: Wtf do I have two components for ListITem?
-//  Where ListItem Tiltable is used compared to ListItemContainer
-export const ListItemContainer = styled(Paper)`
+//  Where ListItem Tiltable is used compared to ListItemContainerBase
+export const ListItemContainerBase = styled(Paper)`
   ${listItemContainerBase};
   cursor: pointer;
 `
+ListItemContainerBase.displayName = 'ListItemContainerBase'
 
-export const ListItemContainerPointless = styled(Paper)<Pendable>`
+export const ListItemContainer = styled(Paper)<Pendable>`
   ${listItemContainerBase};
   cursor: default;
 
@@ -46,6 +48,7 @@ export const ListItemContainerPointless = styled(Paper)<Pendable>`
       pointer-events: none;
     `}
 `
+ListItemContainer.displayName = 'ListItemContainer'
 
 export const ListItemTiltable = styled(ListItem)`
   border-radius: 8px;
@@ -53,10 +56,12 @@ export const ListItemTiltable = styled(ListItem)`
   height: auto;
   perspective: 10000;
 `
+ListItemTiltable.displayName = 'ListItemTiltable'
 
 export const FullHeightNonScrollableContainer = styled(Container)`
   height: 100%;
 `
+FullHeightNonScrollableContainer.displayName = 'FullHeightNonScrollableContainer'
 
 export const ScrollableBarlessList = styled(List)<{ maxHeight?: string }>`
   overflow: scroll;
@@ -69,6 +74,7 @@ export const ScrollableBarlessList = styled(List)<{ maxHeight?: string }>`
   -ms-overflow-style: none; // for IE and Edge
   scrollbar-width: none; // for Firefox
 `
+ScrollableBarlessList.displayName = 'ScrollableBarlessList'
 
 export const CenteredBox = styled(Box)`
   display: flex;
@@ -77,6 +83,7 @@ export const CenteredBox = styled(Box)`
   height: 100%;
   width: 100%;
 `
+CenteredBox.displayName = 'CenteredBox'
 
 export const FullHeightStackContainer = styled(Box)`
   display: flex;
@@ -85,9 +92,32 @@ export const FullHeightStackContainer = styled(Box)`
   overflow: hidden;
   padding: 2rem 2rem 0;
 `
+FullHeightStackContainer.displayName = 'FullHeightStackContainer'
 
 export const ScrollableBodyContainer = styled(Box)`
   flex: 1;
   overflow-y: auto;
   padding: 0;
 `
+ScrollableBodyContainer.displayName = 'ScrollableBodyContainer'
+
+export const Row = styled(Container)`
+    padding: 0 !important;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+`
+Row.displayName = 'Row'
+
+export const Column = styled(Container)`
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    height: 100%;
+    width: 100%;
+`
+Column.displayName = 'Column'
