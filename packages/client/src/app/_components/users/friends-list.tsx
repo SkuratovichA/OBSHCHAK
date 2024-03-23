@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import type { OptimisticFriends } from '@OBSHCHAK-UI/app/_client-hooks'
 import { useSwr } from '@OBSHCHAK-UI/app/_client-hooks'
 import { useFilters, useFriends } from '@OBSHCHAK-UI/app/_client-hooks'
-import { User } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/friends/user'
+import { FriendItem } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/friends/friend-item'
 import {
   FilterBar,
   FullHeightNonScrollableContainer,
@@ -42,7 +42,7 @@ const FriendsListSkeleton = () => {
     <ScrollableBarlessList>
       {Array.from({ length: 3 }).map((_, i) => (
         <ListItemTiltable key={i}>
-          <User isLoading={true} />
+          <FriendItem isLoading={true} />
         </ListItemTiltable>
       ))}
     </ScrollableBarlessList>
@@ -104,7 +104,7 @@ export const FriendsList: React.FC = () => {
             .with([P.select('friends', P.not(P.nullish)), P._, P._], ({ friends }) =>
               entries(friends).map(([id, friend]) => (
                 <ListItemTiltable key={id}>
-                  <User user={friend} actions={friendActions(friend)} pending={friend.pending} />
+                  <FriendItem user={friend} actions={friendActions(friend)} pending={friend.pending} />
                 </ListItemTiltable>
               )),
             )

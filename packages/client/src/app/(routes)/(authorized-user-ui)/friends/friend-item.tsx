@@ -31,7 +31,7 @@ type UserProps = Loadable<
     actions?: DropdownMenuProps['namedCallbacks']
   }>
 >
-export const User: React.FC<UserProps> = ({ user, actions, pending, isLoading }) => {
+export const FriendItem: React.FC<UserProps> = ({ user, actions, pending, isLoading }) => {
   const [anchorEl, setAnchorEl] = useState<Maybe<HTMLElement>>(null)
   const open = Boolean(anchorEl)
   const router = useRouter()
