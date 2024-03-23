@@ -19,6 +19,11 @@ export enum CurrencyType {
   CZK = 'CZK',
 }
 
+export enum DebtRoleType {
+  LENDER = 'LENDER',
+  BORROWER = 'BORROWER',
+}
+
 export interface Debt {
   id: string
   description?: string
@@ -26,6 +31,7 @@ export interface Debt {
 
   name: string
   currency: CurrencyType
+  role: DebtRoleType
   from: ObshchakUser['username']
   to: DebtParticipant[]
   status: DebtStatusType
@@ -37,7 +43,7 @@ export interface Debt {
   groups?: string[]
 }
 
-// TODO: move to common. It looks like shit btw
+// TODO: add validation for enums, so they are not strings, but enum values
 export const isDebt = (obj: object): obj is Debt =>
   obj &&
   isWithId(obj) &&
@@ -50,8 +56,10 @@ export const isDebt = (obj: object): obj is Debt =>
   'from' in obj &&
   typeof obj.from === 'string' &&
   'to' in obj &&
-  isArray(obj.to)
-// 'status' in obj && typeof obj.status === 'string' &&
+  isArray(obj.to) &&
+  'status' in obj && typeof obj.status === 'string' &&
+  'role' in obj && typeof obj.role === 'string'
+
 // 'createdDate' in obj && obj.createdDate instanceof Date &&
 // 'resolvedDate' in obj && (obj.resolvedDate === null || obj.resolvedDate instanceof Date)
 // 'description' in obj && typeof obj.description === 'string' &&

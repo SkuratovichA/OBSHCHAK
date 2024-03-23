@@ -1,4 +1,5 @@
-import type { ObshchakUser, Debt, Group } from '../types'
+import type { ObshchakUser, Debt, Group} from '../types';
+import { DebtRoleType } from '../types'
 import { CurrencyType, DebtStatusType } from '../types'
 
 let _friendsMock: ObshchakUser[] = [
@@ -108,6 +109,7 @@ export const setUserDataMock = (newUserData: Partial<ObshchakUser>) => {
 let _debtsMock: Debt[] = [
   {
     id: 'txn1',
+    role: DebtRoleType.LENDER,
     description: 'Payment for services rendered',
     name: 'Debt 1',
     currency: CurrencyType.USD,
@@ -124,6 +126,7 @@ let _debtsMock: Debt[] = [
     id: 'txn2',
     description: 'Monthly subscription fee',
     name: 'Debt 2',
+    role: DebtRoleType.BORROWER,
     currency: CurrencyType.EUR,
     from: friendsMock()[0].username,
     to: [{ ...userDataMock(), amount: 150 }],
@@ -139,6 +142,7 @@ let _debtsMock: Debt[] = [
     description: 'Gift',
     name: 'Debt 3',
     currency: CurrencyType.CZK,
+    role: DebtRoleType.LENDER,
     from: userDataMock().username,
     to: [{ ...friendsMock()[1], amount: 1000 }],
     amount: 1000,
@@ -151,6 +155,7 @@ let _debtsMock: Debt[] = [
   {
     id: 'txn4',
     description: 'Lunch reimbursement',
+    role: DebtRoleType.BORROWER,
     name: 'Debt 4',
     currency: CurrencyType.USD,
     from: friendsMock()[2].username,
@@ -166,6 +171,7 @@ let _debtsMock: Debt[] = [
     id: 'txn5',
     description: 'Gift for Tatiana',
     name: 'Debt 5',
+    role: DebtRoleType.LENDER,
     currency: CurrencyType.EUR,
     from: userDataMock().username,
     to: [{ ...friendsMock()[4], amount: 100 }],
@@ -180,6 +186,7 @@ let _debtsMock: Debt[] = [
     id: 'txn6',
     description: 'Shared hosting fees',
     name: 'Debt 6',
+    role: DebtRoleType.LENDER,
     currency: CurrencyType.CZK,
     from: userDataMock().username,
     to: [
@@ -199,6 +206,7 @@ let _debtsMock: Debt[] = [
     description: 'Charity Donation',
     name: 'Debt 7',
     currency: CurrencyType.USD,
+    role: DebtRoleType.LENDER,
     from: userDataMock().username,
     to: [{ ...friendsMock()[3], amount: 200 }],
     amount: 200,
@@ -213,6 +221,7 @@ let _debtsMock: Debt[] = [
     description: 'Andrei',
     name: 'Debt 8',
     currency: CurrencyType.USD,
+    role: DebtRoleType.BORROWER,
     from: friendsMock()[6].username,
     to: [{ ...userDataMock(), amount: 50 }],
     amount: 50,
@@ -227,6 +236,7 @@ let _debtsMock: Debt[] = [
     description: 'Lunch reimbursement 2',
     name: 'Debt 9',
     currency: CurrencyType.USD,
+    role: DebtRoleType.BORROWER,
     from: friendsMock()[7].username,
     to: [{ ...userDataMock(), amount: 50 }],
     amount: 50,
@@ -241,6 +251,7 @@ let _debtsMock: Debt[] = [
     description: 'reimbursement Andrei',
     name: 'Debt 10',
     currency: CurrencyType.USD,
+    role: DebtRoleType.BORROWER,
     from: friendsMock()[8].username,
     to: [{ ...userDataMock(), amount: 50 }],
     amount: 50,
@@ -255,6 +266,7 @@ let _debtsMock: Debt[] = [
     description: 'Utility bills',
     name: 'Debt 11',
     currency: CurrencyType.USD,
+    role: DebtRoleType.LENDER,
     from: userDataMock().username,
     to: [{ ...friendsMock()[8], amount: 50 }],
     amount: 50,
@@ -269,6 +281,7 @@ let _debtsMock: Debt[] = [
     description: 'Lunch reimbursement',
     name: 'Debt 12',
     currency: CurrencyType.USD,
+    role: DebtRoleType.LENDER,
     from: userDataMock().username,
     to: [{ ...friendsMock()[8], amount: 50 }],
     amount: 50,
@@ -284,6 +297,7 @@ let _debtsMock: Debt[] = [
     name: 'Debt 13',
     currency: CurrencyType.USD,
     from: userDataMock().username,
+    role: DebtRoleType.LENDER,
     to: [{ ...friendsMock()[8], amount: 50 }],
     amount: 50,
     status: DebtStatusType.Paid,
@@ -298,6 +312,7 @@ let _debtsMock: Debt[] = [
     name: 'Debt 14',
     currency: CurrencyType.USD,
     from: userDataMock().username,
+    role: DebtRoleType.LENDER,
     to: [{ ...friendsMock()[8], amount: 50 }],
     amount: 50,
     status: DebtStatusType.Paid,
@@ -312,6 +327,7 @@ let _debtsMock: Debt[] = [
     name: 'Utility bills',
     currency: CurrencyType.USD,
     from: userDataMock().username,
+    role: DebtRoleType.LENDER,
     to: [{ ...friendsMock()[9], amount: 50 }],
     amount: 50,
     status: DebtStatusType.Paid,
