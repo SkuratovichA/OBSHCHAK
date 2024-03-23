@@ -3,7 +3,7 @@ import { green, grey, purple } from '@mui/material/colors'
 import { Box, Modal, Skeleton, Stack, Typography } from '@mui/material'
 import styled from '@emotion/styled'
 
-import { TiltedContainer, ListItemContainer } from '../../index'
+import { TiltedContainer, ListItemContainerBase } from '../../index'
 
 import { DebtView } from '../debt-view'
 import type { Loadable, Debt } from 'app-common'
@@ -80,7 +80,7 @@ const DebtNameAndParticipants: React.FC<DebtNameAndParticipantsProps> = ({
 const DebtItemSkeleton: React.FC = () => {
   return (
     <TiltedContainer>
-      <ListItemContainer elevation={1}>
+      <ListItemContainerBase elevation={1}>
         <DebtNameAndParticipantsContainer>
           <DebtNameAndParticipants isLoading={true} />
         </DebtNameAndParticipantsContainer>
@@ -92,7 +92,7 @@ const DebtItemSkeleton: React.FC = () => {
         <DebtStatusContainer>
           <DebtStatus isLoading={true} />
         </DebtStatusContainer>
-      </ListItemContainer>
+      </ListItemContainerBase>
     </TiltedContainer>
   )
 }
@@ -133,7 +133,7 @@ export const DebtItem: React.FC<DebtItemProps> = ({ item, isLoading }) => {
   return (
     <>
       <TiltedContainer>
-        <ListItemContainer elevation={1} onClick={handleOpen}>
+        <ListItemContainerBase elevation={1} onClick={handleOpen}>
           <DebtNameAndParticipantsContainer>
             <DebtNameAndParticipants name={item.name} from={item.from} to={item.to} />
           </DebtNameAndParticipantsContainer>
@@ -145,7 +145,7 @@ export const DebtItem: React.FC<DebtItemProps> = ({ item, isLoading }) => {
           <DebtStatusContainer>
             <DebtStatus status={item.status} />
           </DebtStatusContainer>
-        </ListItemContainer>
+        </ListItemContainerBase>
       </TiltedContainer>
 
       <Modal
