@@ -19,6 +19,8 @@ import type { GroupsRequestBody, GroupsResponse } from '@OBSHCHAK-UI/app/api/gro
 import { deserializeGroupsResponse } from '@OBSHCHAK-UI/app/api/groups/utils'
 import { match, P } from 'ts-pattern'
 import type { DebtsResponse, DebtsSearchParams } from '@OBSHCHAK-UI/app/api/debts/utils'
+import { Box } from '@mui/material'
+import { grey } from '@mui/material/colors'
 
 
 export type FriendPageProps = {
@@ -53,28 +55,38 @@ export const FriendPage: React.FC<FriendPageProps> = ({ username }) => {
   )
 
   return (
-    <ScrollableBarlessList>
+    <ScrollableBarlessList
+      style={{
+        gap: '16px',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <LoadingProvider isLoading={!!isLoadingUser}>
         <UserProfile user={users?.length ? users[0] : undefined} />
       </LoadingProvider>
 
-      {match([isDebtsLoading, isDebtsValidating, debts])
-        .returnType<React.ReactNode>()
-        .with(
-          [false, false, P.select('debts', P.not(P.nullish))],
-          ({ debts }) => <FriendsDebts debts={debts} />,
-        )
-        .otherwise(() => <DebtsPageSkeleton />)
-      }
+      <Section>
+        {match([isDebtsLoading, isDebtsValidating, debts])
+          .returnType<React.ReactNode>()
+          .with(
+            [false, false, P.select('debts', P.not(P.nullish))],
+            ({ debts }) => <FriendsDebts debts={debts} />,
+          )
+          .otherwise(() => <DebtsPageSkeleton />)
+        }
+      </Section>
 
-      {match([isGroupsLoading, isGroupsValidating, groups])
-        .returnType<React.ReactNode>()
-        .with(
-          [false, false, P.select('groups', P.not(P.nullish))],
-          ({ groups }) => <GroupsList groups={deserializeGroupsResponse(groups)} />,
-        )
-        .otherwise(() => <GroupListSkeleton />)
-      }
+      <Section>
+        {match([isGroupsLoading, isGroupsValidating, groups])
+          .returnType<React.ReactNode>()
+          .with(
+            [false, false, P.select('groups', P.not(P.nullish))],
+            ({ groups }) => <GroupsList groups={deserializeGroupsResponse(groups)} />,
+          )
+          .otherwise(() => <GroupListSkeleton />)
+        }
+      </Section>
 
     </ScrollableBarlessList>
   )
@@ -83,4 +95,13 @@ export const FriendPage: React.FC<FriendPageProps> = ({ username }) => {
 const FriendsDebts = styled(DebtsPage)`
     border: 1px solid #e0e0e0;
     border-radius: 8px;
+`
+
+const Section = styled(Box)`
+    align-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background: ${grey[50]};
+    border-radius: 16px;
 `
