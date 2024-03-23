@@ -1,40 +1,21 @@
 'use client'
-import React, { useCallback } from 'react'
-import type { Group, Pendable } from 'app-common'
+import React, { useCallback, useMemo } from 'react'
+import type { Group, Loadable, Pendable } from 'app-common'
 import { CurrencyType, getDebtsAmount } from 'app-common'
-import type { DropdownMenuProps } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
-import { Avatar, AvatarGroup, Container, IconButton, Modal, Typography } from '@mui/material'
-import { ListItemContainerPointless, TiltedContainer } from '@OBSHCHAK-UI/app/_components'
-import styled from '@emotion/styled'
+import { Column, ConfirmationModal, ListItemContainer, Row, TiltedContainer } from '@OBSHCHAK-UI/app/_components'
 import { DebtAmount } from '@OBSHCHAK-UI/app/_components/debts/debt-amount'
-import { Delete, Launch, Logout } from '@mui/icons-material'
-import { match } from 'ts-pattern'
 import { useRouter } from 'next/navigation'
+import { GroupCardHeader } from '@OBSHCHAK-UI/app/_components/groups/group-card-header'
+import { UserAvatarsRow } from '@OBSHCHAK-UI/app/_components/groups/user-avatar-row'
+import { GroupActions } from '@OBSHCHAK-UI/app/_components/groups/group-actions'
+import { match, P } from 'ts-pattern'
 
-const Row = styled(Container)`
-    padding: 0 !important;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-`
-
-const Column = styled(Container)`
-    padding: 0 !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: start;
-    height: 100%;
-    width: 100%;
-`
 
 type GroupItemProps = Pendable<{
   group: Group
-  actions: DropdownMenuProps['namedCallbacks']
+  leaveGroup: () => void
 }>
-export const GroupItem: React.FC<GroupItemProps> = ({ group, pending }) => {
+export const GroupItemBase: React.FC<GroupItemProps> = ({ group }) => {
   const defaultAccountCurrency = CurrencyType.USD // TODO: useAccountCurrency()
   const [isLeaveGroupModalOpen, setIsLeaveGroupModalOpen] = React.useState(false)
 
@@ -50,108 +31,104 @@ export const GroupItem: React.FC<GroupItemProps> = ({ group, pending }) => {
 
 
   const handleGroupRedirect = useCallback(() => {
-    // do next js redirect via router
     router.push(`/groups/${group.id}`)
   }, [group.id, router])
 
 
+  const confirmationModal = useMemo(() => (
+    <ConfirmationModal
+      key={`leave-group-${group.id}`}
+      isOpen={isLeaveGroupModalOpen}
+      title="Confirm group leave"
+      content="Are you sure you want to leave this group?"
+      confirmButtonText="Leave"
+      onConfirm={handleGroupLeave}
+      onCancel={toggleLeaveGroupModal}
+    />
+  ), [group.id, isLeaveGroupModalOpen, handleGroupLeave, toggleLeaveGroupModal])
+
+
   return (
     <>
-      <TiltedContainer>
-        <ListItemContainerPointless>
+      <Row
+        sx={{
+          justifyContent: 'space-between',
+        }}
+      >
+        <GroupCardHeader
+          name={group.name}
+          description={group.description}
+          creationDate={group.creationDate}
+        />
 
-          <Column sx={{ gap: '20px' }}>
-            <Row>
-              <div>
-                <Typography variant={'h6'}>
-                  {group.name}
-                </Typography>
+        <DebtAmount
+          amount={getDebtsAmount(group.debts, defaultAccountCurrency)}
+          currency={defaultAccountCurrency}
+        />
+      </Row>
 
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  alignItems: 'start',
-                }}>
-                  <Typography variant={'caption'}>
-                    {group.description}
-                  </Typography>
+      <Row
+        sx={{
+          justifyContent: 'space-between',
+        }}
+      >
+        <UserAvatarsRow users={group.members} />
 
-                  <Typography variant={'caption'} color={'rgba(47,47,47,0.5)'}>
-                    {group.creationDate.toDateString()}
-                  </Typography>
-                </div>
-              </div>
+        <GroupActions
+          id={group.id}
+          isAdmin={group.isAdmin}
+          handleGroupLeave={handleGroupLeave}
+          handleGroupRedirect={handleGroupRedirect}
+        />
+      </Row>
 
-              <DebtAmount
-                amount={getDebtsAmount(group.debts, defaultAccountCurrency)}
-                currency={defaultAccountCurrency}
-              />
-            </Row>
-
-            <Row>
-              <AvatarGroup max={3} sx={{ justifyContent: 'start', height: '40px' }}>
-                {group.members.map((member, key) => (
-                  <Avatar
-                    key={key}
-                    alt={member.username}
-                    src={member.profileImage}
-                  />
-                ))}
-              </AvatarGroup>
-
-              <div>
-                <IconButton
-                  aria-label={`group-leave-action-${group.id}`}
-                  id={`group-leave-${group.id}`}
-                  onClick={handleGroupLeave}
-                >{match(group.isAdmin)
-                  .with(true, () => <Delete fontSize="small" />)
-                  .with(false, () => <Logout fontSize="small" />)
-                  .exhaustive()
-                }
-                </IconButton>
-
-                <IconButton>
-                  <Launch
-                    fontSize="small"
-                    aria-label={`group-redirect-${group.id}`}
-                    onClick={handleGroupRedirect}
-                  />
-                </IconButton>
-              </div>
-
-            </Row>
-          </Column>
-        </ListItemContainerPointless>
-      </TiltedContainer>
-
-      <>{isLeaveGroupModalOpen && (
-        <Modal
-          open={isLeaveGroupModalOpen}
-          onClose={toggleLeaveGroupModal}
-          aria-labelledby="leave-group-modal-title"
-          aria-describedby="leave-group-modal-description"
-        >
-          <div>
-            Leaving group modal
-            {/*<Typography variant='h6' id='leave-group-modal-title'>*/}
-            {/*  Leave group*/}
-            {/*</Typography>*/}
-            {/*<Typography variant='body1' id='leave-group-modal-description'>*/}
-            {/*  Are you sure you want to leave the group?*/}
-            {/*</Typography>*/}
-            {/*<IconButton*/}
-            {/*  aria-label='leave-group'*/}
-            {/*  id='leave-group'*/}
-            {/*  onClick={handleGroupLeave}*/}
-            {/*>*/}
-            {/*  <Logout />*/}
-            {/*</IconButton>*/}
-          </div>
-        </Modal>
-      )
-      }</>
+      {confirmationModal}
     </>
+  )
+}
+
+const GroupItemSkeleton = () => {
+  return (
+    <>
+      <Row
+        sx={{
+          justifyContent: 'space-between',
+        }}
+      >
+        <GroupCardHeader isLoading />
+        <DebtAmount isLoading />
+      </Row>
+      <Row
+        sx={{
+          justifyContent: 'space-between',
+        }}
+      >
+        <UserAvatarsRow isLoading />
+      </Row>
+    </>
+  )
+}
+export const GroupItem: React.FC<Loadable<GroupItemProps>> = ({ isLoading, ...props }) => {
+
+  return (
+    <TiltedContainer>
+      <ListItemContainer>
+        <Column sx={{ gap: '20px', }}>
+          {match([isLoading, props])
+            .returnType<React.ReactNode>()
+            .with([P.nullish, P.select('props', {
+              group: P.not(P.nullish),
+              leaveGroup: P.not(P.nullish),
+              // TODO: do something with `pending`
+            })], ({ props }) => (
+              <GroupItemBase {...props}></GroupItemBase>
+            ))
+            .otherwise(() =>
+              <GroupItemSkeleton />,
+            )
+          }
+        </Column>
+      </ListItemContainer>
+    </TiltedContainer>
   )
 }

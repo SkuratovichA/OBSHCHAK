@@ -1,3 +1,4 @@
+import React from 'react'
 import type { Debt, Loadable } from 'app-common'
 import { Skeleton, Typography } from '@mui/material'
 import { match, P } from 'ts-pattern'
@@ -20,7 +21,7 @@ const appendSign = (amount: number): string =>
 type DebtAmountProps = Loadable<Pick<Debt, 'amount' | 'currency'>>
 export const DebtAmount: React.FC<DebtAmountProps> = ({ amount, currency, isLoading }) => {
   if (isLoading) {
-    return <Skeleton variant="text" width={'6ch'} />
+    return <Skeleton variant="text" width={'8ch'} height={'2.5rem'} />
   }
 
   return (
