@@ -9,6 +9,7 @@ import { DebtView } from '../debt-view'
 import type { Loadable, Debt } from 'app-common'
 import { DebtStatusType } from 'app-common'
 import { match } from 'ts-pattern'
+import { DebtAmount } from '@OBSHCHAK-UI/app/_components/debts/debt-amount'
 
 const getColorByStatus = (status: DebtStatusType): string =>
   match(status)
@@ -94,15 +95,6 @@ const DebtItemSkeleton: React.FC = () => {
       </ListItemContainer>
     </TiltedContainer>
   )
-}
-
-type DebtAmountProps = Loadable<Pick<Debt, 'amount' | 'currency'>>
-const DebtAmount: React.FC<DebtAmountProps> = ({ amount, currency, isLoading }) => {
-  if (isLoading) {
-    return <Skeleton variant="text" width={'6ch'} />
-  }
-
-  return <Typography variant="body1">{`${currency} ${amount}`}</Typography>
 }
 
 type DebtStatusProps = Loadable<Pick<Debt, 'status'>>
