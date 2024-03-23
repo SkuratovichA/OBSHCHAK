@@ -50,7 +50,7 @@ export const ListItemContainerPointless = styled(Paper)<Pendable>`
 export const ListItemTiltable = styled(ListItem)`
   border-radius: 8px;
   margin-bottom: 8px;
-  height: 100px;
+  height: auto;
   perspective: 10000;
 `
 
