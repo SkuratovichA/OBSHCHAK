@@ -3,7 +3,7 @@ import {
   ScrollableBarlessList,
   ListItemTiltable,
   TiltedContainer,
-  ListItemContainerPointless,
+  ListItemContainer,
   FullHeightNonScrollableContainer,
   GroupItem,
 } from '@OBSHCHAK-UI/app/_components'
@@ -30,14 +30,14 @@ export const GroupListSkeleton = () => {
 const GroupSkeleton = () => {
   return (
     <TiltedContainer>
-      <ListItemContainerPointless elevation={1}>
+      <ListItemContainer elevation={1}>
         <Skeleton variant="circular" width={40} height={40} />
 
         <Box sx={{ flex: 1, ml: 2 }}>
           <Skeleton variant="text" width={'20ch'} />
           <Skeleton variant="text" width={'10ch'} />
         </Box>
-      </ListItemContainerPointless>
+      </ListItemContainer>
     </TiltedContainer>
   )
 }
