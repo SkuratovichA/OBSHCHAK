@@ -1,31 +1,40 @@
 import type { NextRequest } from 'next/server'
-import { isArray } from 'lodash'
+import type { ObshchakUser } from 'app-common'
+import { arrayToIdMap, groupsMock } from 'app-common'
+import type { GroupsResponse } from '@OBSHCHAK-UI/app/api/groups/utils'
+import { serializeGroup } from '@OBSHCHAK-UI/app/api/groups/utils'
+import { isGroupsRequestBody } from '@OBSHCHAK-UI/app/api/groups/utils'
+import { match, P } from 'ts-pattern'
 
 export type GroupsSearchParams = {
-  usernames: string[]
+  usernames: ObshchakUser['username']
 } & Partial<{
   page: number
   limit: number
 }>
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type GroupsSearchResponse = any[]
-
-const isGroupSearchParams = (obj: object): obj is GroupsSearchParams =>
-  obj && 'usernames' in obj && isArray(obj.usernames)
-
 export async function POST(request: NextRequest) {
-  console.log('Hello in group fetching')
   const body: GroupsSearchParams = await request.json()
 
-  if (!isGroupSearchParams(body)) {
+  if (!isGroupsRequestBody(body)) {
     return Response.json(undefined, { status: 400 })
   }
-  console.log('group fetching body:', body)
 
   // const res = await fetch(`/v${API_VER}/groups`)
   // const data = await res.json()
-  const data: GroupsSearchResponse = []
-
+  const data: GroupsResponse = arrayToIdMap(
+    groupsMock()
+      .filter((group) =>
+        match(body)
+          .with({ groupId: P.select('groupId', P.string) }, ({ groupId }) => groupId === group.id)
+          .with({ usernames: P.select('usernames', P.array(P.string)) }, ({ usernames }) =>
+            usernames.some((username) =>
+              group.members.some((member) => member.username === username),
+            ),
+          )
+          .otherwise(() => true),
+      )
+      .map(serializeGroup),
+  )
   return Response.json(data, { status: 200 })
 }

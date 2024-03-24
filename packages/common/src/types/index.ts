@@ -1,15 +1,22 @@
 export * from './chatbot'
-export * from './debts'
+export * from './debt'
+export * from './group'
+export * from './obshchak-user'
 export * from './old'
 export * from './utils'
 
 import type { AsArray, Maybe, Optional } from './utils'
 
-export type Paginatable<T> = Optional<{
+export type Paginatable<T extends object = object> = Optional<{
   page: number
   limit: number
 }> &
   T
+
+export const isPaginatable = (obj: object): obj is Paginatable =>
+  !obj ||
+  (typeof obj === 'object' &&
+    (('page' in obj && 'limit' in obj) || (!('page' in obj) && !('limit' in obj))))
 
 export type Loadable<T = object> =
   | ({
@@ -42,7 +49,9 @@ export type WithDimensions<T = object, S extends undefined | number = undefined>
       }
   )
 
-export const isEmpty = (s: object) => !Object.keys(s).length
+export const isSomeEmpty = (s: object) => !Object.keys(s).length
+
+export const isAnyEmpty = (s: unknown) => !s || isSomeEmpty(s)
 
 export const entries = <T extends object>(obj: Maybe<T>): AsArray<T> =>
   obj ? (Object.entries(obj) as AsArray<T>) : []

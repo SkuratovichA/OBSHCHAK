@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from 'react'
 
 import type { OptimisticFriends } from '@OBSHCHAK-UI/app/_client-hooks'
+import { useSwr } from '@OBSHCHAK-UI/app/_client-hooks'
 import { useFilters, useFriends } from '@OBSHCHAK-UI/app/_client-hooks'
-import { User } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/friends/user'
+import { FriendItem } from '@OBSHCHAK-UI/app/(routes)/(authorized-user-ui)/friends/friend-item'
 import {
   FilterBar,
   FullHeightNonScrollableContainer,
@@ -12,11 +13,12 @@ import {
   ScrollableBarlessList,
 } from '@OBSHCHAK-UI/app/_components'
 import type { Maybe, ObshchakUser } from 'app-common'
-import { isEmpty, userDataMock } from 'app-common'
+import { userDataMock, isAnyEmpty, nextEndpointsMap } from 'app-common'
 import { useSession } from 'next-auth/react'
-import { match } from 'ts-pattern'
+import { match, P } from 'ts-pattern'
 import { entries } from 'app-common/lib/types'
 import type { DropdownMenuProps } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
+import type { FriendsRequestBody, FriendsResponse } from '@OBSHCHAK-UI/app/api/friends/utils'
 
 interface UserFilters {
   search: string
@@ -40,7 +42,7 @@ const FriendsListSkeleton = () => {
     <ScrollableBarlessList>
       {Array.from({ length: 3 }).map((_, i) => (
         <ListItemTiltable key={i}>
-          <User isLoading={true} />
+          <FriendItem isLoading={true} />
         </ListItemTiltable>
       ))}
     </ScrollableBarlessList>
@@ -51,7 +53,14 @@ export const FriendsList: React.FC = () => {
 
   console.log('SESSION: ', session, '\n', 'STATUS: ', status)
 
-  const { friends, removeFriend } = useFriends({ userId: userDataMock().id })
+  const {
+    data: friends,
+    isLoading: isFriendsLoading,
+    isValidating: isFriendsValidating,
+  } = useSwr<FriendsRequestBody, FriendsResponse>(nextEndpointsMap.FRIENDS(), {
+    id: userDataMock().id,
+  })
+  const { removeFriend } = useFriends(friends)
 
   const { filters, updateFilters } = useFilters<UserFilters>()
   const [filteredFriends, setFilteredFriends] = useState<Maybe<OptimisticFriends>>(friends)
@@ -88,16 +97,23 @@ export const FriendsList: React.FC = () => {
 
       <ScrollableBarlessList>
         <>
-          {match(filteredFriends)
-            .with(undefined, null, () => <FriendsListSkeleton />) // TODO: add loading
-            .when(isEmpty, () => <div>no friends</div>) // TODO: add no friends view
-            .otherwise((friends) =>
+          {match([filteredFriends, isFriendsLoading, isFriendsValidating])
+            .with([P.nullish, true, P._], [P.nullish, P._, true], () => <FriendsListSkeleton />)
+            .with([P.when(isAnyEmpty), P.any, P.any], () => <div>no friends</div>) // TODO: add no friends view
+            .with([P.select('friends', P.not(P.nullish)), P._, P._], ({ friends }) =>
               entries(friends).map(([id, friend]) => (
                 <ListItemTiltable key={id}>
-                  <User user={friend} actions={friendActions(friend)} pending={friend.pending} />
+                  <FriendItem
+                    user={friend}
+                    actions={friendActions(friend)}
+                    pending={friend.pending}
+                  />
                 </ListItemTiltable>
               )),
-            )}
+            )
+            .otherwise(([friends, isLoading, isValidating]) => {
+              throw new Error(`Invalid friends state: ${friends}, ${isLoading}, ${isValidating}`)
+            })}
         </>
       </ScrollableBarlessList>
     </FullHeightNonScrollableContainer>

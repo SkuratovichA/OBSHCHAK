@@ -1,8 +1,8 @@
 import type { NextRequest } from 'next/server'
+import { arrayToIdMap } from 'app-common'
 import type { ObshchakUser } from 'app-common'
 import { isObshchakUser, friendsMock, updateFriendsMock } from 'app-common'
 import type { FriendsResponse } from '../utils'
-import { usersToFriendsMap } from '../utils'
 
 export interface FriendSearchPayload {
   id: string
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   // )
   // const data = await res.json()
   const friends = updateFriendsMock(friendsMock().filter((user) => user.id !== body.id))
-  const responseData: FriendsResponse = usersToFriendsMap(friends)
+  const responseData: FriendsResponse = arrayToIdMap(friends)
 
   return Response.json(responseData, { status: 200 })
 }

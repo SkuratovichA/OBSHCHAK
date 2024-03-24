@@ -22,35 +22,3 @@ export const isObshchakUser = (user: object): user is ObshchakUser =>
   typeof user.profileImage === 'string' &&
   'mobileNumber' in user &&
   typeof user.mobileNumber === 'string'
-
-export enum DebtStatusType {
-  Paid = 'Paid',
-  Pending = 'Pending',
-  Active = 'Active',
-}
-
-export type DebtParticipant = { username: string; amount: number }
-
-export enum CurrencyType {
-  USD = 'USD',
-  EUR = 'EUR',
-  CZK = 'CZK',
-}
-
-export interface Debt {
-  id: string
-  description?: string
-  amount: number
-
-  name: string
-  currency: CurrencyType
-  from: ObshchakUser['username']
-  to: DebtParticipant[]
-  status: DebtStatusType
-
-  createdDate: Date
-  resolvedDate: Date | null
-
-  categories?: string[]
-  groups?: string[]
-}

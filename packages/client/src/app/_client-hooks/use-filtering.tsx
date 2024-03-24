@@ -9,7 +9,7 @@ export type FilterFn<S, T extends FilterContextTypeBase = FilterContextTypeBase>
 ) => S
 
 type UseFiltering = <S, >({
-   items,
+  items,
   filteringFunction,
 }: {
   items: S

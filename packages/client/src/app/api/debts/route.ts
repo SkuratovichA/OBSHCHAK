@@ -4,6 +4,8 @@ import { debtsMock } from 'app-common'
 
 import type { DebtsResponse } from './utils'
 import { isDebtsSearchParams } from './utils'
+import { match, P } from 'ts-pattern'
+import { isEmpty } from 'lodash'
 
 export async function POST(request: NextRequest) {
   console.log('Hello in debt fetching')
@@ -17,15 +19,36 @@ export async function POST(request: NextRequest) {
 
   console.log('debt fetching body:', body)
 
+  const intercepts = <T extends string | number>(one?: T[], two?: T[]) =>
+    one?.some((it) => two?.includes(it))
+
   // get a session here.
   // const res = await fetch(`/v${API_VER}/debts`)
   // const data = await res.json()
   const data: DebtsResponse = arrayToIdMap(
-    debtsMock().filter(
-      (t) =>
-        !body.usernames.length ||
-        body.usernames.includes(t.from) ||
-        t.to.some(({ username }) => body.usernames.includes(username)),
+    debtsMock().filter((debt) =>
+      match([body.usernames, body.groups])
+        .returnType<boolean>()
+        // pain
+        .with(
+          [P.when((u) => !u.length), P.when((u) => !u.length)],
+          [P.nullish, P.nullish],
+          [P.when(isEmpty), P.when((requestGroups) => intercepts(requestGroups, debt.groups))],
+          [
+            P.when((requestUsers) =>
+              intercepts(requestUsers, [debt.from, ...debt.to.map((u) => u.username)]),
+            ),
+            P.when(isEmpty),
+          ],
+          [
+            P.when((requestUsers) =>
+              intercepts(requestUsers, [debt.from, ...debt.to.map((u) => u.username)]),
+            ),
+            P.when((requestGroups) => intercepts(requestGroups, debt.groups)),
+          ],
+          () => true,
+        )
+        .otherwise(() => false),
     ),
   )
 

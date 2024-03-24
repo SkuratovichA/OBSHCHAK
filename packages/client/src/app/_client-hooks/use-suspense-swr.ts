@@ -9,14 +9,11 @@ export const swrCallback = <T, S>([uri, params]: [string, T]) => fetcher<T, S>(u
 
 export const useSwr = <P extends object, R extends Maybe<object>>(endpoint: string, params: P) => {
   // todo: looks like shit :) Why would I need it?
-  console.log('USE SUSPENSE SWR CALLED')
   return useSWR([endpoint, params], swrCallback<P, R>, {}) as State<R>
 }
 
 // TODO: not tested
 export const fetcher = async <T, S>(url: string, params: T, timeout = 5000): Promise<S> => {
-  console.log('USE SUSPENSE SWR: fetcher: url: ', url, 'params: ', params)
-
   const controller = new AbortController()
   const id = setTimeout(() => controller.abort(), timeout)
 

@@ -5,9 +5,9 @@ import { CenteredBox } from '@OBSHCHAK-UI/app/_components'
 import { useLoading } from '@OBSHCHAK-UI/app/_client-hooks'
 
 import { isNil, pick } from 'lodash'
-import { NameField } from './name-field'
+import { NameField } from '../fields'
 import { ContactInfo } from './contact-info'
-import { UserAvatar } from './user-avatar'
+import { Avatar } from '../avatar'
 
 export type Contacts = Pick<ObshchakUser, 'username' | 'email' | 'mobileNumber'>
 
@@ -15,7 +15,7 @@ const UserProfileSkeleton: React.FC = () => {
   return (
     <Box padding={'16px'}>
       <CenteredBox>
-        <UserAvatar isLoading={true} />
+        <Avatar isLoading={true} />
       </CenteredBox>
       <CenteredBox>
         <NameField isLoading={true} />
@@ -35,8 +35,6 @@ interface UserProfileProps {
 export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
   const { isLoading } = useLoading()
 
-  console.log(`isLoading: ${isLoading}, user: `, user)
-
   if (isLoading) {
     return <UserProfileSkeleton />
   }
@@ -49,7 +47,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
     <Box padding={'16px'}>
       <>
         <CenteredBox>
-          <UserAvatar alt={user.name} src={user.profileImage} />
+          <Avatar alt={user.name} src={user.profileImage} />
         </CenteredBox>
 
         <CenteredBox>

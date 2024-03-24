@@ -3,18 +3,19 @@ import { green, grey, purple } from '@mui/material/colors'
 import { Box, Modal, Skeleton, Stack, Typography } from '@mui/material'
 import styled from '@emotion/styled'
 
-import { TiltedContainer, ListItemContainer } from '../../index'
+import { TiltedContainer, ListItemContainerBase } from '../../index'
 
 import { DebtView } from '../debt-view'
 import type { Loadable, Debt } from 'app-common'
 import { DebtStatusType } from 'app-common'
 import { match } from 'ts-pattern'
+import { DebtAmount } from '@OBSHCHAK-UI/app/_components/debts/debt-amount'
 
 const getColorByStatus = (status: DebtStatusType): string =>
   match(status)
     .with(DebtStatusType.Paid, () => green[500])
-    .with(DebtStatusType.Pending, () => purple[800])
-    .with(DebtStatusType.Active, () => grey[500])
+    .with(DebtStatusType.Pending, () => grey[500])
+    .with(DebtStatusType.Active, () => purple[500])
     .otherwise(() => grey[300])
 
 enum DebtParticipantsType {
@@ -79,7 +80,7 @@ const DebtNameAndParticipants: React.FC<DebtNameAndParticipantsProps> = ({
 const DebtItemSkeleton: React.FC = () => {
   return (
     <TiltedContainer>
-      <ListItemContainer elevation={1}>
+      <ListItemContainerBase elevation={1}>
         <DebtNameAndParticipantsContainer>
           <DebtNameAndParticipants isLoading={true} />
         </DebtNameAndParticipantsContainer>
@@ -91,18 +92,9 @@ const DebtItemSkeleton: React.FC = () => {
         <DebtStatusContainer>
           <DebtStatus isLoading={true} />
         </DebtStatusContainer>
-      </ListItemContainer>
+      </ListItemContainerBase>
     </TiltedContainer>
   )
-}
-
-type DebtAmountProps = Loadable<Pick<Debt, 'amount' | 'currency'>>
-const DebtAmount: React.FC<DebtAmountProps> = ({ amount, currency, isLoading }) => {
-  if (isLoading) {
-    return <Skeleton variant="text" width={'6ch'} />
-  }
-
-  return <Typography variant="body1">{`${currency} ${amount}`}</Typography>
 }
 
 type DebtStatusProps = Loadable<Pick<Debt, 'status'>>
@@ -141,7 +133,7 @@ export const DebtItem: React.FC<DebtItemProps> = ({ item, isLoading }) => {
   return (
     <>
       <TiltedContainer>
-        <ListItemContainer elevation={1} onClick={handleOpen}>
+        <ListItemContainerBase elevation={1} onClick={handleOpen}>
           <DebtNameAndParticipantsContainer>
             <DebtNameAndParticipants name={item.name} from={item.from} to={item.to} />
           </DebtNameAndParticipantsContainer>
@@ -153,7 +145,7 @@ export const DebtItem: React.FC<DebtItemProps> = ({ item, isLoading }) => {
           <DebtStatusContainer>
             <DebtStatus status={item.status} />
           </DebtStatusContainer>
-        </ListItemContainer>
+        </ListItemContainerBase>
       </TiltedContainer>
 
       <Modal

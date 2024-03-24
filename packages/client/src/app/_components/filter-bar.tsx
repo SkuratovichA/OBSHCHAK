@@ -13,7 +13,7 @@ import React from 'react'
 import { Search } from '@mui/icons-material'
 
 import { deSpacify } from 'app-common'
-import type { Function, Undefined } from 'app-common'
+import type { Undefined } from 'app-common'
 import styled from '@emotion/styled'
 
 interface FilterSelectorProps {
@@ -80,6 +80,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       sx={{
         borderBottom: '1px solid #e0e0e0',
         paddingBottom: 0,
+        position: 'sticky',
       }}
       display="flex"
       justifyContent="end"

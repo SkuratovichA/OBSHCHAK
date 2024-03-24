@@ -1,36 +1,62 @@
-'use client'
+import React, { useState } from 'react'
+import {
+  ScrollableBarlessList,
+  ListItemTiltable,
+  FullHeightNonScrollableContainer,
+  GroupItem,
+} from '@OBSHCHAK-UI/app/_components'
+import { entries, isSomeEmpty } from 'app-common'
+import type { GroupsMap } from '@OBSHCHAK-UI/app/api/groups/utils'
+import { match } from 'ts-pattern'
+import { useGroups } from '@OBSHCHAK-UI/app/_client-hooks/use-groups'
 
-import React from 'react'
-import { GroupItem } from '@OBSHCHAK-UI/app/_components/groups/group-item'
-import { ScrollableBarlessList, ListItemTiltable } from '@OBSHCHAK-UI/app/_components'
-import { useLoading } from '@OBSHCHAK-UI/app/_client-hooks'
-import { isNil } from 'lodash'
-
-// group-list ts
-interface GroupsListProps {
-  // TODO: tbd
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  groups: any[] | undefined // FIXME: tmp solution before types are in app-common
+export const GroupListSkeleton = () => {
+  return (
+    <FullHeightNonScrollableContainer>
+      <ScrollableBarlessList>
+        {Array.from({ length: 3 }).map((_, i) => (
+          <ListItemTiltable key={i}>
+            <GroupItem isLoading />
+          </ListItemTiltable>
+        ))}
+      </ScrollableBarlessList>
+    </FullHeightNonScrollableContainer>
+  )
 }
 
+type GroupsListProps = {
+  groups: GroupsMap
+}
 export const GroupsList: React.FC<GroupsListProps> = ({ groups }) => {
-  const { isLoading } = useLoading()
+  const { deleteGroup, updateGroup, createGroup } = useGroups(groups)
 
-  if (isLoading) {
-    return <div>Group list is loading - return a skeleton TODO</div>
-  }
+  const [filteredGroups, setFlteredGroups] = useState<GroupsMap>(groups)
 
-  if (isNil(groups)) {
-    return <div>PROBABLY AN UNHANDLED ERROR</div>
-  }
+  // TODO: group filtering (tbd in the future)
+  // const { filters, updateFilters } = useFilters<GroupFilters>()
+  // useEffect(() => {
+  //   const filtered = filterGroups(groups, filters)
+  //   setFilteredGroups(filtered)
+  // }, [filters, groups])
+
+  // const handleSearchChange = (value: string) => {
+  //   updateFilters({ search: value })
+  // }
 
   return (
-    <ScrollableBarlessList>
-      {groups.map((group) => (
-        <ListItemTiltable key={group.id}>
-          <GroupItem group={group} />
-        </ListItemTiltable>
-      ))}
-    </ScrollableBarlessList>
+    <FullHeightNonScrollableContainer>
+      {/*<FilterBar searchValue={filters.search ?? ''} onSearchChange={handleSearchChange} />*/}
+      <ScrollableBarlessList>
+        {match(filteredGroups)
+          .when(isSomeEmpty, () => <div>No groups</div>) // Show "No groups" message when there are no groups
+          .otherwise((groups) =>
+            entries(groups).map(([id, group]) => (
+              <ListItemTiltable key={id}>
+                <GroupItem group={group} leaveGroup={() => deleteGroup(group)} />
+              </ListItemTiltable>
+            )),
+          )}
+      </ScrollableBarlessList>
+    </FullHeightNonScrollableContainer>
   )
 }

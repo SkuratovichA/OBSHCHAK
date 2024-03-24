@@ -6,21 +6,21 @@ import { MoreVert, Launch } from '@mui/icons-material'
 import { usePathname, useRouter } from 'next/navigation'
 import type { Loadable, Maybe, ObshchakUser, Pendable } from 'app-common'
 
-import { ListItemContainerPointless, TiltedContainer } from '@OBSHCHAK-UI/app/_components'
+import { ListItemContainer, TiltedContainer } from '@OBSHCHAK-UI/app/_components'
 import type { DropdownMenuProps } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
 import { DropdownMenu } from '@OBSHCHAK-UI/app/_components/dropdown-menu'
 
 const UserSkeleton = () => {
   return (
     <TiltedContainer>
-      <ListItemContainerPointless elevation={1}>
+      <ListItemContainer elevation={1}>
         <Skeleton variant="circular" width={40} height={40} />
 
         <Box sx={{ flex: 1, ml: 2 }}>
           <Skeleton variant="text" width={'20ch'} />
           <Skeleton variant="text" width={'10ch'} />
         </Box>
-      </ListItemContainerPointless>
+      </ListItemContainer>
     </TiltedContainer>
   )
 }
@@ -31,7 +31,7 @@ type UserProps = Loadable<
     actions?: DropdownMenuProps['namedCallbacks']
   }>
 >
-export const User: React.FC<UserProps> = ({ user, actions, pending, isLoading }) => {
+export const FriendItem: React.FC<UserProps> = ({ user, actions, pending, isLoading }) => {
   const [anchorEl, setAnchorEl] = useState<Maybe<HTMLElement>>(null)
   const open = Boolean(anchorEl)
   const router = useRouter()
@@ -55,7 +55,7 @@ export const User: React.FC<UserProps> = ({ user, actions, pending, isLoading })
 
   return (
     <TiltedContainer>
-      <ListItemContainerPointless elevation={1} pending={pending}>
+      <ListItemContainer elevation={1} pending={pending}>
         <Avatar alt={user.name} src={user.profileImage} />
         <Box sx={{ flex: 1, ml: 2 }}>
           <Typography variant="body1">{user.name}</Typography>
@@ -82,7 +82,7 @@ export const User: React.FC<UserProps> = ({ user, actions, pending, isLoading })
             <DropdownMenu namedCallbacks={actions} anchorEl={anchorEl} onClose={handleCloseMenu} />
           </>
         )}
-      </ListItemContainerPointless>
+      </ListItemContainer>
     </TiltedContainer>
   )
 }

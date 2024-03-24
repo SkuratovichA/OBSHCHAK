@@ -1,5 +1,9 @@
+import type { CurrencyType, Debt } from '../types'
+import { DebtRoleType } from '../types'
+
 export * from './react-on-char'
 import { reactOnChar } from './react-on-char'
+import { match } from 'ts-pattern'
 
 const CRITICAL_STRING_LENGTH_RATIO = 1 / 4
 export const hideCriticalString = (str: string) =>
@@ -34,3 +38,14 @@ export const splitSentence = (text: string, chunk: string): ReturnType<typeof re
 export const deSpacifyBase = (str: string, subWith: string) =>
   str.toLowerCase().replace(/\s/g, subWith)
 export const deSpacify = (str: string) => deSpacifyBase(str, '-')
+
+export const getDebtsAmount = (debts: Debt[], defaultAccountCurrency: CurrencyType): number =>
+  debts.reduce(
+    (acc, { amount, role }) =>
+      acc +
+      match(role)
+        .with(DebtRoleType.LENDER, () => amount)
+        .with(DebtRoleType.BORROWER, () => -amount)
+        .exhaustive(),
+    0,
+  )

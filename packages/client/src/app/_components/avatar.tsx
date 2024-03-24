@@ -1,15 +1,15 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import type { AvatarProps } from '@mui/material'
-import { Avatar, Skeleton } from '@mui/material'
+import { Avatar as AvatarMUI, Skeleton } from '@mui/material'
 
 import type { Loadable, Optional, WithDimensions } from 'app-common'
 
-import { CenteredBox } from '@OBSHCHAK-UI/app/_components'
+import { CenteredBox } from '@OBSHCHAK-UI/app/_components/index'
 
 const DEFAULT_AVATAR_SIZE = 200
 
-const AvatarWithDimensions = styled(Avatar)<WithDimensions<AvatarProps, number>>`
+const AvatarWithDimensions = styled(AvatarMUI)<WithDimensions<AvatarProps, number>>`
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
 `
@@ -34,7 +34,7 @@ const UserAvatarBase: React.FC<UserAvatarProps> = ({ isLoading, ...props }) => {
   )
 }
 
-export const UserAvatar: typeof UserAvatarBase = (props) => (
+export const Avatar: typeof UserAvatarBase = (props) => (
   <CenteredBox>
     <UserAvatarBase {...props} />
   </CenteredBox>
