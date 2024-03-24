@@ -28,6 +28,7 @@ export const deserializeGroupsResponse = (groupsResponse: GroupsResponse): Group
 
 export type GroupsRequestBody = Paginatable<{
   usernames: Array<ObshchakUser['username']> | null
+  groupId: Group['id'] | null
 }>
 
 export const isGroupsResponse = (obj: object): obj is GroupsResponse =>
@@ -50,4 +51,8 @@ export const isGroupsDeleteRequestBody = (obj: object): obj is GroupsDeleteReque
 export const isGroupsRequestBody = (obj: object): obj is GroupsRequestBody =>
   isPaginatable(obj) &&
   typeof obj === 'object' &&
-  'usernames' in obj && (Array.isArray(obj.usernames) || obj.usernames === null)
+  (
+    'usernames' in obj && (Array.isArray(obj.usernames) || obj.usernames === null)
+    ||
+    'groupId' in obj && typeof obj.groupId === 'string'
+  )

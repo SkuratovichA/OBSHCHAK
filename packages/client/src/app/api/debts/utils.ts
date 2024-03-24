@@ -1,10 +1,10 @@
-import type { Debt, IdMap, ObshchakUser, Paginatable } from 'app-common'
+import type { Debt, Group, IdMap, ObshchakUser, Paginatable } from 'app-common'
 import { isDebt } from 'app-common'
 import { isArray } from 'lodash'
 
 export type DebtsSearchParams = Paginatable<{
-  usernames: ObshchakUser['username'][]
-  groups: string[]
+  usernames: Array<ObshchakUser['username']>
+  groups: Array<Group['id']>
 }>
 
 export const isDebtsSearchParams = (obj: object): obj is DebtsSearchParams =>
