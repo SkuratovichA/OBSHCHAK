@@ -53,11 +53,13 @@ export const FriendsList: React.FC = () => {
 
   console.log('SESSION: ', session, '\n', 'STATUS: ', status)
 
-  const { data: friends, isLoading: isFriendsLoading, isValidating: isFriendsValidating } =
-    useSwr<FriendsRequestBody, FriendsResponse>(
-      nextEndpointsMap.FRIENDS(),
-      { id: userDataMock().id },
-    )
+  const {
+    data: friends,
+    isLoading: isFriendsLoading,
+    isValidating: isFriendsValidating,
+  } = useSwr<FriendsRequestBody, FriendsResponse>(nextEndpointsMap.FRIENDS(), {
+    id: userDataMock().id,
+  })
   const { removeFriend } = useFriends(friends)
 
   const { filters, updateFilters } = useFilters<UserFilters>()
@@ -96,22 +98,22 @@ export const FriendsList: React.FC = () => {
       <ScrollableBarlessList>
         <>
           {match([filteredFriends, isFriendsLoading, isFriendsValidating])
-            .with(
-              [P.nullish, true, P._],
-              [P.nullish, P._, true],
-              () => <FriendsListSkeleton />)
+            .with([P.nullish, true, P._], [P.nullish, P._, true], () => <FriendsListSkeleton />)
             .with([P.when(isAnyEmpty), P.any, P.any], () => <div>no friends</div>) // TODO: add no friends view
             .with([P.select('friends', P.not(P.nullish)), P._, P._], ({ friends }) =>
               entries(friends).map(([id, friend]) => (
                 <ListItemTiltable key={id}>
-                  <FriendItem user={friend} actions={friendActions(friend)} pending={friend.pending} />
+                  <FriendItem
+                    user={friend}
+                    actions={friendActions(friend)}
+                    pending={friend.pending}
+                  />
                 </ListItemTiltable>
               )),
             )
             .otherwise(([friends, isLoading, isValidating]) => {
               throw new Error(`Invalid friends state: ${friends}, ${isLoading}, ${isValidating}`)
-            })
-          }
+            })}
         </>
       </ScrollableBarlessList>
     </FullHeightNonScrollableContainer>

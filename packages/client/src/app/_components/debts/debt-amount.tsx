@@ -4,18 +4,26 @@ import { Skeleton, Typography } from '@mui/material'
 import { match, P } from 'ts-pattern'
 import { green, grey, red } from '@mui/material/colors'
 
-
 const getColorByAmount = (amount: number): string =>
   match(amount)
     .returnType<string>()
-    .with(P.when(x => x < 0), () => red[500])
-    .with(P.when(x => x > 0), () => green[500])
+    .with(
+      P.when((x) => x < 0),
+      () => red[500],
+    )
+    .with(
+      P.when((x) => x > 0),
+      () => green[500],
+    )
     .otherwise(() => grey[500])
 
 const appendSign = (amount: number): string =>
   match(amount)
     .returnType<string>()
-    .with(P.when(x => x < 0), () => `-${amount}`)
+    .with(
+      P.when((x) => x < 0),
+      () => `-${amount}`,
+    )
     .otherwise(() => `+${amount}`)
 
 type DebtAmountProps = Loadable<Pick<Debt, 'amount' | 'currency'>>

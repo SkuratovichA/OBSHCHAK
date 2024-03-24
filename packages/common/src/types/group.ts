@@ -45,7 +45,6 @@ export const isBaseGroup = (obj: object): obj is Group =>
   'isAdmin' in obj &&
   typeof obj.isAdmin === 'boolean'
 
-
 export const isSerializedGroup = (obj: object): obj is SerializedGroup =>
   isBaseGroup(obj) && 'creationDate' in obj && typeof obj.creationDate === 'string'
 

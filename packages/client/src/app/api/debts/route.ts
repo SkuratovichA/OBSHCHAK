@@ -19,43 +19,36 @@ export async function POST(request: NextRequest) {
 
   console.log('debt fetching body:', body)
 
-
-  const intercepts = <T extends string | number, >(one?: T[], two?: T[]) => one?.some(it => two?.includes(it))
+  const intercepts = <T extends string | number>(one?: T[], two?: T[]) =>
+    one?.some((it) => two?.includes(it))
 
   // get a session here.
   // const res = await fetch(`/v${API_VER}/debts`)
   // const data = await res.json()
   const data: DebtsResponse = arrayToIdMap(
-    debtsMock().filter(
-      (debt) =>
-        match([body.usernames, body.groups])
-          .returnType<boolean>()
-          // pain
-          .with(
-            [
-              P.when(u => !u.length),
-              P.when(u => !u.length),
-            ], [
-              P.nullish,
-              P.nullish,
-            ],
-            [
-              P.when(isEmpty),
-              P.when(requestGroups => intercepts(requestGroups, debt.groups)),
-            ],
-            [
-              P.when(requestUsers => intercepts(requestUsers, [debt.from, ...debt.to.map(u => u.username)])),
-              P.when(isEmpty),
-            ],
-            [
-              P.when(requestUsers => intercepts(requestUsers, [debt.from, ...debt.to.map(u => u.username)])),
-              P.when(requestGroups => intercepts(requestGroups, debt.groups)),
-            ],
-            () => true,
-          )
-          .otherwise(
-            () => false,
-          ),
+    debtsMock().filter((debt) =>
+      match([body.usernames, body.groups])
+        .returnType<boolean>()
+        // pain
+        .with(
+          [P.when((u) => !u.length), P.when((u) => !u.length)],
+          [P.nullish, P.nullish],
+          [P.when(isEmpty), P.when((requestGroups) => intercepts(requestGroups, debt.groups))],
+          [
+            P.when((requestUsers) =>
+              intercepts(requestUsers, [debt.from, ...debt.to.map((u) => u.username)]),
+            ),
+            P.when(isEmpty),
+          ],
+          [
+            P.when((requestUsers) =>
+              intercepts(requestUsers, [debt.from, ...debt.to.map((u) => u.username)]),
+            ),
+            P.when((requestGroups) => intercepts(requestGroups, debt.groups)),
+          ],
+          () => true,
+        )
+        .otherwise(() => false),
     ),
   )
 

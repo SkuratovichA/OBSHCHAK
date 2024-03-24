@@ -27,10 +27,7 @@ export const GroupListSkeleton = () => {
 type GroupsListProps = {
   groups: GroupsMap
 }
-export const GroupsList: React.FC<GroupsListProps> = ({
-  groups,
-}) => {
-
+export const GroupsList: React.FC<GroupsListProps> = ({ groups }) => {
   const { deleteGroup, updateGroup, createGroup } = useGroups(groups)
 
   const [filteredGroups, setFlteredGroups] = useState<GroupsMap>(groups)
@@ -55,10 +52,7 @@ export const GroupsList: React.FC<GroupsListProps> = ({
           .otherwise((groups) =>
             entries(groups).map(([id, group]) => (
               <ListItemTiltable key={id}>
-                <GroupItem
-                  group={group}
-                  leaveGroup={() => deleteGroup(group)}
-                />
+                <GroupItem group={group} leaveGroup={() => deleteGroup(group)} />
               </ListItemTiltable>
             )),
           )}

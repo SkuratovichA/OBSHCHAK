@@ -24,17 +24,15 @@ export async function POST(request: NextRequest) {
   // const data = await res.json()
   const data: GroupsResponse = arrayToIdMap(
     groupsMock()
-      .filter(group =>
+      .filter((group) =>
         match(body)
-          .with({ groupId: P.select('groupId', P.string) }, ({ groupId }) =>
-            groupId === group.id,
-          )
+          .with({ groupId: P.select('groupId', P.string) }, ({ groupId }) => groupId === group.id)
           .with({ usernames: P.select('usernames', P.array(P.string)) }, ({ usernames }) =>
-            usernames.some(username => group.members.some(member => member.username === username)),
+            usernames.some((username) =>
+              group.members.some((member) => member.username === username),
+            ),
           )
-          .otherwise(() =>
-            true,
-          ),
+          .otherwise(() => true),
       )
       .map(serializeGroup),
   )

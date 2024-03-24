@@ -23,41 +23,41 @@ const GroupCardHeaderSkeleton = () => {
   )
 }
 
-
 type GroupCardHeaderProps = Loadable<{
   name: string
   description: string
   creationDate: Date
 }>
-export const GroupCardHeader: React.FC<GroupCardHeaderProps> = ({ isLoading, name, description, creationDate }) => {
-
+export const GroupCardHeader: React.FC<GroupCardHeaderProps> = ({
+  isLoading,
+  name,
+  description,
+  creationDate,
+}) => {
   return (
     <div>
-      {isLoading
-        ? <GroupCardHeaderSkeleton />
-        : <>
-          <Typography variant={'h6'}>
-            {name}
-          </Typography>
+      {isLoading ? (
+        <GroupCardHeaderSkeleton />
+      ) : (
+        <>
+          <Typography variant={'h6'}>{name}</Typography>
 
           <GroupCardHeaderDescriptionContainer>
-            <Typography variant={'caption'}>
-              {description}
-            </Typography>
+            <Typography variant={'caption'}>{description}</Typography>
 
             <Typography variant={'caption'} color={'rgba(47,47,47,0.5)'}>
               {creationDate.toLocaleDateString()}
             </Typography>
           </GroupCardHeaderDescriptionContainer>
         </>
-      }
+      )}
     </div>
   )
 }
 
 const GroupCardHeaderDescriptionContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
 `

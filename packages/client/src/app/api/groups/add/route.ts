@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   // const res = await fetch(`/v${API_VER}/groups`)
   // const data = await res.json()
   const groupsMap = arrayToIdMap(
-    updateGroupsMock([...groupsMock(), ...newGroups.map(deserializeGroup)])
+    updateGroupsMock([...groupsMock(), ...newGroups.map(deserializeGroup)]),
   )
 
   return Response.json(groupsMap, { status: 200 })

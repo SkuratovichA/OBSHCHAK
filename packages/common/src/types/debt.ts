@@ -1,5 +1,5 @@
 import type { ObshchakUser } from './obshchak-user'
-import type { Group} from './index'
+import type { Group } from './index'
 import { isWithId } from './index'
 import { isArray } from 'lodash'
 
@@ -58,8 +58,10 @@ export const isDebt = (obj: object): obj is Debt =>
   typeof obj.from === 'string' &&
   'to' in obj &&
   isArray(obj.to) &&
-  'status' in obj && typeof obj.status === 'string' &&
-  'role' in obj && typeof obj.role === 'string'
+  'status' in obj &&
+  typeof obj.status === 'string' &&
+  'role' in obj &&
+  typeof obj.role === 'string'
 
 // 'createdDate' in obj && obj.createdDate instanceof Date &&
 // 'resolvedDate' in obj && (obj.resolvedDate === null || obj.resolvedDate instanceof Date)

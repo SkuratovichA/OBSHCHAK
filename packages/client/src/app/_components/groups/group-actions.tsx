@@ -5,7 +5,6 @@ import { Delete, Launch, Logout } from '@mui/icons-material'
 import type { Loadable } from 'app-common'
 import { Row } from '@OBSHCHAK-UI/app/_components'
 
-
 const GroupActionsSkeleton = () => {
   return (
     <>
@@ -28,7 +27,6 @@ export const GroupActions: React.FC<GroupActionsProps> = ({
   handleGroupLeave,
   handleGroupRedirect,
 }) => {
-
   return (
     <Row
       style={{
@@ -42,11 +40,11 @@ export const GroupActions: React.FC<GroupActionsProps> = ({
             aria-label={`group-leave-action-${id}`}
             id={`group-leave-${id}`}
             onClick={handleGroupLeave}
-          >{match(isAdmin)
-            .with(true, () => <Delete fontSize="small" />)
-            .with(false, () => <Logout fontSize="small" />)
-            .exhaustive()
-          }
+          >
+            {match(isAdmin)
+              .with(true, () => <Delete fontSize="small" />)
+              .with(false, () => <Logout fontSize="small" />)
+              .exhaustive()}
           </IconButton>
 
           <IconButton>

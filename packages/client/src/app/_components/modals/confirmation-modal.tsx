@@ -20,7 +20,7 @@ type ConfirmationModalProps = {
   confirmButtonText: string
   onConfirm: () => void
   onCancel: () => void
-};
+}
 
 export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   isOpen,

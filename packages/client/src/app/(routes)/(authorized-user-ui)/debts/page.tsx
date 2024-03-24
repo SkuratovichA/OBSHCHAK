@@ -8,13 +8,10 @@ import type { DebtsResponse, DebtsSearchParams } from '@OBSHCHAK-UI/app/api/debt
 import { nextEndpointsMap } from 'app-common'
 
 const Page: React.FC = () => {
-  const { data: debts } = useSwr<DebtsSearchParams, DebtsResponse>(
-    nextEndpointsMap.DEBTS(),
-    {
-      usernames: [],
-      groups: []
-    },
-  )
+  const { data: debts } = useSwr<DebtsSearchParams, DebtsResponse>(nextEndpointsMap.DEBTS(), {
+    usernames: [],
+    groups: [],
+  })
 
   // TODO: we need to have another layer of abstraction (xD) here and
   //  fetch the data first based on the username
@@ -24,8 +21,6 @@ const Page: React.FC = () => {
     return <DebtsPageSkeleton />
   }
 
-  return (
-    <DebtsPage debts={debts} />
-  )
+  return <DebtsPage debts={debts} />
 }
 export default Page

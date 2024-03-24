@@ -22,7 +22,6 @@ import type { DebtsResponse, DebtsSearchParams } from '@OBSHCHAK-UI/app/api/debt
 import { Box } from '@mui/material'
 import { grey } from '@mui/material/colors'
 
-
 export type FriendPageProps = {
   username: ObshchakUser['username']
 }
@@ -40,19 +39,19 @@ export const FriendPage: React.FC<FriendPageProps> = ({ username }) => {
     data: debts,
     isLoading: isDebtsLoading,
     isValidating: isDebtsValidating,
-  } = useSwr<DebtsSearchParams, DebtsResponse>(
-    nextEndpointsMap.DEBTS(),
-    { ...usernames, groups: [] },
-  )
+  } = useSwr<DebtsSearchParams, DebtsResponse>(nextEndpointsMap.DEBTS(), {
+    ...usernames,
+    groups: [],
+  })
 
   const {
     data: groups,
     isLoading: isGroupsLoading,
     isValidating: isGroupsValidating,
-  } = useSwr<GroupsRequestBody, GroupsResponse>(
-    nextEndpointsMap.GROUPS(),
-    {...usernames, groupId: null},
-  )
+  } = useSwr<GroupsRequestBody, GroupsResponse>(nextEndpointsMap.GROUPS(), {
+    ...usernames,
+    groupId: null,
+  })
 
   return (
     <ScrollableBarlessList
@@ -69,39 +68,38 @@ export const FriendPage: React.FC<FriendPageProps> = ({ username }) => {
       <Section>
         {match([isDebtsLoading, isDebtsValidating, debts])
           .returnType<React.ReactNode>()
-          .with(
-            [false, false, P.select('debts', P.not(P.nullish))],
-            ({ debts }) => <FriendsDebts debts={debts} />,
-          )
-          .otherwise(() => <DebtsPageSkeleton />)
-        }
+          .with([false, false, P.select('debts', P.not(P.nullish))], ({ debts }) => (
+            <FriendsDebts debts={debts} />
+          ))
+          .otherwise(() => (
+            <DebtsPageSkeleton />
+          ))}
       </Section>
 
       <Section>
         {match([isGroupsLoading, isGroupsValidating, groups])
           .returnType<React.ReactNode>()
-          .with(
-            [false, false, P.select('groups', P.not(P.nullish))],
-            ({ groups }) => <GroupsList groups={deserializeGroupsResponse(groups)} />,
-          )
-          .otherwise(() => <GroupListSkeleton />)
-        }
+          .with([false, false, P.select('groups', P.not(P.nullish))], ({ groups }) => (
+            <GroupsList groups={deserializeGroupsResponse(groups)} />
+          ))
+          .otherwise(() => (
+            <GroupListSkeleton />
+          ))}
       </Section>
-
     </ScrollableBarlessList>
   )
 }
 
 const FriendsDebts = styled(DebtsPage)`
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
 `
 
 const Section = styled(Box)`
-    align-content: center;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    background: ${grey[50]};
-    border-radius: 16px;
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  background: ${grey[50]};
+  border-radius: 16px;
 `

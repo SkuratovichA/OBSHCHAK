@@ -48,7 +48,6 @@ export const useFriends: UseFriends = (friends) => {
     ReducerActionType
   >(friends, reducer)
 
-
   const removeFriend = useCallback(
     async (friend: ObshchakUser) => {
       console.log('useFriends: REMOVE FRIEND')

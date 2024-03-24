@@ -15,11 +15,8 @@ export type Paginatable<T extends object = object> = Optional<{
 
 export const isPaginatable = (obj: object): obj is Paginatable =>
   !obj ||
-  typeof obj === 'object' && (
-    'page' in obj && 'limit' in obj ||
-    !('page' in obj) && !('limit' in obj)
-  )
-
+  (typeof obj === 'object' &&
+    (('page' in obj && 'limit' in obj) || (!('page' in obj) && !('limit' in obj))))
 
 export type Loadable<T = object> =
   | ({

@@ -66,11 +66,7 @@ export const DebtsPage: React.FC<DebtsPageProps> = ({ debts }) => {
     filteringFunction: filterDebts,
   })
 
-  const {
-    updateFilters,
-    filteredItems: filteredDebts,
-    filters,
-  } = result // that's weird that this isn't enough to make it defined
+  const { updateFilters, filteredItems: filteredDebts, filters } = result // that's weird that this isn't enough to make it defined
 
   const handleFilterChange = (filterName: FilterType, value: keyof Debt) => {
     updateFilters!({ [filtersToKeyMap[filterName]]: value })

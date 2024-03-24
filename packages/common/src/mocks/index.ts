@@ -1,4 +1,4 @@
-import type { ObshchakUser, Debt, Group} from '../types';
+import type { ObshchakUser, Debt, Group } from '../types'
 import { DebtRoleType } from '../types'
 import { CurrencyType, DebtStatusType } from '../types'
 

@@ -12,10 +12,7 @@ import type { GroupsMap, GroupsResponse } from '@OBSHCHAK-UI/app/api/groups/util
 import { deserializeGroupsResponse } from '@OBSHCHAK-UI/app/api/groups/utils'
 import { isGroupsResponse } from '@OBSHCHAK-UI/app/api/groups/utils'
 
-const modifyGroups = async (
-  endpoint: string,
-  body: Partial<Group>,
-): Promise<Maybe<GroupsMap>> => {
+const modifyGroups = async (endpoint: string, body: Partial<Group>): Promise<Maybe<GroupsMap>> => {
   try {
     const res = await fetch(endpoint, {
       method: 'POST',

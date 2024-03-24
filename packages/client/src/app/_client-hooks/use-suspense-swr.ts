@@ -14,7 +14,6 @@ export const useSwr = <P extends object, R extends Maybe<object>>(endpoint: stri
 
 // TODO: not tested
 export const fetcher = async <T, S>(url: string, params: T, timeout = 5000): Promise<S> => {
-
   const controller = new AbortController()
   const id = setTimeout(() => controller.abort(), timeout)
 

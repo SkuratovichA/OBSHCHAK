@@ -1,4 +1,4 @@
-import type { CurrencyType, Debt} from '../types';
+import type { CurrencyType, Debt } from '../types'
 import { DebtRoleType } from '../types'
 
 export * from './react-on-char'
@@ -20,8 +20,8 @@ export const createLabeledList = <T>(
 ): string =>
   obj
     ? Object.entries(obj)
-      .map(([key, value]) => ppFun(key, value))
-      .join(joiner)
+        .map(([key, value]) => ppFun(key, value))
+        .join(joiner)
     : ''
 
 export const splitSentence = (text: string, chunk: string): ReturnType<typeof reactOnChar> => {
@@ -40,9 +40,12 @@ export const deSpacifyBase = (str: string, subWith: string) =>
 export const deSpacify = (str: string) => deSpacifyBase(str, '-')
 
 export const getDebtsAmount = (debts: Debt[], defaultAccountCurrency: CurrencyType): number =>
-  debts.reduce((acc, { amount, role }) =>
-      acc + (match(role)
+  debts.reduce(
+    (acc, { amount, role }) =>
+      acc +
+      match(role)
         .with(DebtRoleType.LENDER, () => amount)
         .with(DebtRoleType.BORROWER, () => -amount)
-        .exhaustive())
-    , 0)
+        .exhaustive(),
+    0,
+  )

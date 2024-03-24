@@ -103,7 +103,7 @@ export const ScrollableBodyContainer = styled(Box)`
 `
 ScrollableBodyContainer.displayName = 'ScrollableBodyContainer'
 
-export const Row = styled(Box)<{style: React.CSSProperties}>(props => ({
+export const Row = styled(Box)<{ style: React.CSSProperties }>((props) => ({
   width: '100%',
   height: '100%',
   padding: 0,
@@ -115,10 +115,10 @@ export const Row = styled(Box)<{style: React.CSSProperties}>(props => ({
 Row.displayName = 'Row'
 
 export const Column = styled(Box)`
-    padding: 0 !important;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
 `
 Column.displayName = 'Column'

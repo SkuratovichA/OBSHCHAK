@@ -4,6 +4,5 @@ export const centered: React.CSSProperties = {
   justifyContent: 'center',
   alignItems: 'center',
   textAlign: 'center',
-  alignContent: 'center'
+  alignContent: 'center',
 }
-
