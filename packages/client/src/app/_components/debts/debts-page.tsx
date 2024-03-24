@@ -6,14 +6,12 @@ import { useFiltering } from '@OBSHCHAK-UI/app/_client-hooks'
 import {
   FilterBar,
   FullHeightNonScrollableContainer,
-  DebtsList, Row,
+  DebtsList,
 } from '@OBSHCHAK-UI/app/_components'
 import type { Maybe, Debt } from 'app-common'
 import { entries } from 'app-common'
 import { DebtStatusType } from 'app-common'
 import type { DebtsResponse } from '@OBSHCHAK-UI/app/api/debts/utils'
-import { Typography } from '@mui/material'
-import { grey } from '@mui/material/colors'
 
 interface DebtFilters extends FilterContextTypeBase {
   search: string
@@ -47,20 +45,12 @@ const filterDebts: FilterFn<Maybe<DebtsResponse>, DebtFilters> = (
 export const DebtsPageSkeleton = () => {
   return (
     <FullHeightNonScrollableContainer>
-      <Row
-        sx={{
-          justifyContent: 'space-between',
-        }}
-      >
-        <Typography variant={'h5'} color={grey[500]}>Debts</Typography>
-
-        <FilterBar
-          filterOptions={[]}
-          onFilterChange={() => {}}
-          searchValue=""
-          onSearchChange={() => {}}
-        />
-      </Row>
+      <FilterBar
+        filterOptions={[]}
+        onFilterChange={() => {}}
+        searchValue=""
+        onSearchChange={() => {}}
+      />
       <DebtsList isLoading={true} />
     </FullHeightNonScrollableContainer>
   )
@@ -104,22 +94,15 @@ export const DebtsPage: React.FC<DebtsPageProps> = ({ debts }) => {
 
   return (
     <FullHeightNonScrollableContainer>
-      <Row
-        sx={{
-          justifyContent: 'space-between',
-        }}
-      >
-        <Typography variant={'h5'} color={grey[500]}>Debts</Typography>
-        <FilterBar
-          filterOptions={filterOptions(filters)}
-          // TODO: maybe go with hooks to make it more type-safe. tbd in the future versions if there are any
-          onFilterChange={(filterName, value) =>
-            handleFilterChange(filterName as FilterType, value as keyof Debt)
-          }
-          searchValue={filters.search || ''}
-          onSearchChange={handleSearchChange}
-        />
-      </Row>
+      <FilterBar
+        filterOptions={filterOptions(filters)}
+        // TODO: maybe go with hooks to make it more type-safe. tbd in the future versions if there are any
+        onFilterChange={(filterName, value) =>
+          handleFilterChange(filterName as FilterType, value as keyof Debt)
+        }
+        searchValue={filters.search || ''}
+        onSearchChange={handleSearchChange}
+      />
 
       {/*try do it w/o !*/}
       <DebtsList itemsMap={filteredDebts!} />

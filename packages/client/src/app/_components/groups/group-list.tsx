@@ -9,15 +9,11 @@ import { entries, isSomeEmpty } from 'app-common'
 import type { GroupsMap } from '@OBSHCHAK-UI/app/api/groups/utils'
 import { match } from 'ts-pattern'
 import { useGroups } from '@OBSHCHAK-UI/app/_client-hooks/use-groups'
-import { Typography } from '@mui/material'
-import { grey } from '@mui/material/colors'
 
 export const GroupListSkeleton = () => {
   return (
     <FullHeightNonScrollableContainer>
       <ScrollableBarlessList>
-        <Typography variant={'h5'} color={grey[500]} >Groups</Typography>
-
         {Array.from({ length: 3 }).map((_, i) => (
           <ListItemTiltable key={i}>
             <GroupItem isLoading />
@@ -54,8 +50,6 @@ export const GroupsList: React.FC<GroupsListProps> = ({
     <FullHeightNonScrollableContainer>
       {/*<FilterBar searchValue={filters.search ?? ''} onSearchChange={handleSearchChange} />*/}
       <ScrollableBarlessList>
-        <Typography variant={'h5'} color={grey[500]}>Groups</Typography>
-
         {match(filteredGroups)
           .when(isSomeEmpty, () => <div>No groups</div>) // Show "No groups" message when there are no groups
           .otherwise((groups) =>
