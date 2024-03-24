@@ -4,6 +4,7 @@ import { arrayToIdMap, groupsMock } from 'app-common'
 import type { GroupsResponse } from '@OBSHCHAK-UI/app/api/groups/utils'
 import { serializeGroup } from '@OBSHCHAK-UI/app/api/groups/utils'
 import { isGroupsRequestBody } from '@OBSHCHAK-UI/app/api/groups/utils'
+import { match, P } from 'ts-pattern'
 
 export type GroupsSearchParams = {
   usernames: ObshchakUser['username']
@@ -24,9 +25,16 @@ export async function POST(request: NextRequest) {
   const data: GroupsResponse = arrayToIdMap(
     groupsMock()
       .filter(group =>
-        !body.usernames ||
-        // check if some of the usernames are in the array of group.members({usernames})
-        body.usernames.some(username => group.members.some(member => member.username === username)),
+        match(body)
+          .with({ groupId: P.select('groupId', P.string) }, ({ groupId }) =>
+            groupId === group.id,
+          )
+          .with({ usernames: P.select('usernames', P.array(P.string)) }, ({ usernames }) =>
+            usernames.some(username => group.members.some(member => member.username === username)),
+          )
+          .otherwise(() =>
+            true,
+          ),
       )
       .map(serializeGroup),
   )
