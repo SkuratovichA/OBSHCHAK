@@ -51,7 +51,7 @@ export const GroupItemBase: React.FC<GroupItemProps> = ({ group }) => {
   return (
     <>
       <Row
-        sx={{
+        style={{
           justifyContent: 'space-between',
         }}
       >
@@ -68,7 +68,7 @@ export const GroupItemBase: React.FC<GroupItemProps> = ({ group }) => {
       </Row>
 
       <Row
-        sx={{
+        style={{
           justifyContent: 'space-between',
         }}
       >
@@ -91,7 +91,7 @@ const GroupItemSkeleton = () => {
   return (
     <>
       <Row
-        sx={{
+        style={{
           justifyContent: 'space-between',
         }}
       >
@@ -99,7 +99,7 @@ const GroupItemSkeleton = () => {
         <DebtAmount isLoading />
       </Row>
       <Row
-        sx={{
+        style={{
           justifyContent: 'space-between',
         }}
       >

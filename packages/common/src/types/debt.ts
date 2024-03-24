@@ -1,4 +1,5 @@
 import type { ObshchakUser } from './obshchak-user'
+import type { Group} from './index'
 import { isWithId } from './index'
 import { isArray } from 'lodash'
 
@@ -40,7 +41,7 @@ export interface Debt {
   resolvedDate: Date | null
 
   categories?: string[]
-  groups?: string[]
+  groups?: Array<Group['id']>
 }
 
 // TODO: add validation for enums, so they are not strings, but enum values

@@ -31,7 +31,7 @@ export const GroupActions: React.FC<GroupActionsProps> = ({
 
   return (
     <Row
-      sx={{
+      style={{
         justifyContent: 'end',
       }}
     >

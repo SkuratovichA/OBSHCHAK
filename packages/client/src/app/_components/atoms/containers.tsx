@@ -59,11 +59,13 @@ export const ListItemTiltable = styled(ListItem)`
 ListItemTiltable.displayName = 'ListItemTiltable'
 
 export const FullHeightNonScrollableContainer = styled(Container)`
+  position: relative;
   height: 100%;
 `
 FullHeightNonScrollableContainer.displayName = 'FullHeightNonScrollableContainer'
 
 export const ScrollableBarlessList = styled(List)<{ maxHeight?: string }>`
+  position: relative;
   overflow: scroll;
   max-height: ${({ maxHeight }) => maxHeight ?? '100%'};
 
@@ -101,21 +103,21 @@ export const ScrollableBodyContainer = styled(Box)`
 `
 ScrollableBodyContainer.displayName = 'ScrollableBodyContainer'
 
-export const Row = styled(Container)`
-    padding: 0 !important;
-    display: flex;
-    width: 100%;
-    align-items: center;
-    height: 100%;
-`
+export const Row = styled(Box)<{style: React.CSSProperties}>(props => ({
+  width: '100%',
+  height: '100%',
+  padding: 0,
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  ...props.style,
+}))
 Row.displayName = 'Row'
 
-export const Column = styled(Container)`
+export const Column = styled(Box)`
     padding: 0 !important;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: start;
     height: 100%;
     width: 100%;
 `
