@@ -46,7 +46,7 @@ export const GroupCardHeader: React.FC<GroupCardHeaderProps> = ({ isLoading, nam
             </Typography>
 
             <Typography variant={'caption'} color={'rgba(47,47,47,0.5)'}>
-              {creationDate.toDateString()}
+              {creationDate.toLocaleDateString()}
             </Typography>
           </GroupCardHeaderDescriptionContainer>
         </>
