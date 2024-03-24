@@ -6,7 +6,7 @@ const UserAvatarsRowSkeleton = () => {
   return (
     <AvatarGroup max={4} sx={{
       justifyContent: 'start',
-      direction: 'row'
+      direction: 'row',
     }}>
       <Skeleton variant="circular" width={40} height={40} />
       <Skeleton variant="circular" width={40} height={40} />
@@ -18,15 +18,16 @@ const UserAvatarsRowSkeleton = () => {
 
 type UserAvatarsRowProps = Loadable<{
   users: Array<Pick<ObshchakUser, 'username' | 'profileImage'>>
+  max?: number
 }>
-export const UserAvatarsRow: React.FC<UserAvatarsRowProps> = ({ isLoading, users }) => {
+export const UserAvatarsRow: React.FC<UserAvatarsRowProps> = ({ isLoading, users, max = 3 }) => {
 
   if (isLoading) {
     return <UserAvatarsRowSkeleton />
   }
 
   return (
-    <AvatarGroup max={3} sx={{
+    <AvatarGroup max={max} sx={{
       justifyContent: 'start',
     }}>
       {users.map((user, key) => (
