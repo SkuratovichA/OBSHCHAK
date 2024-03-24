@@ -51,7 +51,7 @@ export const FriendPage: React.FC<FriendPageProps> = ({ username }) => {
     isValidating: isGroupsValidating,
   } = useSwr<GroupsRequestBody, GroupsResponse>(
     nextEndpointsMap.GROUPS(),
-    usernames,
+    {...usernames, groupId: null},
   )
 
   return (

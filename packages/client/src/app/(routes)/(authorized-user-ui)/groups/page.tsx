@@ -11,7 +11,7 @@ const Page: React.FC = () => {
 
   const { data, isLoading, isValidating, error } = useSwr<GroupsRequestBody, GroupsResponse>(
     nextEndpointsMap.GROUPS(),
-    {usernames: null},
+    {usernames: null, groupId: null},
   )
 
   const groups = useMemo(() => data ? deserializeGroupsResponse(data): data, [data])
